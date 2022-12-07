@@ -2,9 +2,8 @@ import React from "react";
 import { publicAPI } from "../utils/publicAPI";
 import { Button, Grid, TextField } from "@mui/material";
 
-export function Leaderboard() {
+export function Leaderboard({ apiKey }) {
   const [urlSlug, setUrlSlug] = React.useState(null);
-  const [apiKey, setApiKey] = React.useState(null);
 
   React.useEffect(() => {
     //   publicAPI(apiKey)
@@ -27,23 +26,25 @@ export function Leaderboard() {
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={8}>
-        <TextField
-          id="urlSlugInput"
-          label="Add URL Slug"
-          variant="standard"
-          onChange={(event) => setUrlSlug(event.target.value)}
-        />
+    <Grid
+      container
+      spacing={2}
+      justifyContent="space-between"
+      alignItems="center"
+      direction="column"
+      style={{ minHeight: "40vh" }}
+    >
+      <Grid container direction="row" justifyContent="center" spacing={3}>
+        <Grid item>
+          <TextField
+            id="urlSlugInput"
+            label="Add URL Slug"
+            variant="standard"
+            onChange={(event) => setUrlSlug(event.target.value)}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={8}>
-        <TextField
-          id="apiKeyInput"
-          label="Add API Key"
-          variant="standard"
-          onChange={(event) => setApiKey(event.target.value)}
-        />
-      </Grid>
+
       <Grid item xs={8}>
         <Button onClick={fetchAssets} variant="contained">
           Click to fetch
