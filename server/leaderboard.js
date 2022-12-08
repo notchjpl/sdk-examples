@@ -38,7 +38,9 @@ const createLeaderboard = (leaderboardObject) => {
       console.log(b);
       return leaderboardObject[b].accuracy - leaderboardObject[a].accuracy;
     })
-    .map((element) => leaderboardObject[element]);
+    .map((element) => {
+      return { ...leaderboardObject[element], department: element };
+    });
 
   let completedLeaderboard = Object.keys(leaderboardObject)
     .sort((a, b) => {
@@ -55,7 +57,7 @@ const createLeaderboard = (leaderboardObject) => {
     .get(`/world/${process.env.LEADERBOARD_URL_SLUG}/assets`, {})
     .then((response) => {
       const { data } = response;
-      let existingAccuracyArray = {
+      let existingLeaderboards = {
         AccuracyLeaderboard: {
           department: {},
           completed: {},
@@ -69,23 +71,66 @@ const createLeaderboard = (leaderboardObject) => {
       };
 
       data.forEach((element) => {
-        const { id, uniqueName } = element;
+        const { uniqueName } = element;
         if (
           uniqueName &&
-          (uniqueName.contains("AccuracyLeaderboard") ||
-            uniqueName.contains("CompletedLeaderboard"))
+          (uniqueName.includes("AccuracyLeaderboard") ||
+            uniqueName.includes("CompletedLeaderboard"))
         ) {
           const tempArray = uniqueName.split("_");
           const board = tempArray[0];
-          const category = tempArray[1];
+          const category = tempArray[1].toLowerCase();
           const order = tempArray[2];
-          existingAccuracyArray[board][category][order] = element;
+          existingLeaderboards[board][category][order] = element;
         }
 
-        console.log("ID to delete", id);
-        for (let i = 0; i < 10; i++) {}
+        console.log(existingLeaderboards);
+        // console.console.log("ID to delete", id);
+
+        // for (let i = 0; i < completedLeaderboard.length; i++) {
+        // const boardString = "CompletedLeaderboard";
+        //   prepareAssetText(
+        //   boardString,
+        //   existingLeaderboards[boardString],
+        //   accuracyLeaderboard[i],
+        //   i
+        // );
+        // }
       });
+      for (let i = 0; i < accuracyLeaderboard.length; i++) {
+        const boardString = "AccuracyLeaderboard";
+        prepareAssetText(
+          boardString,
+          existingLeaderboards[boardString],
+          accuracyLeaderboard[i],
+          i
+        );
+      }
     });
+};
+
+const prepareAssetText = (boardString, boardObj, newItem, index) => {
+  const prepByCategory = (cat) => {
+    const asset = boardObj[cat][index];
+    if (!asset) {
+      console.log("No asset for index", index);
+      return;
+    }
+    const { id } = asset;
+    updateAssetText(id, newItem[cat].toString());
+  };
+
+  prepByCategory("department");
+  setTimeout(() => prepByCategory("completed"), 500);
+  setTimeout(() => prepByCategory("accuracy"), 1000);
+};
+
+const updateAssetText = (id, text) => {
+  console.log(id, text);
+  publicAPI(process.env.LEADERBOARD_API_KEY).put(
+    `/world/${process.env.LEADERBOARD_URL_SLUG}/assets/${id}/set-custom-text`,
+    { text }
+  );
 };
 
 module.exports = { updateLeaderboard };
