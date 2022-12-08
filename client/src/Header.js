@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 export function Header(props) {
-  const { apiKey, changeExample, setApiKey } = props;
+  const { apiKey, changeExample, setApiKey, title } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -33,7 +33,7 @@ export function Header(props) {
     >
       <Grid item>
         <Typography variant="h1" component="h1">
-          Leaderboard
+          {title}
         </Typography>
       </Grid>
       <Grid container justifyContent="center" alignItems="center" spacing={4}>

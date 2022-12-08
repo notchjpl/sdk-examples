@@ -5,7 +5,7 @@ import { Header } from "./Header";
 
 function App() {
   const [apiKey, setApiKey] = React.useState("");
-  const [example, changeExample] = React.useState("Leaderboard");
+  const [example, changeExample] = React.useState("leaderboard");
 
   const pageSelector = () => {
     switch (example) {
@@ -22,6 +22,7 @@ function App() {
         apiKey={apiKey}
         setApiKey={setApiKey}
         changeExample={changeExample}
+        title={example.toUpperCase()}
       />
       {pageSelector()}
     </div>
