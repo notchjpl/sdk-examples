@@ -20,7 +20,7 @@ const updateLeaderboard = (req, res) => {
       case 4:
         leaderboardObject[leaderboardArray[i - 4]].accuracy = parseFloat(
           leaderboardArray[i]
-        );
+        ).toFixed(0);
         break;
       default:
         break;
@@ -34,8 +34,9 @@ const updateLeaderboard = (req, res) => {
 const createLeaderboard = (leaderboardObject) => {
   let accuracyLeaderboard = Object.keys(leaderboardObject)
     .sort((a, b) => {
-      console.log(a);
-      console.log(b);
+      if (leaderboardObject[b].accuracy === leaderboardObject[a].accuracy) {
+        return leaderboardObject[b].completed - leaderboardObject[a].completed;
+      }
       return leaderboardObject[b].accuracy - leaderboardObject[a].accuracy;
     })
     .map((element) => {
@@ -44,14 +45,14 @@ const createLeaderboard = (leaderboardObject) => {
 
   let completedLeaderboard = Object.keys(leaderboardObject)
     .sort((a, b) => {
+      if (leaderboardObject[b].completed === leaderboardObject[a].completed) {
+        return leaderboardObject[b].accuracy - leaderboardObject[a].accuracy;
+      }
       return leaderboardObject[b].completed - leaderboardObject[a].completed;
     })
     .map((element) => {
       return { ...leaderboardObject[element], department: element };
     });
-
-  console.log(accuracyLeaderboard);
-  console.log(completedLeaderboard);
 
   publicAPI(process.env.LEADERBOARD_API_KEY)
     .get(`/world/${process.env.LEADERBOARD_URL_SLUG}/assets`, {})
@@ -83,20 +84,18 @@ const createLeaderboard = (leaderboardObject) => {
           const order = tempArray[2];
           existingLeaderboards[board][category][order] = element;
         }
-
-        console.log(existingLeaderboards);
-        // console.console.log("ID to delete", id);
-
-        // for (let i = 0; i < completedLeaderboard.length; i++) {
-        // const boardString = "CompletedLeaderboard";
-        //   prepareAssetText(
-        //   boardString,
-        //   existingLeaderboards[boardString],
-        //   accuracyLeaderboard[i],
-        //   i
-        // );
-        // }
       });
+
+      for (let i = 0; i < completedLeaderboard.length; i++) {
+        const boardString = "CompletedLeaderboard";
+        prepareAssetText(
+          boardString,
+          existingLeaderboards[boardString],
+          completedLeaderboard[i],
+          i
+        );
+      }
+
       for (let i = 0; i < accuracyLeaderboard.length; i++) {
         const boardString = "AccuracyLeaderboard";
         prepareAssetText(
@@ -109,28 +108,70 @@ const createLeaderboard = (leaderboardObject) => {
     });
 };
 
-const prepareAssetText = (boardString, boardObj, newItem, index) => {
+const prepareAssetText = (
+  boardString,
+  boardObj,
+  newItem,
+  index
+  // addedNewAssetCallback
+) => {
+  // This isn't yet working properly
+  // const prepCreateAsset = async (cat) => {
+  //   const firstAsset = boardObj[cat][0];
+  //   if (!firstAsset) return;
+  //   let newAsset = firstAsset;
+  //   delete newAsset.id;
+  //   newAsset.position.y =
+  //     firstAsset.position.y + firstAsset.textStyle.textSize + index;
+  //   newAsset.uniqueName = `${boardString}_${cat}_${index}`;
+  //   newAsset.text = newItem[cat].toString();
+  //   // console.log(newItem[cat]);
+  //   // addedNewAssetCallback(boardString, cat, index, newAsset);
+  //   const id = await createAsset(newAsset);
+  //   console.log(newAsset.text);
+  //   updateAssetText(id, newAsset.text, firstAsset.textStyle);
+  // };
+
   const prepByCategory = (cat) => {
     const asset = boardObj[cat][index];
     if (!asset) {
-      console.log("No asset for index", index);
+      // console.log("No asset for index", index);
+      // prepCreateAsset(cat);
       return;
     }
-    const { id } = asset;
-    updateAssetText(id, newItem[cat].toString());
+    const { id, text } = asset;
+    const newText = newItem[cat].toString();
+    if (text !== newText) updateAssetText(id, newText);
   };
 
   prepByCategory("department");
-  setTimeout(() => prepByCategory("completed"), 500);
-  setTimeout(() => prepByCategory("accuracy"), 1000);
+  prepByCategory("completed");
+  prepByCategory("accuracy");
 };
 
-const updateAssetText = (id, text) => {
-  console.log(id, text);
+const updateAssetText = (id, text, style) => {
+  const toUpdate = { text };
+  if (style) toUpdate.style = style;
   publicAPI(process.env.LEADERBOARD_API_KEY).put(
     `/world/${process.env.LEADERBOARD_URL_SLUG}/assets/${id}/set-custom-text`,
-    { text }
+    toUpdate
   );
 };
+
+// Not yet working properly
+// const createAsset = (assetObj) => {
+//   return new Promise((resolve, reject) => {
+//     const { assetId, position, uniqueName } = assetObj;
+//     publicAPI(process.env.LEADERBOARD_API_KEY)
+//       .post(`/world/${process.env.LEADERBOARD_URL_SLUG}/assets`, {
+//         assetId,
+//         position,
+//         uniqueName,
+//       })
+//       .then((response) => {
+//         return resolve(response.data.id);
+//       });
+//   });
+// };
 
 module.exports = { updateLeaderboard };
