@@ -1,5 +1,6 @@
 import React from "react";
 import { publicAPI } from "../utils/publicAPI";
+import { lassoAllVisitors } from "../utils/visitors";
 import {
   Button,
   FormControl,
@@ -41,6 +42,10 @@ export function LassoScatter({ apiKey }) {
 
   const handleChangeLassoAsset = (event) => setLassoAsset(event.target.value);
 
+  const lassoCallback = (result) => {
+    console.log("Got callback");
+  };
+
   return (
     <Grid
       container
@@ -66,8 +71,8 @@ export function LassoScatter({ apiKey }) {
           Fetch Assets with Unique Names
         </Button>
       </Grid>
-      <Grid container direction="column">
-        <Typography variant="h3" component="h3">
+      <Grid container direction="column" xs={5}>
+        <Typography variant="h3" component="h3" color={"black"}>
           Lasso
         </Typography>
         <FormControl>
@@ -82,6 +87,20 @@ export function LassoScatter({ apiKey }) {
             {createSelectItems(uniqueAssets)}
           </Select>
         </FormControl>
+        <Button
+          onClick={() =>
+            lassoAllVisitors({
+              apiKey,
+              asset: uniqueAssets[lassoAsset],
+              urlSlug,
+              callback: lassoCallback,
+            })
+          }
+          variant="contained"
+          disabled={!urlSlug}
+        >
+          Lasso Everyone
+        </Button>
       </Grid>
     </Grid>
   );
