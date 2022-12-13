@@ -5,12 +5,12 @@ import { Header } from "./Header";
 
 function App() {
   const [apiKey, setApiKey] = React.useState("");
-  const [example, changeExample] = React.useState("leaderboard");
+  const [example, changeExample] = React.useState("LassoScatter");
 
   const pageSelector = () => {
     switch (example) {
       case "LassoScatter":
-        return <LassoScatter />;
+        return <LassoScatter apiKey={apiKey} />;
       case "leaderboard":
         return <Leaderboard />;
       default:

@@ -58,6 +58,9 @@ export function Header(props) {
               "aria-labelledby": "basic-button",
             }}
           >
+            <MenuItem id="LassoScatter" onClick={handleClose}>
+              LassoScatter
+            </MenuItem>
             <MenuItem id="Leaderboard" onClick={handleClose}>
               Leaderboard
             </MenuItem>
