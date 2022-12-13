@@ -16,6 +16,7 @@ import {
 // Lasso, v1 is select asset (by unique name), and when click button everyone in world lassoed to that spot
 // Scatter, v1 is input box where select asset.  Plus below where can add additional asset.  Scatters evenly across as many assets as are added when click button.
 // v2 of both is being able to select specific players from a list (pull visitors) to be involve in lasso and scatter.  List of players is at top or bottom and when select, stay selected so can scatter, then lasso same group without having to re-select.
+// Include a 'select all' button, then remove people.  To exclude selectively from the lasso.
 
 export function LassoScatter({ apiKey }) {
   const [urlSlug, setUrlSlug] = React.useState(null);
