@@ -5,16 +5,6 @@ import { Button, Grid, TextField } from "@mui/material";
 export function Leaderboard({ apiKey }) {
   const [urlSlug, setUrlSlug] = React.useState(null);
 
-  React.useEffect(() => {
-    //   publicAPI(apiKey)
-    //   .get(`/assets/my-assets?email=${this.email}`)
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data)
-    //     setData("HI!");
-    // })
-  }, []);
-
   const fetchAssets = () => {
     publicAPI(apiKey)
       .get(`/world/${urlSlug}/assets`)

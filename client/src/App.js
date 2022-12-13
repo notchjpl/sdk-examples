@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Leaderboard } from "./Examples";
+import { LassoScatter, Leaderboard } from "./Examples";
 import { Header } from "./Header";
 
 function App() {
@@ -9,6 +9,8 @@ function App() {
 
   const pageSelector = () => {
     switch (example) {
+      case "LassoScatter":
+        return <LassoScatter />;
       case "leaderboard":
         return <Leaderboard />;
       default:
