@@ -60,6 +60,11 @@ export function Header(props) {
               "aria-labelledby": "basic-button",
             }}
           >
+            <Link to="/jukebox">
+              <MenuItem id="jukebox" onClick={handleClose}>
+                Jukebox
+              </MenuItem>
+            </Link>
             <Link to="/lassoscatter">
               <MenuItem id="LassoScatter" onClick={handleClose}>
                 LassoScatter
