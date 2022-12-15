@@ -12,9 +12,11 @@
 
 import React from "react";
 import ReactPlayer from "react-player/lazy";
-import { Button, Grid, Paper, TextField } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
+import { Button, Grid, Paper } from "@mui/material";
 import { EXAMPLE_VIDEOS } from "./youtubeSamples";
 import { selectVideo } from "../utils/jukebox";
+import { SelectUniqueAsset } from "../Components";
 
 function randInt(max) {
   return Math.floor(Math.random() * max);
@@ -22,6 +24,18 @@ function randInt(max) {
 
 export function Jukebox({ apiKey }) {
   const playerRef = React.useRef(null);
+  const [urlSlug, setUrlSlug] = React.useState(null);
+  const [asset, setAsset] = React.useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlSlugParam = searchParams.get("urlSlug");
+  let assetId = searchParams.get("assetId");
+  const playerId = searchParams.get("playerId");
+  if (urlSlugParam) setUrlSlug(urlSlugParam);
+  // if (assetIdParam) setUrlSlug(assetIdParam)
+  if (!playerId) {
+    // Meaning not coming from iframe
+    assetId = asset.id;
+  }
 
   const renderRow = (id) => {
     return (
@@ -68,8 +82,19 @@ export function Jukebox({ apiKey }) {
     return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => renderRow(id));
   };
   return (
-    <Grid container direction="column" spacing={2} alignItems="center">
-      {calcVideos()}
-    </Grid>
+    <div>
+      {!playerId && (
+        <SelectUniqueAsset
+          apiKey={apiKey}
+          asset={asset}
+          setUrlSlug={setUrlSlug}
+          handleChangeAsset={setAsset}
+          urlSlug={urlSlug}
+        />
+      )}
+      <Grid container direction="column" spacing={2} alignItems="center">
+        {calcVideos()}
+      </Grid>
+    </div>
   );
 }

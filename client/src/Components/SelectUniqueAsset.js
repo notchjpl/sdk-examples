@@ -33,6 +33,7 @@ export function SelectUniqueAsset({
         justifyContent="center"
         alignItems="center"
         spacing={2}
+        style={{ marginBottom: 20 }}
       >
         <Grid item>
           <TextField
@@ -56,11 +57,13 @@ export function SelectUniqueAsset({
           </Button>
         </Grid>
 
-        <Grid item xs={8}>
-          <Typography variant="h3" component="h3" color={"black"}>
-            {title}
-          </Typography>
-        </Grid>
+        {title && (
+          <Grid item xs={8}>
+            <Typography variant="h3" component="h3" color={"black"}>
+              {title}
+            </Typography>
+          </Grid>
+        )}
         <Grid item xs={8}>
           <FormControl style={{ minWidth: 100 }} disabled={!urlSlug}>
             <InputLabel id="demo-simple-select-label">Asset</InputLabel>
