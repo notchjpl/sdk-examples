@@ -1,33 +1,40 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { LassoScatter, Leaderboard } from "./Examples";
 import { Header } from "./Header";
 
 function App() {
   const [apiKey, setApiKey] = React.useState("");
-  const [example, changeExample] = React.useState("LassoScatter");
 
-  const pageSelector = () => {
-    switch (example) {
-      case "LassoScatter":
-        return <LassoScatter apiKey={apiKey} />;
-      case "leaderboard":
-        return <Leaderboard />;
-      default:
-        return <Leaderboard />;
-    }
-  };
+  // const pageSelector = () => {
+  //   switch (example) {
+  //     case "LassoScatter":
+  //       return <LassoScatter apiKey={apiKey} />;
+  //     case "leaderboard":
+  //       return <Leaderboard />;
+  //     default:
+  //       return <Leaderboard />;
+  //   }
+  // };
 
   return (
-    <div className="App-container">
-      <Header
-        apiKey={apiKey}
-        setApiKey={setApiKey}
-        changeExample={changeExample}
-        title={example.toUpperCase()}
-      />
-      {pageSelector()}
-    </div>
+    <Router>
+      <div className="App-container">
+        <Header apiKey={apiKey} setApiKey={setApiKey} />
+        <Routes>
+          <Route exact path="/" element={<LassoScatter apiKey={apiKey} />} />
+          <Route
+            path="/lassoscatter"
+            element={<LassoScatter apiKey={apiKey} />}
+          />
+          <Route
+            path="/leaderboard"
+            element={<Leaderboard apiKey={apiKey} />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

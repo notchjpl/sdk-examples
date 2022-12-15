@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,7 +8,8 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 export function Header(props) {
-  const { apiKey, changeExample, setApiKey, title } = props;
+  const { apiKey, setApiKey } = props;
+  const [title, setTitle] = React.useState("LASSOSCATTER");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -15,7 +17,7 @@ export function Header(props) {
   };
   const handleClose = (event) => {
     setAnchorEl(null);
-    changeExample(event.target.id);
+    setTitle(event.target.id.toUpperCase());
   };
 
   return (
@@ -58,12 +60,17 @@ export function Header(props) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem id="LassoScatter" onClick={handleClose}>
-              LassoScatter
-            </MenuItem>
-            <MenuItem id="Leaderboard" onClick={handleClose}>
-              Leaderboard
-            </MenuItem>
+            <Link to="/lassoscatter">
+              <MenuItem id="LassoScatter" onClick={handleClose}>
+                LassoScatter
+              </MenuItem>
+            </Link>
+
+            <Link to="/leaderboard">
+              <MenuItem id="Leaderboard" onClick={handleClose}>
+                Leaderboard
+              </MenuItem>
+            </Link>
           </Menu>
         </Grid>
         <Grid item>
