@@ -15,8 +15,9 @@ import ReactPlayer from "react-player/lazy";
 import { useSearchParams } from "react-router-dom";
 import { Button, Grid, Paper } from "@mui/material";
 import { EXAMPLE_VIDEOS } from "./youtubeSamples";
-import { selectVideo } from "../utils/jukebox";
+
 import { SelectUniqueAsset } from "../Components";
+import { setAssetMedia } from "../utils";
 
 function randInt(max) {
   return Math.floor(Math.random() * max);
@@ -38,6 +39,7 @@ export function Jukebox({ apiKey }) {
   }
 
   const renderRow = (id) => {
+    const mediaLink = `https://www.youtube.com/watch?v=${id}`;
     return (
       <Paper variant="outlined" elevation={3} key={id} style={{ width: 220 }}>
         <Grid
@@ -64,11 +66,21 @@ export function Jukebox({ apiKey }) {
                   },
                 },
               }}
-              url={`https://www.youtube.com/watch?v=${id}`}
+              url={mediaLink}
             />
           </Grid>
           <Grid item xs={4}>
-            <Button onClick={() => selectVideo()} variant="contained">
+            <Button
+              onClick={() =>
+                setAssetMedia({
+                  apiKey,
+                  urlSlug,
+                  assetId,
+                  mediaLink,
+                })
+              }
+              variant="contained"
+            >
               Play
             </Button>
           </Grid>
