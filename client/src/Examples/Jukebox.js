@@ -9,6 +9,7 @@
 // Add a server listener for 'next track' and 'previous track'
 // Add a server listener for 'pause' and 'play'
 // Add a server listener for 'pause'.  Update data object with current track time.
+// https://sdk-examples.metaversecloud.com/jukebox?urlSlug=jukebox-demo-s9zdortms&playerId=1&assetId=-NJN9E9YVXSgR5yxaKG3&apiKey=4885c9eb-88ec-4792-a13f-fdb74fbf56a9
 
 import React from "react";
 import ReactPlayer from "react-player/lazy";
@@ -31,7 +32,7 @@ export function Jukebox({ apiKey }) {
   const urlSlugParam = searchParams.get("urlSlug");
   let assetId = searchParams.get("assetId");
   const playerId = searchParams.get("playerId");
-  if (urlSlugParam) setUrlSlug(urlSlugParam);
+  // if (urlSlugParam) setUrlSlug(urlSlugParam);
   // if (assetIdParam) setUrlSlug(assetIdParam)
   if (!playerId) {
     // Meaning not coming from iframe
@@ -41,7 +42,12 @@ export function Jukebox({ apiKey }) {
   const renderRow = (id) => {
     const mediaLink = `https://www.youtube.com/watch?v=${id}`;
     return (
-      <Paper variant="outlined" elevation={3} key={id} style={{ width: 220 }}>
+      <Paper
+        variant="elevation"
+        elevation={3}
+        key={id}
+        style={{ width: 220, margin: 5 }}
+      >
         <Grid
           container
           direction="row"
@@ -74,7 +80,7 @@ export function Jukebox({ apiKey }) {
               onClick={() =>
                 setAssetMedia({
                   apiKey,
-                  urlSlug,
+                  urlSlug: urlSlug || searchParams.get("urlSlug"),
                   assetId,
                   mediaLink,
                 })
@@ -104,7 +110,13 @@ export function Jukebox({ apiKey }) {
           urlSlug={urlSlug}
         />
       )}
-      <Grid container direction="column" spacing={2} alignItems="center">
+      <Grid
+        container
+        direction="column"
+        spacing={2}
+        alignItems="center"
+        style={{ backgroundColor: "gray", width: "100vw", padding: 10 }}
+      >
         {calcVideos()}
       </Grid>
     </div>
