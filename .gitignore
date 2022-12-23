@@ -4,6 +4,7 @@
 /node_modules
 /client/node_modules
 /client/.pnp
+/client/.yalc
 .pnp.js
 
 # testing

@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 export function Header(props) {
-  const { apiKey, setApiKey } = props;
+  const { apiKey, fetchWorld, setApiKey, setUrlSlug, urlSlug } = props;
   const [title, setTitle] = React.useState("LASSOSCATTER");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -18,6 +18,15 @@ export function Header(props) {
   const handleClose = (event) => {
     setAnchorEl(null);
     setTitle(event.target.id.toUpperCase());
+  };
+
+  const inputStyle = {
+    "& .MuiInputForm-root": { color: "white" },
+    "& .MuiFormLabel-root": { color: "white" },
+    "& .MuiInput-underline:before": { borderBottomColor: "white" },
+    "& .MuiInput-underline:after": { borderBottomColor: "white" },
+    input: { color: "white" },
+    label: { color: "white" },
   };
 
   return (
@@ -85,14 +94,18 @@ export function Header(props) {
             variant="standard"
             value={apiKey}
             onChange={(event) => setApiKey(event.target.value)}
-            sx={{
-              "& .MuiInputForm-root": { color: "white" },
-              "& .MuiFormLabel-root": { color: "white" },
-              "& .MuiInput-underline:before": { borderBottomColor: "white" },
-              "& .MuiInput-underline:after": { borderBottomColor: "white" },
-              input: { color: "white" },
-              label: { color: "white" },
-            }}
+            sx={inputStyle}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            id="urlSlugInput"
+            label="Add URL Slug"
+            variant="standard"
+            value={urlSlug}
+            onBlur={fetchWorld}
+            onChange={(event) => setUrlSlug(event.target.value)}
+            sx={inputStyle}
           />
         </Grid>
       </Grid>
