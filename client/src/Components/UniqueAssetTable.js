@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Table from "@mui/material/Table";
@@ -12,10 +12,10 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
-  const [uniqueAssets, setAssetsWithUniqueNames] = React.useState({});
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [uniqueAssets, setAssetsWithUniqueNames] = useState({});
+  const [selectedAsset, setSelectedAsset] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleFetchAssets = async () => {
     const uniqueAssets = [];
@@ -36,7 +36,7 @@ export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
 
   const handleClick = (asset) => {
     handleChangeAsset(asset);
-    setSelected(asset);
+    setSelectedAsset(asset.id);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -61,17 +61,20 @@ export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
         alignItems="center"
         direction="column"
       >
-        <Grid item>
-          <Button
-            onClick={handleFetchAssets}
-            variant="contained"
-            disabled={!selectedWorld}
-          >
-            Fetch Assets with Unique Names
-          </Button>
+        <Grid container spacing={2} p={2} justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h6" color="black">
+              Dropped Assets
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Button onClick={handleFetchAssets} variant="contained">
+              Fetch Assets with Unique Names
+            </Button>
+          </Grid>
         </Grid>
         {uniqueAssets.length > 0 && (
-          <Grid item>
+          <Grid item sx={{ width: "100%" }}>
             <TableContainer>
               <Table aria-labelledby="tableTitle" size="small">
                 <TableHead>
@@ -92,6 +95,7 @@ export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
                           role="checkbox"
                           tabIndex={-1}
                           key={asset.id}
+                          selected={asset.id === selectedAsset}
                         >
                           <TableCell component="th" scope="row">
                             {asset.name}

@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { UniqueAssetTable } from "../Components";
+import { UniqueAssetTable, VisitorsTable } from "../Components";
 
 // Pull all assets.  Loop through and include any assets with a uniqueName in a select (with search)
 // Lasso, v1 is select asset (by unique name), and when click button everyone in world lassoed to that spot
@@ -47,57 +47,97 @@ export function LassoScatter({
       });
   };
 
+  const handleMoveVisitors = async (visitors) => {
+    let visitorsToMove = visitors.filter((v) => v.selected === true);
+    await selectedWorld
+      .moveVisitors(visitorsToMove)
+      .then(() => {
+        setHasMessage(true);
+        setMessage("Success!");
+        setMessageType("success");
+      })
+      .catch((error) => {
+        setHasMessage(true);
+        setMessage(error);
+        setMessageType("error");
+      });
+  };
+
+  if (!selectedWorld) {
+    return (
+      <Grid container p={10} justifyContent="space-around">
+        <Grid item>
+          <Typography variant="h5" color="black">
+            Enter an API Key and Url Slug above to continue
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  }
+
   return (
-    <Grid container spacing={2} p={4} justifyContent="space-around">
-      <Grid item xs>
-        <UniqueAssetTable
-          handleChangeAsset={setAsset}
-          selectedWorld={selectedWorld}
-        />
+    <>
+      <Grid container spacing={2} p={4} justifyContent="space-around">
+        <Grid item xs>
+          <UniqueAssetTable
+            handleChangeAsset={setAsset}
+            selectedWorld={selectedWorld}
+          />
+        </Grid>
+        <Grid item xs>
+          <Paper sx={{ p: 2 }}>
+            {asset.name ? (
+              <Grid
+                container
+                spacing={2}
+                justifyContent="space-between"
+                direction="column"
+              >
+                <Grid item>
+                  <Typography variant="h5">
+                    Lasso Visitors to <b>{asset.name}</b>
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id="scatter"
+                    label="Scatter by"
+                    onChange={(event) =>
+                      setScatterVisitorsBy(event.target.value)
+                    }
+                  />
+                </Grid>
+                <Grid item>
+                  <Select
+                    id="shouldTeleportVisitors"
+                    value={shouldTeleportVisitors}
+                    label="Teleport visitors?"
+                    onChange={(e) => setShouldTeleportVisitors(e.target.value)}
+                  >
+                    <MenuItem value={true}>True</MenuItem>
+                    <MenuItem value={false}>False</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item>
+                  <Button onClick={handleLassoAll} variant="contained">
+                    Lasso Everyone
+                  </Button>
+                </Grid>
+              </Grid>
+            ) : (
+              <Typography>Select an asset to continue</Typography>
+            )}
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid item xs>
-        <Paper sx={{ p: 2 }}>
-          {asset.name ? (
-            <Grid
-              container
-              spacing={2}
-              justifyContent="space-between"
-              direction="column"
-            >
-              <Grid item>
-                <Typography variant="h5">
-                  Lasso Visitors to {asset.name}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <TextField
-                  id="scatter"
-                  label="Scatter by"
-                  onChange={(event) => setScatterVisitorsBy(event.target.value)}
-                />
-              </Grid>
-              <Grid item>
-                <Select
-                  id="shouldTeleportVisitors"
-                  value={shouldTeleportVisitors}
-                  label="Teleport visitors?"
-                  onChange={(e) => setShouldTeleportVisitors(e.target.value)}
-                >
-                  <MenuItem value={true}>True</MenuItem>
-                  <MenuItem value={false}>False</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item>
-                <Button onClick={handleLassoAll} variant="contained">
-                  Lasso Everyone
-                </Button>
-              </Grid>
-            </Grid>
-          ) : (
-            <Typography>Select an asset to continue</Typography>
-          )}
-        </Paper>
+      <Grid container spacing={2} p={4} justifyContent="space-around">
+        <Grid item xs>
+          <VisitorsTable
+            handleMoveVisitors={handleMoveVisitors}
+            selectedWorld={selectedWorld}
+          />
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 }
