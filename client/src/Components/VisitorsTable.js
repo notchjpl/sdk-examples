@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
+import { EmptyRows } from "./EmptyRows";
 
 export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
   const [visitors, setVisitors] = useState({});
@@ -63,10 +64,6 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - visitors.length) : 0;
 
   return (
     <Paper sx={{ p: 2 }}>
@@ -170,15 +167,11 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
-                    <TableRow
-                      style={{
-                        height: 33 * emptyRows,
-                      }}
-                    >
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
+                  <EmptyRows
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    length={visitors.length}
+                  />
                 </TableBody>
               </Table>
             </TableContainer>

@@ -85,6 +85,11 @@ export function Header(props) {
                 Leaderboard
               </MenuItem>
             </Link>
+            <Link to="/replace-scene">
+              <MenuItem id="ReplaceScene" onClick={handleClose}>
+                ReplaceScene
+              </MenuItem>
+            </Link>
           </Menu>
         </Grid>
         <Grid item>

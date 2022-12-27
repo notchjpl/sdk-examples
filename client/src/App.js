@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes, useSearchParams } from "react-router-dom";
 import "./App.css";
-import { Jukebox, LassoScatter, Leaderboard } from "./Examples";
+import { Jukebox, LassoScatter, Leaderboard, ReplaceScene } from "./Examples";
 import { Header } from "./Header";
 import { World } from "@rtsdk/topia";
 import { Alert, Snackbar } from "@mui/material";
@@ -31,7 +31,7 @@ function App() {
 
   const fetchWorld = async () => {
     if (!urlSlug) return;
-    const selectedWorld = await new World(apiKey, urlSlug);
+    const selectedWorld = await new World({ apiKey, urlSlug });
     await selectedWorld
       .fetchDetails()
       .then(() => {
@@ -84,6 +84,18 @@ function App() {
           }
         />
         <Route path="/leaderboard" element={<Leaderboard apiKey={key} />} />
+        <Route
+          path="/replace-scene"
+          element={
+            <ReplaceScene
+              apiKey={key}
+              selectedWorld={selectedWorld}
+              setHasMessage={setHasMessage}
+              setMessage={setMessage}
+              setMessageType={setMessageType}
+            />
+          }
+        />
       </Routes>
       <Snackbar
         open={hasMessage}

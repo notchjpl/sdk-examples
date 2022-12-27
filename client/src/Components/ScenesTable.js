@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Scene } from "@rtsdk/topia";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Table from "@mui/material/Table";
@@ -10,34 +11,20 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import Input from "@mui/material/Input";
 import { EmptyRows } from "./EmptyRows";
 
-export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
-  const [uniqueAssets, setAssetsWithUniqueNames] = useState({});
-  const [selectedAsset, setSelectedAsset] = useState([]);
+export function ScenesTable({ apiKey, handleReplaceScene }) {
+  const [scenes, setScenes] = useState({});
+  const [email, setEmail] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleFetchAssets = async () => {
-    const uniqueAssets = [];
-    await selectedWorld.fetchDroppedAssets();
-    if (!selectedWorld.droppedAssets) return console.log("no assets found");
-    for (const asset of Object.values(selectedWorld.droppedAssets)) {
-      if (asset.uniqueName) {
-        uniqueAssets.push({
-          id: asset.id,
-          name: asset.uniqueName,
-          x: asset.position.x,
-          y: asset.position.y,
-        });
-      }
-    }
-    setAssetsWithUniqueNames(uniqueAssets);
-  };
-
-  const handleClick = (asset) => {
-    handleChangeAsset(asset);
-    setSelectedAsset(asset.id);
+  const handleFetchScenes = async () => {
+    if (!email) return;
+    const sceneClass = await new Scene(apiKey);
+    const scenes = await sceneClass.fetchScenesByEmail(email);
+    setScenes(scenes);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -61,51 +48,74 @@ export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
         <Grid container spacing={2} p={2} justifyContent="space-between">
           <Grid item>
             <Typography variant="h6" color="black">
-              Dropped Assets
+              Scenes
             </Typography>
           </Grid>
           <Grid item>
-            <Button onClick={handleFetchAssets} variant="contained">
-              Fetch Assets with Unique Names
-            </Button>
+            <Grid container spacing={2} p={2} justifyContent="space-between">
+              <Grid item>
+                <Typography color="black">Email: </Typography>
+              </Grid>
+              <Grid item>
+                <Input
+                  id="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  disabled={!email}
+                  onClick={handleFetchScenes}
+                  variant="contained"
+                >
+                  Fetch Scenes
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
-        {uniqueAssets.length > 0 && (
+        {scenes.length > 0 && (
           <Grid item sx={{ width: "100%" }}>
             <TableContainer>
               <Table aria-labelledby="tableTitle" size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Dropped Asset Name</TableCell>
-                    <TableCell align="right">Position X</TableCell>
-                    <TableCell align="right">Position Y</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Url Slug</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell align="right"></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {uniqueAssets
+                  {scenes
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((asset) => {
+                    .map((scene) => {
                       return (
-                        <TableRow
-                          hover
-                          onClick={() => handleClick(asset)}
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={asset.id}
-                          selected={asset.id === selectedAsset}
-                        >
-                          <TableCell component="th" scope="row">
-                            {asset.name}
+                        <TableRow hover tabIndex={-1} key={scene.id}>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ minWidth: 200 }}
+                          >
+                            {scene.name}
                           </TableCell>
-                          <TableCell align="right">{asset.x}</TableCell>
-                          <TableCell align="right">{asset.y}</TableCell>
+                          <TableCell>{scene.urlSlug}</TableCell>
+                          <TableCell>{scene.description}</TableCell>
+                          <TableCell align="right">
+                            <Button
+                              onClick={() => handleReplaceScene(scene.id)}
+                            >
+                              Replace
+                            </Button>
+                          </TableCell>
                         </TableRow>
                       );
                     })}
                   <EmptyRows
                     page={page}
                     rowsPerPage={rowsPerPage}
-                    length={uniqueAssets.length}
+                    length={scenes.length}
                   />
                 </TableBody>
               </Table>
@@ -113,7 +123,7 @@ export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={uniqueAssets.length}
+              count={scenes.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -125,4 +135,4 @@ export function UniqueAssetTable({ handleChangeAsset, selectedWorld }) {
     </Paper>
   );
 }
-export default UniqueAssetTable;
+export default ScenesTable;
