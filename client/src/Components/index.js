@@ -3,3 +3,4 @@ export { ScenesTable } from "./ScenesTable";
 export { SelectUniqueAsset } from "./SelectUniqueAsset";
 export { UniqueAssetTable } from "./UniqueAssetTable";
 export { VisitorsTable } from "./VisitorsTable";
+export { WorldsTable } from "./WorldsTable";
