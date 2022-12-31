@@ -17,8 +17,7 @@ import {
 import { EmptyRows } from "../EmptyRows";
 
 // context
-import { useUserState } from "../../context/UserContext";
-import { setMessage, useGlobalDispatch } from "../../context/GlobalContext";
+import { setMessage, useGlobalDispatch, useUserState } from "@context";
 
 export function WorldsTable({ handleSelectWorld }) {
   const [worlds, setWorlds] = useState({});

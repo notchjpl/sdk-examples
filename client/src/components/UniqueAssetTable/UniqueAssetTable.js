@@ -15,11 +15,7 @@ import {
 import { EmptyRows } from "../EmptyRows";
 
 // context
-import {
-  setMessage,
-  useGlobalDispatch,
-  useGlobalState,
-} from "../../context/GlobalContext";
+import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
 export function UniqueAssetTable({ handleChangeAsset }) {
   const [uniqueAssets, setAssetsWithUniqueNames] = useState({});

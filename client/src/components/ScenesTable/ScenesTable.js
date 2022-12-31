@@ -18,8 +18,7 @@ import {
 import { EmptyRows } from "../EmptyRows";
 
 // context
-import { useUserState } from "../../context/UserContext";
-import { setMessage, useGlobalDispatch } from "../../context/GlobalContext";
+import { useUserState, setMessage, useGlobalDispatch } from "@context";
 
 export function ScenesTable({ handleReplaceScene }) {
   const [scenes, setScenes] = useState({});

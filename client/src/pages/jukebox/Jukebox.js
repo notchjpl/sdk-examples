@@ -18,17 +18,13 @@ import { DroppedAsset } from "@rtsdk/topia";
 
 // components
 import { Button, Grid, Paper } from "@mui/material";
-import { UniqueAssetTable } from "../../components";
+import { UniqueAssetTable } from "@components";
 
 // utils
-import { EXAMPLE_VIDEOS } from "../../utils";
+import { EXAMPLE_VIDEOS } from "@utils";
 
 // context
-import {
-  setMessage,
-  useGlobalDispatch,
-  useGlobalState,
-} from "../../context/GlobalContext";
+import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
 function randInt(max) {
   return Math.floor(Math.random() * max);

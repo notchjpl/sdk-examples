@@ -1,15 +1,11 @@
 import React from "react";
 
 // components
-import { Grid, Typography } from "@mui/material";
-import { ScenesTable } from "../../components";
+import { Grid } from "@mui/material";
+import { ScenesTable } from "@components";
 
 // context
-import {
-  setMessage,
-  useGlobalDispatch,
-  useGlobalState,
-} from "../../context/GlobalContext";
+import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
 export function ReplaceScene() {
   // context

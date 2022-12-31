@@ -19,7 +19,7 @@ import {
 import { EmptyRows } from "../EmptyRows";
 
 // context
-import { setMessage, useGlobalDispatch } from "../../context/GlobalContext";
+import { setMessage, useGlobalDispatch } from "@context";
 
 export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
   const [visitors, setVisitors] = useState({});

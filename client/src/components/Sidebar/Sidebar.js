@@ -7,24 +7,14 @@ import useStyles from "./styles";
 import { Drawer } from "@mui/material";
 import SidebarLink from "./components/SidebarLink/SidebarLink";
 
-// context
-import { useLayoutState } from "../../context/LayoutContext";
-
 // utils
-import { sidebarRoutes } from "../../utils";
+import { sidebarRoutes } from "@utils";
 
 export function Sidebar() {
   const classes = useStyles();
 
-  // context
-  const { isSidebarOpened } = useLayoutState();
-
   return (
-    <Drawer
-      className={isSidebarOpened ? classes.drawerOpen : classes.drawerClose}
-      variant="permanent"
-      open={isSidebarOpened}
-    >
+    <Drawer open className={classes.drawerOpen} variant="permanent">
       {sidebarRoutes.map((route, index) => {
         return <SidebarLink key={index} path={route.path} text={route.text} />;
       })}

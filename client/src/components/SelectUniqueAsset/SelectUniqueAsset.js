@@ -1,5 +1,5 @@
 import React from "react";
-// import { fetchAssets } from "../../utils/publicAPI";
+// import { fetchAssets } from "@utils/publicAPI";
 import {
   Button,
   FormControl,
@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 // context
-import { useGlobalState } from "../../context/GlobalContext";
+import { useGlobalState } from "@context";
 
 /**
  * @deprecated

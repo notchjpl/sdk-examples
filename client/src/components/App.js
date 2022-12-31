@@ -5,10 +5,10 @@ import { Route, Routes } from "react-router-dom";
 import { Layout } from "./Layout";
 
 // pages
-import { Error } from "../pages";
+import { Error } from "@pages";
 
 // utils
-import { routes } from "../utils";
+import { routes } from "@utils";
 
 export function App() {
   return (

@@ -16,14 +16,12 @@ import useStyles from "./styles";
 // context
 import {
   fetchUser,
-  useUserDispatch,
-  useUserState,
-} from "../../context/UserContext";
-import {
   fetchWorld,
   useGlobalDispatch,
   useGlobalState,
-} from "../../context/GlobalContext";
+  useUserDispatch,
+  useUserState,
+} from "@context";
 
 export function Header() {
   const classes = useStyles();

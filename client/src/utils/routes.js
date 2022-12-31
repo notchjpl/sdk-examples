@@ -5,7 +5,7 @@ import {
   MoveVisitors,
   Leaderboard,
   ReplaceScene,
-} from "../pages";
+} from "@pages";
 
 export const getRouteByPath = (path) => {
   return routes.find((route) => route.path === path);

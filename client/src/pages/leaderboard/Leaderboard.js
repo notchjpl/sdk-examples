@@ -4,11 +4,7 @@ import React from "react";
 import { Button, Grid } from "@mui/material";
 
 // context
-import {
-  setMessage,
-  useGlobalDispatch,
-  useGlobalState,
-} from "../../context/GlobalContext";
+import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
 export function Leaderboard() {
   // context

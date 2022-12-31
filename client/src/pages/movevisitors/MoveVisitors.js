@@ -10,14 +10,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { UniqueAssetTable, VisitorsTable } from "../../components";
+import { UniqueAssetTable, VisitorsTable } from "@components";
 
 // context
-import {
-  setMessage,
-  useGlobalDispatch,
-  useGlobalState,
-} from "../../context/GlobalContext";
+import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
 // Pull all assets.  Loop through and include any assets with a uniqueName in a select (with search)
 // Lasso, v1 is select asset (by unique name), and when click button everyone in world lassoed to that spot

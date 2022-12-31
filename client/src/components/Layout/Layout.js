@@ -10,14 +10,10 @@ import Sidebar from "../Sidebar/Sidebar";
 import { Alert, Grid, Snackbar, Typography } from "@mui/material";
 
 // context
-import {
-  removeMessage,
-  useGlobalDispatch,
-  useGlobalState,
-} from "../../context/GlobalContext";
+import { removeMessage, useGlobalDispatch, useGlobalState } from "@context";
 
 // utils
-import { getRouteByPath } from "../../utils";
+import { getRouteByPath } from "@utils";
 import { pageContent } from "../../content/pageContent";
 
 export function Layout({ children }) {

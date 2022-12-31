@@ -2,14 +2,10 @@ import React from "react";
 
 // components
 import { Grid, Typography } from "@mui/material";
-import { WorldsTable } from "../../components";
+import { WorldsTable } from "@components";
 
 // context
-import {
-  fetchWorld,
-  setMessage,
-  useGlobalDispatch,
-} from "../../context/GlobalContext";
+import { fetchWorld, setMessage, useGlobalDispatch } from "@context";
 
 export function Home() {
   const apiKey = localStorage.getItem("apiKey");
