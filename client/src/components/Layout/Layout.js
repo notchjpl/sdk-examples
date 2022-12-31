@@ -19,8 +19,9 @@ import { pageContent } from "../../content/pageContent";
 export function Layout({ children }) {
   const classes = useStyles();
   const location = useLocation();
-  const { id } = getRouteByPath(location.pathname);
-  const { description, title, requiresUrlSlug } = pageContent[id];
+  const route = getRouteByPath(location.pathname);
+  const routeId = route ? route.id : "ERROR";
+  const { description, title, requiresUrlSlug } = pageContent[routeId];
 
   // context
   const globalDispatch = useGlobalDispatch();
@@ -34,9 +35,9 @@ export function Layout({ children }) {
     <div className={classes.root}>
       <Header />
       <Sidebar />
-      <Grid container className={classes.content} spacing={4}>
+      <Grid className={classes.content} container spacing={4}>
         <Grid item xs={12}>
-          <Typography variant="h3" component="h1">
+          <Typography component="h1" variant="h3">
             {title}
           </Typography>
         </Grid>
@@ -47,9 +48,9 @@ export function Layout({ children }) {
         )}
         <Grid item xs={12}>
           {requiresUrlSlug && !selectedWorld.urlSlug ? (
-            <Grid container p={10} justifyContent="space-around">
+            <Grid container justifyContent="space-around" p={10}>
               <Grid item>
-                <Typography variant="h5" color="black">
+                <Typography color="black" variant="h5">
                   Please enter an API Key and Url Slug above to continue
                 </Typography>
               </Grid>
@@ -61,8 +62,8 @@ export function Layout({ children }) {
       </Grid>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        open={hasMessage}
         onClose={handleCloseSnackbar}
+        open={hasMessage}
       >
         <Alert
           onClose={handleCloseSnackbar}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
 // styles
 import useStyles from "./styles";
@@ -37,13 +38,20 @@ export default function SidebarLink({ icon, path, text, type }) {
   return (
     <ListItem
       button
-      component={Link}
-      to={path}
       className={isLinkActive ? classes.linkActive : classes.link}
+      component={Link}
       disableRipple
+      to={path}
     >
       {icon && <ListItemIcon>{icon}</ListItemIcon>}
       <ListItemText primary={text} />
     </ListItem>
   );
 }
+
+SidebarLink.propTypes = {
+  icon: PropTypes.string,
+  path: PropTypes.string,
+  text: PropTypes.string,
+  type: PropTypes.string,
+};

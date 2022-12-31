@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+
+// components
 import {
   Button,
   Checkbox,
@@ -16,18 +19,19 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { EmptyRows } from "../EmptyRows";
+import { EmptyRows } from "@components/EmptyRows";
 
 // context
-import { setMessage, useGlobalDispatch } from "@context";
+import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
-export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
+export function VisitorsTable({ handleMoveVisitors }) {
   const [visitors, setVisitors] = useState({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // context
   const globalDispatch = useGlobalDispatch();
+  const { selectedWorld } = useGlobalState();
 
   // useEffect(() => {
   //   handleFetchVisitors();
@@ -82,17 +86,15 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
   return (
     <Paper sx={{ p: 2 }}>
       <Grid
-        container
-        spacing={2}
-        justifyContent="space-between"
         alignItems="center"
+        container
         direction="column"
+        justifyContent="space-between"
+        spacing={2}
       >
-        <Grid container spacing={2} p={2} justifyContent="space-between">
+        <Grid container justifyContent="space-between" p={2} spacing={2}>
           <Grid item>
-            <Typography variant="h6" color="black">
-              Current Visitors
-            </Typography>
+            <Typography variant="h6">Current Visitors</Typography>
           </Grid>
           <Grid item>
             <Button onClick={handleFetchVisitors} variant="contained">
@@ -119,9 +121,9 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
                       return (
                         <TableRow
                           hover
-                          tabIndex={-1}
                           key={visitor.id}
                           selected={visitor.selected}
+                          tabIndex={-1}
                         >
                           <TableCell
                             component="th"
@@ -129,10 +131,9 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
                             sx={{ minWidth: 200 }}
                           >
                             <Checkbox
-                              color="primary"
                               checked={visitor.selected}
+                              color="primary"
                               id={`${visitor.id}-selected`}
-                              value={visitor.selected}
                               onChange={(event) =>
                                 onChange(
                                   "selected",
@@ -140,13 +141,13 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
                                   visitor.id
                                 )
                               }
+                              value={visitor.selected}
                             />
                             {visitor.name}
                           </TableCell>
                           <TableCell>
                             <Select
                               id={`${visitor.id}-shouldTeleportVisitor`}
-                              value={visitor.shouldTeleportVisitor}
                               onChange={(event) =>
                                 onChange(
                                   "shouldTeleportVisitor",
@@ -154,6 +155,7 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
                                   visitor.id
                                 )
                               }
+                              value={visitor.shouldTeleportVisitor}
                             >
                               <MenuItem value={true}>True</MenuItem>
                               <MenuItem value={false}>False</MenuItem>
@@ -162,49 +164,49 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
                           <TableCell align="right">
                             <Input
                               id={`${visitor.id}-x`}
-                              value={visitor.x}
                               onChange={(event) =>
                                 onChange("x", event.target.value, visitor.id)
                               }
+                              value={visitor.x}
                             />
                           </TableCell>
                           <TableCell align="right">
                             <Input
                               id={`${visitor.id}-y`}
                               name="y"
-                              value={visitor.y}
                               onChange={(event) =>
                                 onChange("y", event.target.value, visitor.id)
                               }
+                              value={visitor.y}
                             />
                           </TableCell>
                         </TableRow>
                       );
                     })}
                   <EmptyRows
+                    length={visitors.length}
                     page={page}
                     rowsPerPage={rowsPerPage}
-                    length={visitors.length}
                   />
                 </TableBody>
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={visitors.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              rowsPerPageOptions={[5, 10, 25]}
             />
           </Grid>
         )}
         <Grid item>
           <Button
+            disabled={!visitors.length > 0}
             onClick={() => handleMoveVisitors(visitors)}
             variant="contained"
-            disabled={!visitors.length > 0}
           >
             Move Visitors
           </Button>
@@ -213,4 +215,9 @@ export function VisitorsTable({ handleMoveVisitors, selectedWorld }) {
     </Paper>
   );
 }
+
+VisitorsTable.propTypes = {
+  handleMoveVisitors: PropTypes.func.isRequired,
+};
+
 export default VisitorsTable;

@@ -27,12 +27,13 @@ export function App() {
         );
       })}
       <Route
-        path="/error"
         element={
           <Layout>
             <Error />
           </Layout>
         }
+        exact
+        path="*"
       />
     </Routes>
   );

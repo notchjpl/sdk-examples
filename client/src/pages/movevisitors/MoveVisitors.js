@@ -77,7 +77,7 @@ export function MoveVisitors() {
 
   return (
     <>
-      <Grid container spacing={2} p={4} justifyContent="space-around">
+      <Grid container justifyContent="space-around" p={4} spacing={2}>
         <Grid item xs={8}>
           <UniqueAssetTable
             handleChangeAsset={setAsset}
@@ -89,9 +89,9 @@ export function MoveVisitors() {
             {asset.name ? (
               <Grid
                 container
-                spacing={2}
-                justifyContent="space-between"
                 direction="column"
+                justifyContent="space-between"
+                spacing={2}
               >
                 <Grid item>
                   <Typography variant="h5">
@@ -110,9 +110,9 @@ export function MoveVisitors() {
                 <Grid item>
                   <Select
                     id="shouldTeleportVisitors"
-                    value={shouldTeleportVisitors}
                     label="Teleport visitors?"
                     onChange={(e) => setShouldTeleportVisitors(e.target.value)}
+                    value={shouldTeleportVisitors}
                   >
                     <MenuItem value={true}>True</MenuItem>
                     <MenuItem value={false}>False</MenuItem>
@@ -130,7 +130,7 @@ export function MoveVisitors() {
           </Paper>
         </Grid>
       </Grid>
-      <Grid container spacing={2} p={4} justifyContent="space-around">
+      <Grid container justifyContent="space-around" p={4} spacing={2}>
         <Grid item xs={12}>
           <VisitorsTable
             handleMoveVisitors={handleMoveVisitors}

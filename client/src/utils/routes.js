@@ -2,8 +2,8 @@ import {
   Error,
   Home,
   Jukebox,
-  MoveVisitors,
   Leaderboard,
+  MoveVisitors,
   ReplaceScene,
 } from "@pages";
 

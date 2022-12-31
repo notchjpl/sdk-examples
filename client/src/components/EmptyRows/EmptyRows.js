@@ -1,3 +1,4 @@
+import React from "react";
 import { TableCell, TableRow } from "@mui/material";
 
 // Avoid a layout jump when reaching the last page with empty rows.

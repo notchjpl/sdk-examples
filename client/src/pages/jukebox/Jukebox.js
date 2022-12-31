@@ -78,27 +78,19 @@ export function Jukebox() {
     const mediaLink = `https://www.youtube.com/watch?v=${id}`;
     return (
       <Paper
-        variant="elevation"
         elevation={3}
         key={id}
         style={{ width: 220, margin: 5 }}
+        variant="elevation"
       >
         <Grid
+          alignItems="center"
           container
           direction="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <Grid item xs={4}>
             <ReactPlayer
-              muted={true}
-              light
-              height={75}
-              width={100}
-              controls={false}
-              playsinline={true}
-              ref={playerRef}
-              onReady={(item) => item.getInternalPlayer().playVideo()}
               config={{
                 youtube: {
                   playerVars: {
@@ -107,7 +99,15 @@ export function Jukebox() {
                   },
                 },
               }}
+              controls={false}
+              height={75}
+              light
+              muted={true}
+              onReady={(item) => item.getInternalPlayer().playVideo()}
+              playsinline={true}
+              ref={playerRef}
               url={mediaLink}
+              width={100}
             />
           </Grid>
           <Grid item xs={4}>
@@ -128,7 +128,7 @@ export function Jukebox() {
     return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => renderRow(id));
   };
   return (
-    <Grid container spacing={2} p={4} justifyContent="space-around">
+    <Grid container justifyContent="space-around" p={4} spacing={2}>
       {!playerId && (
         <Grid item xs={6}>
           <UniqueAssetTable

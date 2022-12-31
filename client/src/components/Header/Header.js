@@ -51,16 +51,16 @@ export function Header() {
   };
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar className={classes.appBar} position="fixed">
       <Toolbar className={classes.toolbar}>
         <Grid
-          container
           alignItems="center"
+          container
           direction="row"
           justifyContent="space-between"
         >
           <Grid item>
-            <Grid alignItems="center" spacing={4} container>
+            <Grid alignItems="center" container spacing={4}>
               <Grid item>
                 <Typography variant="h6">Realtime SDK Demo</Typography>
               </Grid>
@@ -68,22 +68,22 @@ export function Header() {
           </Grid>
 
           <Grid item>
-            <Grid container alignItems="center" spacing={2}>
+            <Grid alignItems="center" container spacing={2}>
               <Grid item>
                 <TextField
-                  id="apiKeyInput"
                   className={classes.inputInput}
+                  id="apiKeyInput"
                   label="API Key"
                   onChange={(event) => setApiKey(event.target.value)}
-                  value={apiKey}
                   sx={{ width: 320 }}
+                  value={apiKey}
                 />
               </Grid>
               <Grid item>
                 <TextField
-                  id="urlSlugInput"
                   className={classes.inputInput}
                   disabled={!apiKey}
+                  id="urlSlugInput"
                   label="URL Slug"
                   onChange={(event) => setUrlSlug(event.target.value)}
                   value={urlSlug}
@@ -91,9 +91,9 @@ export function Header() {
               </Grid>
               <Grid item>
                 <Button
-                  variant="outlined"
                   onClick={handleUpdateContext}
                   style={{ color: "white", borderColor: "white" }}
+                  variant="outlined"
                 >
                   Update
                 </Button>

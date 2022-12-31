@@ -26,11 +26,11 @@ export function Leaderboard() {
 
   return (
     <Grid
-      container
-      spacing={2}
-      justifyContent="space-between"
       alignItems="center"
+      container
       direction="column"
+      justifyContent="space-between"
+      spacing={2}
       style={{ minHeight: "40vh" }}
     >
       <Grid item xs={8}>

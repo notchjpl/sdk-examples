@@ -1,4 +1,7 @@
 export const pageContent = {
+  ERROR: {
+    title: "Oops!",
+  },
   HOME: {
     title: "Welcome!",
     description:

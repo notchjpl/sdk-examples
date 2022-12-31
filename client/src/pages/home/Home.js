@@ -35,7 +35,7 @@ export function Home() {
     return (
       <Grid container justifyContent="space-around">
         <Grid item>
-          <Typography variant="h5" color="black">
+          <Typography variant="h5">
             Enter an API Key and Url Slug above to continue
           </Typography>
         </Grid>

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+
+// components
 import {
   Button,
   Grid,
@@ -12,7 +15,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { EmptyRows } from "../EmptyRows";
+import { EmptyRows } from "@components/EmptyRows";
 
 // context
 import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
@@ -67,15 +70,15 @@ export function UniqueAssetTable({ handleChangeAsset }) {
   return (
     <Paper sx={{ p: 2 }}>
       <Grid
-        container
-        spacing={2}
-        justifyContent="space-between"
         alignItems="center"
+        container
         direction="column"
+        justifyContent="space-between"
+        spacing={2}
       >
-        <Grid container spacing={2} p={2} justifyContent="space-between">
+        <Grid container justifyContent="space-between" p={2} spacing={2}>
           <Grid item>
-            <Typography variant="h6" color="black">
+            <Typography color="black" variant="h6">
               Dropped Assets
             </Typography>
           </Grid>
@@ -103,11 +106,11 @@ export function UniqueAssetTable({ handleChangeAsset }) {
                       return (
                         <TableRow
                           hover
+                          key={asset.id}
                           onClick={() => handleClick(asset)}
                           role="checkbox"
-                          tabIndex={-1}
-                          key={asset.id}
                           selected={asset.id === selectedAsset}
+                          tabIndex={-1}
                         >
                           <TableCell component="th" scope="row">
                             {asset.name}
@@ -118,21 +121,21 @@ export function UniqueAssetTable({ handleChangeAsset }) {
                       );
                     })}
                   <EmptyRows
+                    length={uniqueAssets.length}
                     page={page}
                     rowsPerPage={rowsPerPage}
-                    length={uniqueAssets.length}
                   />
                 </TableBody>
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={uniqueAssets.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              rowsPerPageOptions={[5, 10, 25]}
             />
           </Grid>
         )}
@@ -140,4 +143,9 @@ export function UniqueAssetTable({ handleChangeAsset }) {
     </Paper>
   );
 }
+
+UniqueAssetTable.propTypes = {
+  handleChangeAsset: PropTypes.func.isRequired,
+};
+
 export default UniqueAssetTable;

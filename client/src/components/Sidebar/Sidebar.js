@@ -14,7 +14,7 @@ export function Sidebar() {
   const classes = useStyles();
 
   return (
-    <Drawer open className={classes.drawerOpen} variant="permanent">
+    <Drawer className={classes.drawerOpen} open variant="permanent">
       {sidebarRoutes.map((route, index) => {
         return <SidebarLink key={index} path={route.path} text={route.text} />;
       })}

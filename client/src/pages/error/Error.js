@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // components
-import { Grid, Paper, Typography, Button } from "@mui/material";
+import { Button, Grid, Paper, Typography } from "@mui/material";
 
 // styles
 import useStyles from "./styles";
@@ -12,30 +12,30 @@ export function Error() {
   // const error = useRouteError();
 
   return (
-    <Grid container className={classes.container}>
+    <Grid className={classes.container} container>
       <Paper classes={{ root: classes.paperRoot }}>
-        <Typography variant="h1" color="primary" className={classes.textRow}>
+        <Typography className={classes.textRow} color="primary" variant="h1">
           404
         </Typography>
-        <Typography variant="h5" color="primary" className={classes.textRow}>
-          Oops. Looks like the page you're looking for no longer exists.
+        <Typography className={classes.textRow} color="primary" variant="h5">
+          Oops. Looks like the page you&apos;re looking for no longer exists.
           {/* <i>{error.statusText || error.message}</i> */}
         </Typography>
         <Typography
-          variant="h6"
+          className={classes.textRow}
           color="text"
           colorBrightness="secondary"
-          className={classes.textRow}
+          variant="h6"
         >
-          But we're here to bring you back to safety
+          But we&apos;re here to bring you back to safety
         </Typography>
         <Button
-          variant="contained"
+          className={classes.backButton}
           color="primary"
           component={Link}
-          to="/"
           size="large"
-          className={classes.backButton}
+          to="/"
+          variant="contained"
         >
           Back to Home
         </Button>

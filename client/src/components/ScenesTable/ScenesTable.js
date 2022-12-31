@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 // components
 import {
@@ -18,7 +19,7 @@ import {
 import { EmptyRows } from "../EmptyRows";
 
 // context
-import { useUserState, setMessage, useGlobalDispatch } from "@context";
+import { setMessage, useGlobalDispatch, useUserState } from "@context";
 
 export function ScenesTable({ handleReplaceScene }) {
   const [scenes, setScenes] = useState({});
@@ -57,28 +58,28 @@ export function ScenesTable({ handleReplaceScene }) {
   return (
     <Paper sx={{ p: 2 }}>
       <Grid
-        container
-        spacing={2}
-        justifyContent="space-between"
         alignItems="center"
+        container
         direction="column"
+        justifyContent="space-between"
+        spacing={2}
       >
-        <Grid container spacing={2} p={2} justifyContent="space-between">
+        <Grid container justifyContent="space-between" p={2} spacing={2}>
           <Grid item>
-            <Typography variant="h6" color="black">
+            <Typography color="black" variant="h6">
               Scenes
             </Typography>
           </Grid>
           <Grid item>
-            <Grid container spacing={2} p={2} justifyContent="space-between">
+            <Grid container justifyContent="space-between" p={2} spacing={2}>
               <Grid item>
-                <Typography color="black">Email: </Typography>
+                <Typography>Email: </Typography>
               </Grid>
               <Grid item>
                 <Input
                   id="email"
-                  value={email}
                   onChange={(event) => setEmail(event.target.value)}
+                  value={email}
                 />
               </Grid>
               <Grid item>
@@ -110,7 +111,7 @@ export function ScenesTable({ handleReplaceScene }) {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((scene) => {
                       return (
-                        <TableRow hover tabIndex={-1} key={scene.id}>
+                        <TableRow hover key={scene.id} tabIndex={-1}>
                           <TableCell
                             component="th"
                             scope="row"
@@ -131,21 +132,21 @@ export function ScenesTable({ handleReplaceScene }) {
                       );
                     })}
                   <EmptyRows
+                    length={scenes.length}
                     page={page}
                     rowsPerPage={rowsPerPage}
-                    length={scenes.length}
                   />
                 </TableBody>
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={scenes.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              rowsPerPageOptions={[5, 10, 25]}
             />
           </Grid>
         )}
@@ -153,4 +154,9 @@ export function ScenesTable({ handleReplaceScene }) {
     </Paper>
   );
 }
+
+ScenesTable.propTypes = {
+  handleReplaceScene: PropTypes.func.isRequired,
+};
+
 export default ScenesTable;
