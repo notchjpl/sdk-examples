@@ -14,11 +14,4 @@ export default makeStyles((theme) => ({
     position: "relative",
     alignSelf: "flex-start",
   },
-  contentShift: {
-    width: `calc(100vw - ${240 + theme.spacing(6)}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
 }));

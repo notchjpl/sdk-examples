@@ -1,38 +1,17 @@
 import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
-  logotype: {
-    color: "white",
-    marginLeft: theme.spacing(2.5),
-    marginRight: theme.spacing(2.5),
-    fontWeight: 500,
-    fontSize: 18,
-    whiteSpace: "nowrap",
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
-  },
   appBar: {
     zIndex: 2000,
     transition: theme.transitions.create(["margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    "background-color": `${theme.palette.primary.main} !important`,
+    "background-color": `${theme.palette.secondary.main} !important`,
   },
   toolbar: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  inputRoot: {
-    color: "inherit",
-    width: "100%",
   },
   inputInput: {
     padding: 0,
@@ -45,12 +24,5 @@ export default makeStyles((theme) => ({
       "border-radius": 4,
       color: "white",
     },
-  },
-  headerIcon: {
-    fontSize: 28,
-    color: "rgba(255, 255, 255, 0.35)",
-  },
-  headerIconCollapse: {
-    color: "white",
   },
 }));

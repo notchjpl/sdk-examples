@@ -1,32 +1,61 @@
-import defaultTheme from "./default";
-
 import { createTheme } from "@mui/material/styles";
+import tinycolor from "tinycolor2";
 
-const overrides = {
-  typography: {
-    h1: {
-      fontSize: "2rem",
+const primary = "#4355f9";
+const secondary = "#37343d";
+const warning = "#FFC260";
+const success = "#3CD4A0";
+const info = "#9013FE";
+
+const lightenRate = 7.5;
+const darkenRate = 15;
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: primary,
+      light: tinycolor(primary).lighten(lightenRate).toHexString(),
+      dark: tinycolor(primary).darken(darkenRate).toHexString(),
     },
-    h2: {
-      fontSize: "1.8rem",
+    secondary: {
+      main: secondary,
+      light: tinycolor(secondary).lighten(lightenRate).toHexString(),
+      dark: tinycolor(secondary).darken(darkenRate).toHexString(),
+      contrastText: "#FFFFFF",
     },
-    h3: {
-      fontSize: "1.6rem",
+    warning: {
+      main: warning,
+      light: tinycolor(warning).lighten(lightenRate).toHexString(),
+      dark: tinycolor(warning).darken(darkenRate).toHexString(),
     },
-    h4: {
-      fontSize: "1.3rem",
+    success: {
+      main: success,
+      light: tinycolor(success).lighten(lightenRate).toHexString(),
+      dark: tinycolor(success).darken(darkenRate).toHexString(),
     },
-    h5: {
-      fontSize: "1.2rem",
+    info: {
+      main: info,
+      light: tinycolor(info).lighten(lightenRate).toHexString(),
+      dark: tinycolor(info).darken(darkenRate).toHexString(),
     },
-    h6: {
-      fontSize: "0.8rem",
+    text: {
+      primary: "#4A4A4A",
+      secondary: "#6E6E6E",
+      hint: "#B9B9B9",
+    },
+    background: {
+      default: "#F6F7FF",
+      light: "#F3F5FF",
     },
   },
-};
+  customShadows: {
+    widget:
+      "0px 3px 11px 0px #E8EAFC, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
+    widgetDark:
+      "0px 3px 18px 0px #4558A3B3, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
+    widgetWide:
+      "0px 12px 33px 0px #E8EAFC, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
+  },
+});
 
-const themes = {
-  default: createTheme({ ...defaultTheme, ...overrides }),
-};
-
-export default themes;
+export default theme;

@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import { ThemeProvider } from "@mui/styles";
 import { CssBaseline } from "@mui/material";
-import Themes from "./themes";
+import theme from "./themes";
 
 // components
 import { App } from "@components/App";
@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <GlobalProvider>
     <UserProvider>
-      <ThemeProvider theme={Themes.default}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
           <App />
