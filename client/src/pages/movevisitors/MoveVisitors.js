@@ -4,6 +4,7 @@ import React from "react";
 import {
   Button,
   Grid,
+  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -108,9 +109,9 @@ export function MoveVisitors() {
                   />
                 </Grid>
                 <Grid item>
+                  <InputLabel>Teleport visitors?</InputLabel>
                   <Select
                     id="shouldTeleportVisitors"
-                    label="Teleport visitors?"
                     onChange={(e) => setShouldTeleportVisitors(e.target.value)}
                     value={shouldTeleportVisitors}
                   >

@@ -71,7 +71,7 @@ export function Header() {
             <Grid alignItems="center" container spacing={2}>
               <Grid item>
                 <TextField
-                  className={classes.inputInput}
+                  className={classes.inputField}
                   id="apiKeyInput"
                   label="API Key"
                   onChange={(event) => setApiKey(event.target.value)}
@@ -81,7 +81,7 @@ export function Header() {
               </Grid>
               <Grid item>
                 <TextField
-                  className={classes.inputInput}
+                  className={classes.inputField}
                   disabled={!apiKey}
                   id="urlSlugInput"
                   label="URL Slug"

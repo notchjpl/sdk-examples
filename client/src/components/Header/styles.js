@@ -10,19 +10,26 @@ export default makeStyles((theme) => ({
     "background-color": `${theme.palette.secondary.main} !important`,
   },
   toolbar: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    padding: theme.spacing(1),
   },
-  inputInput: {
-    padding: 0,
+  inputField: {
     width: "100%",
-    "& .MuiFormLabel-root": { color: "white", top: -6 },
+    "& .MuiFormLabel-root": {
+      color: "white",
+      top: -6,
+    },
+    "& .MuiInputLabel-shrink": {
+      "background-color": `${theme.palette.secondary.main} !important`,
+      top: 0,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
     "& input": {
       padding: 8,
-      height: 20,
       border: "1px solid rgba(200,200,200,0.8)",
       "border-radius": 4,
       color: "white",
+      "background-color": `${theme.palette.secondary.main} !important`,
     },
   },
 }));
