@@ -1,3 +1,2 @@
-export { publicAPI } from "./publicAPI";
-export { lassoAllVisitors } from "./visitors";
-export { setAssetMedia } from "./assets";
+export { EXAMPLE_VIDEOS } from "./createYouTubeSamples";
+export { getRouteByPath, routes, sidebarRoutes } from "./routes";
