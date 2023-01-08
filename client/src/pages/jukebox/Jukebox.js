@@ -16,7 +16,6 @@
 import React from "react";
 import ReactPlayer from "react-player/lazy";
 import { useSearchParams } from "react-router-dom";
-import { DroppedAsset } from "@rtsdk/topia";
 
 // components
 import { Button, Grid, Paper } from "@mui/material";
@@ -44,15 +43,22 @@ export function Jukebox() {
   let assetId = searchParams.get("assetId");
   const playerId = searchParams.get("playerId");
   const urlSlug = searchParams.get("urlSlug") || selectedWorld.urlSlug;
+  const apiKey = localStorage.getItem("apiKey");
   // if (urlSlugParam) setUrlSlug(urlSlugParam);
   // if (assetIdParam) setUrlSlug(assetIdParam)
-  if (!playerId) {
-    // Meaning not coming from iframe
-    assetId = asset.id;
-  }
+  // if (!playerId) {
+  //   // Meaning not coming from iframe
+  //   assetId = asset.id;
+  // }
 
   const handleUpdateMedia = async (mediaLink) => {
-    const result = await updateMedia({ assetId, mediaLink, urlSlug });
+    // If API Key is included in an input, send to backend and overwrite the server's default API Key.
+    const result = await updateMedia({
+      apiKey,
+      assetId: assetId || asset.id,
+      mediaLink,
+      urlSlug,
+    });
     if (!result.error) {
       setMessage({
         dispatch: globalDispatch,
@@ -62,7 +68,7 @@ export function Jukebox() {
     } else {
       setMessage({
         dispatch: globalDispatch,
-        message: error,
+        message: result.error,
         messageType: "error",
       });
     }

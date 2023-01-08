@@ -10,5 +10,3 @@ export const publicAPI = (apiKey) => {
     },
   });
 };
-
-// module.exports = { publicAPI };

@@ -8,6 +8,4 @@ router.get("/", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
-router.post("/updateMedia", updateMedia);
-
-// module.exports = router;
+router.post("/updatemedia", updateMedia);

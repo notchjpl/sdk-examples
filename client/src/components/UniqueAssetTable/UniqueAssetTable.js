@@ -35,8 +35,9 @@ export function UniqueAssetTable({ handleChangeAsset }) {
     await selectedWorld.fetchDroppedAssets();
     for (const asset of Object.values(selectedWorld.droppedAssets)) {
       if (asset.uniqueName) {
+        console.log(asset);
         uniqueAssets.push({
-          id: asset.id,
+          id: asset.assetId,
           name: asset.uniqueName,
           x: asset.position.x,
           y: asset.position.y,
