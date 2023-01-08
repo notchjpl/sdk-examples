@@ -1,7 +1,7 @@
-const axios = require("axios");
-const { publicAPI } = require("./utils");
+import axios from "axios";
+import { publicAPI } from "./index.js";
 
-const updateLeaderboard = (req, res) => {
+export const updateLeaderboard = (req, res) => {
   let leaderboardObject = {};
   if (!req.body) return;
   let leaderboardArray = req.body.rows.split(",");
@@ -173,5 +173,3 @@ const updateAssetText = (id, text, style) => {
 //       });
 //   });
 // };
-
-module.exports = { updateLeaderboard };

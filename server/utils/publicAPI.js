@@ -1,6 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
 
-const publicAPI = (apiKey) => {
+export const publicAPI = (apiKey) => {
   return axios.create({
     baseURL: "https://api.topia.io/api",
     headers: {
@@ -11,4 +11,4 @@ const publicAPI = (apiKey) => {
   });
 };
 
-module.exports = { publicAPI };
+// module.exports = { publicAPI };

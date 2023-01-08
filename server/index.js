@@ -1,21 +1,24 @@
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
-const { defaultMaxListeners } = require("events");
-const router = require("./routes");
+import path from "path";
+import { fileURLToPath } from "url";
+import express from "express";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import { defaultMaxListeners } from "events";
+import router from "./routes.js";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 dotenv.config();
 
 // Node serves the files for the React app
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/api", router);
+app.use("/backend", router);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {

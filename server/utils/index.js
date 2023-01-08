@@ -1,3 +1,5 @@
-const { publicAPI } = require("./publicAPI");
+import { publicAPI } from "./publicAPI.js";
+import { getDroppedAsset, updateMedia } from "./droppedAsset.js";
+import { updateLeaderboard } from "./leaderboard.js";
 
-module.exports = { publicAPI };
+export { getDroppedAsset, publicAPI, updateLeaderboard, updateMedia };

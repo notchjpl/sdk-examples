@@ -1,10 +1,13 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { updateLeaderboard } = require("./leaderboard");
+import { updateMedia, updateLeaderboard } from "./utils/index.js";
+export default router;
 
 router.post("/leaderboardupdate", updateLeaderboard);
 router.get("/", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
-module.exports = router;
+router.post("/updateMedia", updateMedia);
+
+// module.exports = router;
