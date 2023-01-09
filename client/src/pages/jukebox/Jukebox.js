@@ -11,17 +11,18 @@
 // Add a server listener for 'pause'.  Update data object with current track time.
 // https://sdk-examples.metaversecloud.com/jukebox?urlSlug=jukebox-demo-s9zdortms&playerId=1&assetId=-NJN9E9YVXSgR5yxaKG3&apiKey=4885c9eb-88ec-4792-a13f-fdb74fbf56a9
 
+// Design at https://codepen.io/Roemerdt/pen/rOqVZx
+
 import React from "react";
 import ReactPlayer from "react-player/lazy";
 import { useSearchParams } from "react-router-dom";
-import { DroppedAsset } from "@rtsdk/topia";
 
 // components
 import { Button, Grid, Paper } from "@mui/material";
 import { UniqueAssetTable } from "@components";
 
 // utils
-import { EXAMPLE_VIDEOS } from "@utils";
+import { EXAMPLE_VIDEOS, updateMedia } from "@utils";
 
 // context
 import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
@@ -39,39 +40,38 @@ export function Jukebox() {
   const globalDispatch = useGlobalDispatch();
   const { selectedWorld } = useGlobalState();
 
-  const apiKey = localStorage.getItem("apiKey");
   let assetId = searchParams.get("assetId");
   const playerId = searchParams.get("playerId");
   const urlSlug = searchParams.get("urlSlug") || selectedWorld.urlSlug;
+  const apiKey = localStorage.getItem("apiKey");
   // if (urlSlugParam) setUrlSlug(urlSlugParam);
   // if (assetIdParam) setUrlSlug(assetIdParam)
-  if (!playerId) {
-    // Meaning not coming from iframe
-    assetId = asset.id;
-  }
+  // if (!playerId) {
+  //   // Meaning not coming from iframe
+  //   assetId = asset.id;
+  // }
 
   const handleUpdateMedia = async (mediaLink) => {
-    const droppedAsset = await new DroppedAsset({
+    // If API Key is included in an input, send to backend and overwrite the server's default API Key.
+    const result = await updateMedia({
       apiKey,
-      id: assetId,
+      assetId: assetId || asset.id,
+      mediaLink,
       urlSlug,
     });
-    await droppedAsset
-      .updateMediaType({ mediaLink })
-      .then(() => {
-        setMessage({
-          dispatch: globalDispatch,
-          message: "Success!",
-          messageType: "success",
-        });
-      })
-      .catch((error) =>
-        setMessage({
-          dispatch: globalDispatch,
-          message: error,
-          messageType: "error",
-        })
-      );
+    if (!result.error) {
+      setMessage({
+        dispatch: globalDispatch,
+        message: "Success!",
+        messageType: "success",
+      });
+    } else {
+      setMessage({
+        dispatch: globalDispatch,
+        message: result.error,
+        messageType: "error",
+      });
+    }
   };
 
   const renderRow = (id) => {
