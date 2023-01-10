@@ -8,6 +8,9 @@
 /.yalc
 .pnp.js
 
+#credentials
+oauth2.keys.json
+
 # testing
 /client/coverage
 

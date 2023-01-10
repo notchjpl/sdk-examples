@@ -11,15 +11,17 @@
 // Add a server listener for 'pause'.  Update data object with current track time.
 // https://sdk-examples.metaversecloud.com/jukebox?urlSlug=jukebox-demo-s9zdortms&playerId=1&assetId=-NJN9E9YVXSgR5yxaKG3&apiKey=4885c9eb-88ec-4792-a13f-fdb74fbf56a9
 
+// Make playlist draggable https://codesandbox.io/s/draggable-material-ui-oj3wz
+
 // Design at https://codepen.io/Roemerdt/pen/rOqVZx
 
 import React from "react";
-import ReactPlayer from "react-player/lazy";
 import { useSearchParams } from "react-router-dom";
 
 // components
-import { Button, Grid, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { UniqueAssetTable } from "@components";
+import { VideoTrack } from "./VideoTrack";
 
 // utils
 import { EXAMPLE_VIDEOS, updateMedia } from "@utils";
@@ -32,7 +34,6 @@ function randInt(max) {
 }
 
 export function Jukebox() {
-  const playerRef = React.useRef(null);
   const [asset, setAsset] = React.useState({});
   const [searchParams] = useSearchParams();
 
@@ -51,7 +52,7 @@ export function Jukebox() {
   //   assetId = asset.id;
   // }
 
-  const handleUpdateMedia = async (mediaLink) => {
+  const playMedia = async (mediaLink) => {
     // If API Key is included in an input, send to backend and overwrite the server's default API Key.
     const result = await updateMedia({
       apiKey,
@@ -74,72 +75,35 @@ export function Jukebox() {
     }
   };
 
-  const renderRow = (id) => {
-    const mediaLink = `https://www.youtube.com/watch?v=${id}`;
-    return (
-      <Paper
-        elevation={3}
-        key={id}
-        style={{ width: 220, margin: 5 }}
-        variant="elevation"
-      >
-        <Grid
-          alignItems="center"
-          container
-          direction="row"
-          justifyContent="space-between"
-        >
-          <Grid item xs={4}>
-            <ReactPlayer
-              config={{
-                youtube: {
-                  playerVars: {
-                    modestbranding: 1,
-                    controls: 0,
-                  },
-                },
-              }}
-              controls={false}
-              height={75}
-              light
-              muted={true}
-              onReady={(item) => item.getInternalPlayer().playVideo()}
-              playsinline={true}
-              ref={playerRef}
-              url={mediaLink}
-              width={100}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <Button
-              onClick={() => handleUpdateMedia(mediaLink)}
-              variant="contained"
-            >
-              Play
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
-    );
-  };
-
   const calcVideos = () => {
     const min = randInt(EXAMPLE_VIDEOS.length - 20);
-    return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => renderRow(id));
+    return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
+      const mediaLink = `https://www.youtube.com/watch?v=${id}`;
+      return VideoTrack(mediaLink, playMedia);
+    });
   };
   return (
-    <Grid container justifyContent="space-around" p={4} spacing={2}>
+    <Grid
+      container
+      direction="column"
+      justifyContent="space-around"
+      p={1}
+      spacing={2}
+    >
       {!playerId && (
-        <Grid item xs={6}>
+        <Grid item>
           <UniqueAssetTable
             handleChangeAsset={setAsset}
             selectedWorld={selectedWorld}
           />
         </Grid>
       )}
-      <Grid item xs={6}>
-        <Paper sx={{ p: 2 }}>{calcVideos()}</Paper>
-      </Grid>
+
+      {asset.id && (
+        <Grid item>
+          <Paper sx={{ p: 2 }}>{calcVideos()}</Paper>
+        </Grid>
+      )}
     </Grid>
   );
 }

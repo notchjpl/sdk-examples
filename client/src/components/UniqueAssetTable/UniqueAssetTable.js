@@ -68,23 +68,23 @@ export function UniqueAssetTable({ handleChangeAsset }) {
   };
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <Paper sx={{ p: 1 }}>
       <Grid
         alignItems="center"
         container
         direction="column"
         justifyContent="space-between"
-        spacing={2}
+        spacing={1}
       >
-        <Grid container justifyContent="space-between" p={2} spacing={2}>
+        <Grid container justifyContent="space-between" p={1} spacing={2}>
           <Grid item>
             <Typography color="black" variant="h6">
-              Dropped Assets
+              Unique Assets
             </Typography>
           </Grid>
           <Grid item>
             <Button onClick={handleFetchAssets} variant="contained">
-              Fetch Assets with Unique Names
+              Fetch Assets
             </Button>
           </Grid>
         </Grid>
@@ -94,9 +94,9 @@ export function UniqueAssetTable({ handleChangeAsset }) {
               <Table aria-labelledby="tableTitle" size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Dropped Asset Name</TableCell>
-                    <TableCell align="right">Position X</TableCell>
-                    <TableCell align="right">Position Y</TableCell>
+                    <TableCell>Unique Name</TableCell>
+                    <TableCell align="right">X</TableCell>
+                    <TableCell align="right">Y</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -110,13 +110,18 @@ export function UniqueAssetTable({ handleChangeAsset }) {
                           onClick={() => handleClick(asset)}
                           role="checkbox"
                           selected={asset.id === selectedAsset}
+                          sx={{ "&:hover": { cursor: "pointer" } }}
                           tabIndex={-1}
                         >
                           <TableCell component="th" scope="row">
                             {asset.name}
                           </TableCell>
-                          <TableCell align="right">{asset.x}</TableCell>
-                          <TableCell align="right">{asset.y}</TableCell>
+                          <TableCell align="right">
+                            {asset.x.toFixed(0)}
+                          </TableCell>
+                          <TableCell align="right">
+                            {asset.y.toFixed(0)}
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -128,15 +133,18 @@ export function UniqueAssetTable({ handleChangeAsset }) {
                 </TableBody>
               </Table>
             </TableContainer>
-            <TablePagination
-              component="div"
-              count={uniqueAssets.length}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              rowsPerPageOptions={[5, 10, 25]}
-            />
+            {uniqueAssets.length > 10 && (
+              <TablePagination
+                component="div"
+                count={uniqueAssets.length}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+                sx={{ overflow: "hidden" }}
+              />
+            )}
           </Grid>
         )}
       </Grid>
