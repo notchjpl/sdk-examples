@@ -12,6 +12,11 @@ function globalReducer(state, action) {
         urlSlug: action.payload.urlSlug,
         selectedWorld: action.payload.selectedWorld,
       };
+    case "SET_INTERACTIVE_PARAMS":
+      return {
+        ...state,
+        ...action.payload,
+      };
     case "SET_MESSAGE":
       return {
         ...state,
@@ -62,6 +67,26 @@ function useGlobalDispatch() {
   return context;
 }
 
+function setInteractiveParams({
+  assetId,
+  dispatch,
+  playerId,
+  interactiveNonce,
+  interactivePublicKey,
+  urlSlug,
+}) {
+  dispatch({
+    type: "SET_INTERACTIVE_PARAMS",
+    payload: {
+      assetId,
+      playerId,
+      interactiveNonce,
+      interactivePublicKey,
+      urlSlug,
+    },
+  });
+}
+
 async function fetchWorld({ apiKey, dispatch, urlSlug }) {
   if (!apiKey || !urlSlug) return;
   const selectedWorld = await new World({ apiKey, urlSlug });
@@ -102,6 +127,7 @@ export {
   GlobalProvider,
   fetchWorld,
   removeMessage,
+  setInteractiveParams,
   setMessage,
   useGlobalState,
   useGlobalDispatch,

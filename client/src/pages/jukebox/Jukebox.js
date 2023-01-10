@@ -24,7 +24,7 @@ import { UniqueAssetTable } from "@components";
 import { VideoTrack } from "./VideoTrack";
 
 // utils
-import { EXAMPLE_VIDEOS, updateMedia } from "@utils";
+import { EXAMPLE_VIDEOS, backendAPI } from "@utils";
 
 // context
 import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
@@ -39,11 +39,10 @@ export function Jukebox() {
 
   // context
   const globalDispatch = useGlobalDispatch();
-  const { selectedWorld } = useGlobalState();
+  const globalState = useGlobalState();
 
-  let assetId = searchParams.get("assetId");
-  const playerId = searchParams.get("playerId");
-  const urlSlug = searchParams.get("urlSlug") || selectedWorld.urlSlug;
+  let assetId = searchParams.get("assetId") || globalState.assetId;
+  const urlSlug = searchParams.get("urlSlug") || globalState.urlSlug;
   const apiKey = localStorage.getItem("apiKey");
   // if (urlSlugParam) setUrlSlug(urlSlugParam);
   // if (assetIdParam) setUrlSlug(assetIdParam)
@@ -54,25 +53,27 @@ export function Jukebox() {
 
   const playMedia = async (mediaLink) => {
     // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-    const result = await updateMedia({
-      apiKey,
-      assetId: assetId || asset.id,
-      mediaLink,
-      urlSlug,
-    });
-    if (!result.error) {
-      setMessage({
-        dispatch: globalDispatch,
-        message: "Success!",
-        messageType: "success",
+    await backendAPI
+      .post("/updatemedia", {
+        apiKey,
+        assetId: assetId || asset.id,
+        mediaLink,
+        urlSlug,
+      })
+      .then(() => {
+        setMessage({
+          dispatch: globalDispatch,
+          message: "Success!",
+          messageType: "success",
+        });
+      })
+      .catch((error) => {
+        setMessage({
+          dispatch: globalDispatch,
+          message: error,
+          messageType: "error",
+        });
       });
-    } else {
-      setMessage({
-        dispatch: globalDispatch,
-        message: result.error,
-        messageType: "error",
-      });
-    }
   };
 
   const calcVideos = () => {
@@ -82,6 +83,7 @@ export function Jukebox() {
       return VideoTrack(mediaLink, playMedia);
     });
   };
+
   return (
     <Grid
       container
@@ -90,14 +92,9 @@ export function Jukebox() {
       p={1}
       spacing={2}
     >
-      {!playerId && (
-        <Grid item>
-          <UniqueAssetTable
-            handleChangeAsset={setAsset}
-            selectedWorld={selectedWorld}
-          />
-        </Grid>
-      )}
+      <Grid item>
+        <UniqueAssetTable handleChangeAsset={setAsset} />
+      </Grid>
 
       {asset.id && (
         <Grid item>
