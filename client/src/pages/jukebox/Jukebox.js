@@ -20,7 +20,7 @@ import { useSearchParams } from "react-router-dom";
 
 // components
 import { Grid, Paper } from "@mui/material";
-import { UniqueAssetTable } from "@components";
+import { Search, UniqueAssetTable } from "@components";
 import { VideoTrack } from "./VideoTrack";
 
 // utils
@@ -96,11 +96,20 @@ export function Jukebox() {
         <UniqueAssetTable handleChangeAsset={setAsset} />
       </Grid>
 
-      {asset.id && (
+      <Grid container p={2} spacing={2}>
         <Grid item>
-          <Paper sx={{ p: 2 }}>{calcVideos()}</Paper>
+          <Search
+            onChange={() => null}
+            runSearch={() => null}
+            searchVal="hi"
+          ></Search>
         </Grid>
-      )}
+        {asset.id && (
+          <Grid item>
+            <Paper sx={{ p: 2 }}>{calcVideos()}</Paper>
+          </Grid>
+        )}
+      </Grid>
     </Grid>
   );
 }
