@@ -25,7 +25,8 @@ export function Layout({ children }) {
 
   // context
   const globalDispatch = useGlobalDispatch();
-  var { hasMessage, message, messageType, selectedWorld } = useGlobalState();
+  const { hasMessage, message, messageType, selectedWorld, urlSlug } =
+    useGlobalState();
 
   const handleCloseSnackbar = () => {
     removeMessage(globalDispatch);
@@ -47,7 +48,7 @@ export function Layout({ children }) {
           </Grid>
         )}
         <Grid item xs={12}>
-          {requiresUrlSlug && !selectedWorld.urlSlug ? (
+          {requiresUrlSlug && !selectedWorld.urlSlug && !urlSlug ? (
             <Grid container justifyContent="space-around" p={10}>
               <Grid item>
                 <Typography color="black" variant="h5">

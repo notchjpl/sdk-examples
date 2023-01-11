@@ -45,6 +45,12 @@ export function Header() {
     setUrlSlug(globalState.urlSlug);
   }, [globalState.urlSlug]);
 
+  useEffect(() => {
+    if (apiKey && urlSlug) {
+      fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
+    }
+  }, [apiKey, globalDispatch, urlSlug]);
+
   const handleUpdateContext = async () => {
     await fetchUser(apiKey, userDispatch);
     if (urlSlug) fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });

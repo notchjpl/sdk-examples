@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Routes, useSearchParams } from "react-router-dom";
 
 // components
 import { Layout } from "./Layout";
@@ -10,7 +10,38 @@ import { Error } from "@pages";
 // utils
 import { routes } from "@utils";
 
+// context
+import { setInteractiveParams, useGlobalDispatch } from "@context";
+import { setupBackendAPI } from "../utils/backendApi";
+
 export function App() {
+  const [searchParams] = useSearchParams();
+  const [hasInitBackendAPI, setHasInitBackendAPI] = useState(false);
+
+  // context
+  const globalDispatch = useGlobalDispatch();
+
+  useEffect(() => {
+    const interactiveParams = {
+      assetId: searchParams.get("assetId"),
+      interactiveNonce: searchParams.get("interactiveNonce"),
+      interactivePublicKey: searchParams.get("interactivePublicKey"),
+      playerId: searchParams.get("playerId"),
+      urlSlug: searchParams.get("url"),
+    };
+
+    setInteractiveParams({
+      dispatch: globalDispatch,
+      ...interactiveParams,
+    });
+
+    const setupAPI = async () => {
+      await setupBackendAPI(interactiveParams);
+      setHasInitBackendAPI(true);
+    };
+    if (!hasInitBackendAPI) setupAPI();
+  }, [globalDispatch, hasInitBackendAPI, searchParams]);
+
   return (
     <Routes>
       {routes.map((route, index) => {
