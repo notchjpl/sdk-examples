@@ -23,7 +23,7 @@ export function Search({ label, onChange, runSearch, searchVal }) {
         id="outlined-basic"
         label={label || "Search"}
         onBlur={runSearch}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         value={searchVal}
         variant="outlined"
