@@ -106,7 +106,9 @@ export function Jukebox() {
         </Grid>
         {asset.id && (
           <Grid item>
-            <Paper sx={{ p: 2 }}>{calcVideos()}</Paper>
+            <Paper sx={{ p: 2 }}>
+              <div>Playlist!</div>
+              {calcVideos()}
           </Grid>
         )}
       </Grid>
