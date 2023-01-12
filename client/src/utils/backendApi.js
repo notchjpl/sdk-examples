@@ -15,17 +15,20 @@ const setupBackendAPI = (interactiveParams) => {
       "Content-Type": "application/json",
     },
   });
-  backendAPI.interceptors.request.use((config) => {
-    if (!config?.data) config.data = {};
-    config.data["assetId"] = interactiveParams.assetId;
-    config.data["playerId"] = interactiveParams.playerId;
-    config.data["interactiveNonce"] = interactiveParams.interactiveNonce;
-    config.data["interactivePublicKey"] =
-      interactiveParams.interactivePublicKey;
-    config.data["urlSlug"] = interactiveParams.urlSlug;
+  // Only do this if have interactive nonce.
+  if (interactiveParams.assetId) {
+    backendAPI.interceptors.request.use((config) => {
+      if (!config?.data) config.data = {};
+      config.data["assetId"] = interactiveParams.assetId;
+      config.data["playerId"] = interactiveParams.playerId;
+      config.data["interactiveNonce"] = interactiveParams.interactiveNonce;
+      config.data["interactivePublicKey"] =
+        interactiveParams.interactivePublicKey;
+      config.data["urlSlug"] = interactiveParams.urlSlug;
 
-    return config;
-  });
+      return config;
+    });
+  }
 };
 
 export { backendAPI, initBackendAPI, setupBackendAPI };
