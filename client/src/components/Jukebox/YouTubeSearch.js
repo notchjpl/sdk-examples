@@ -37,6 +37,7 @@ export function YouTubeSearch({ assetId }) {
       ></Search>
       {searchResults.map((item) => (
         <VideoTrack
+          addToPlaylist={() => null}
           key={item.id.videoId}
           play={() =>
             playMediaInAsset({
