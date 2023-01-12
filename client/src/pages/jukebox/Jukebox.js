@@ -13,63 +13,22 @@
 
 // Make playlist draggable https://codesandbox.io/s/draggable-material-ui-oj3wz
 
-// Design at https://codepen.io/Roemerdt/pen/rOqVZx
+// Add a 'teleport to asset' button that portal teleports you to the selected asset
 
 import React from "react";
+import { useGlobalState } from "@context";
 import { useSearchParams } from "react-router-dom";
 
 // components
-import { Grid, Paper } from "@mui/material";
-import { UniqueAssetTable, VideoTrack, YouTubeSearch } from "@components";
-
-// utils
-import { EXAMPLE_VIDEOS, playMediaInAsset } from "@utils";
-
-// context
-import { useGlobalDispatch, useGlobalState } from "@context";
-
-function randInt(max) {
-  return Math.floor(Math.random() * max);
-}
+import { Grid } from "@mui/material";
+import { Playlist, UniqueAssetTable, YouTubeSearch } from "@components";
 
 export function Jukebox() {
   const [asset, setAsset] = React.useState({});
   const [searchParams] = useSearchParams();
 
-  // context
-  const globalDispatch = useGlobalDispatch();
   const globalState = useGlobalState();
-
   let assetId = searchParams.get("assetId") || globalState.assetId;
-  const urlSlug = searchParams.get("urlSlug") || globalState.urlSlug;
-  const apiKey = localStorage.getItem("apiKey");
-  // if (urlSlugParam) setUrlSlug(urlSlugParam);
-  // if (assetIdParam) setUrlSlug(assetIdParam)
-  // if (!playerId) {
-  //   // Meaning not coming from iframe
-  //   assetId = asset.id;
-  // }
-
-  const calcVideos = () => {
-    const min = randInt(EXAMPLE_VIDEOS.length - 20);
-    return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
-      return (
-        <VideoTrack
-          key={id}
-          play={() =>
-            playMediaInAsset({
-              apiKey,
-              assetId: assetId || asset.id,
-              videoId: id,
-              urlSlug,
-              globalDispatch,
-            })
-          }
-          videoId={id}
-        />
-      );
-    });
-  };
 
   return (
     <Grid
@@ -87,14 +46,9 @@ export function Jukebox() {
         <Grid item>
           <YouTubeSearch assetId={assetId || asset.id} />
         </Grid>
-        {asset.id && (
-          <Grid item>
-            <Paper sx={{ p: 2 }}>
-              <div>Playlist!</div>
-              {calcVideos()}
-            </Paper>
-          </Grid>
-        )}
+        <Grid item>
+          <Playlist assetId={assetId || asset.id} />
+        </Grid>
       </Grid>
     </Grid>
   );

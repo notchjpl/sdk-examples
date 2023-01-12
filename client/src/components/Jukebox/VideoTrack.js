@@ -1,14 +1,21 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // components
 import { Grid, Typography } from "@mui/material";
-import { PlayArrow } from "@mui/icons-material";
+import { Equalizer, PlayArrow } from "@mui/icons-material";
 
 // styles
 import useStyles from "./styles";
 
-export function VideoTrack(youtubeId, play) {
+VideoTrack.propTypes = {
+  play: PropTypes.func,
+  youtubeId: PropTypes.string,
+};
+
+export function VideoTrack({ youtubeId, play }) {
   const classes = useStyles();
+  const playing = false; // TODO Add equalizer to whatever is currently playing
 
   return (
     <Grid
@@ -43,7 +50,11 @@ export function VideoTrack(youtubeId, play) {
         </Grid>
       </Grid>
       <Grid alignSelf="right" item p={2}>
-        <PlayArrow onClick={play} sx={{ color: "white" }} />
+        {playing ? (
+          <Equalizer className={classes.active} />
+        ) : (
+          <PlayArrow onClick={play} sx={{ color: "white" }} />
+        )}
       </Grid>
     </Grid>
   );

@@ -4,8 +4,8 @@ import { Grid } from "@mui/material";
 import { useGlobalDispatch, useGlobalState } from "@context";
 import { playMediaInAsset, youtubeSearch } from "@utils";
 import PropTypes from "prop-types";
-import { Search } from "./index";
-import { VideoTrack } from "../Jukebox";
+import { Search } from "../Search/index";
+import { VideoTrack } from ".";
 
 YouTubeSearch.propTypes = {
   assetId: PropTypes.string,
@@ -47,7 +47,7 @@ export function YouTubeSearch({ assetId }) {
               globalDispatch,
             })
           }
-          videoId={item.id.videoId}
+          youtubeId={item.id.videoId}
         />
       ))}
     </Grid>
