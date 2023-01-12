@@ -42,7 +42,7 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    setUrlSlug(globalState.urlSlug);
+    setUrlSlug(globalState.urlSlug || "");
   }, [globalState.urlSlug]);
 
   useEffect(() => {

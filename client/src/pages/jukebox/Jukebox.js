@@ -16,13 +16,55 @@
 // Design at https://codepen.io/Roemerdt/pen/rOqVZx
 
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 // components
-import { Grid } from "@mui/material";
-import { Jukebox as FeatureJukebox, UniqueAssetTable } from "@components";
+import { Grid, Paper } from "@mui/material";
+import { UniqueAssetTable, VideoTrack, YouTubeSearch } from "@components";
+
+// utils
+import { EXAMPLE_VIDEOS, playMediaInAsset } from "@utils";
+
+// context
+import { useGlobalDispatch, useGlobalState } from "@context";
+
+function randInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 export function Jukebox() {
   const [asset, setAsset] = React.useState({});
+  const [searchParams] = useSearchParams();
+
+  // context
+  const globalDispatch = useGlobalDispatch();
+  const globalState = useGlobalState();
+
+  let assetId = searchParams.get("assetId") || globalState.assetId;
+  const urlSlug = searchParams.get("urlSlug") || globalState.urlSlug;
+  const apiKey = localStorage.getItem("apiKey");
+  // if (urlSlugParam) setUrlSlug(urlSlugParam);
+  // if (assetIdParam) setUrlSlug(assetIdParam)
+  // if (!playerId) {
+  //   // Meaning not coming from iframe
+  //   assetId = asset.id;
+  // }
+
+  const calcVideos = () => {
+    const min = randInt(EXAMPLE_VIDEOS.length - 20);
+    return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
+      const mediaLink = `https://www.youtube.com/watch?v=${id}`;
+      return VideoTrack(mediaLink, () =>
+        playMediaInAsset({
+          apiKey,
+          assetId: assetId || asset.id,
+          mediaLink,
+          urlSlug,
+          globalDispatch,
+        })
+      );
+    });
+  };
 
   return (
     <Grid
@@ -36,11 +78,19 @@ export function Jukebox() {
         <UniqueAssetTable handleChangeAsset={setAsset} />
       </Grid>
 
-      {asset.id && (
+      <Grid container p={2} spacing={2}>
         <Grid item>
-          <FeatureJukebox showVideoPlayer={true} />
+          <YouTubeSearch assetId={assetId || asset.id} />
         </Grid>
-      )}
+        {asset.id && (
+          <Grid item>
+            <Paper sx={{ p: 2 }}>
+              <div>Playlist!</div>
+              {calcVideos()}
+            </Paper>
+          </Grid>
+        )}
+      </Grid>
     </Grid>
   );
 }

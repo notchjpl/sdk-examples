@@ -1,6 +1,7 @@
 import React from "react";
 import ReactPlayer from "react-player/lazy";
 import { Button, Grid, Paper } from "@mui/material";
+
 export function VideoTrack(mediaLink, playMedia) {
   return (
     <Paper
@@ -44,7 +45,7 @@ export function VideoTrack(mediaLink, playMedia) {
           />
         </Grid>
         <Grid item xs={4}>
-          <Button onClick={() => playMedia(mediaLink)} variant="contained">
+          <Button onClick={playMedia} variant="contained">
             Play
           </Button>
         </Grid>
