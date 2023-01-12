@@ -16,6 +16,7 @@
 // Design at https://codepen.io/Roemerdt/pen/rOqVZx
 
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 // components
 import { Grid, Paper } from "@mui/material";
@@ -52,15 +53,20 @@ export function Jukebox() {
   const calcVideos = () => {
     const min = randInt(EXAMPLE_VIDEOS.length - 20);
     return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
-      const mediaLink = `https://www.youtube.com/watch?v=${id}`;
-      return VideoTrack(mediaLink, () =>
-        playMediaInAsset({
-          apiKey,
-          assetId: assetId || asset.id,
-          mediaLink,
-          urlSlug,
-          globalDispatch,
-        })
+      return (
+        <VideoTrack
+          key={id}
+          play={() =>
+            playMediaInAsset({
+              apiKey,
+              assetId: assetId || asset.id,
+              videoId: id,
+              urlSlug,
+              globalDispatch,
+            })
+          }
+          videoId={id}
+        />
       );
     });
   };

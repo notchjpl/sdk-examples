@@ -5,7 +5,7 @@ import { useGlobalDispatch, useGlobalState } from "@context";
 import { playMediaInAsset, youtubeSearch } from "@utils";
 import PropTypes from "prop-types";
 import { Search } from "./index";
-import { VideoTrack } from "../Videos";
+import { VideoTrack } from "../Jukebox";
 
 YouTubeSearch.propTypes = {
   assetId: PropTypes.string,
@@ -28,21 +28,6 @@ export function YouTubeSearch({ assetId }) {
     // return result.items;
   };
 
-  const createVideoCard = (item) => {
-    const { id } = item;
-    const { videoId } = id;
-    const mediaLink = `https://www.youtube.com/watch?v=${videoId}`;
-    return VideoTrack(mediaLink, () =>
-      playMediaInAsset({
-        apiKey,
-        assetId,
-        mediaLink,
-        urlSlug,
-        globalDispatch,
-      })
-    );
-  };
-
   return (
     <Grid container>
       <Search
@@ -50,7 +35,21 @@ export function YouTubeSearch({ assetId }) {
         runSearch={runSearch}
         searchVal={searchVal}
       ></Search>
-      {searchResults.map(createVideoCard)}
+      {searchResults.map((item) => (
+        <VideoTrack
+          key={item.id.videoId}
+          play={() =>
+            playMediaInAsset({
+              apiKey,
+              assetId,
+              videoId: item.id.videoId,
+              urlSlug,
+              globalDispatch,
+            })
+          }
+          videoId={item.id.videoId}
+        />
+      ))}
     </Grid>
   );
 }
