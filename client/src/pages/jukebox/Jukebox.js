@@ -23,10 +23,10 @@ import { Grid, Paper } from "@mui/material";
 import { UniqueAssetTable, VideoTrack, YouTubeSearch } from "@components";
 
 // utils
-import { EXAMPLE_VIDEOS, backendAPI } from "@utils";
+import { EXAMPLE_VIDEOS, playMediaInAsset } from "@utils";
 
 // context
-import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
+import { useGlobalDispatch, useGlobalState } from "@context";
 
 function randInt(max) {
   return Math.floor(Math.random() * max);
@@ -50,36 +50,19 @@ export function Jukebox() {
   //   assetId = asset.id;
   // }
 
-  const playMedia = async (mediaLink) => {
-    // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-    await backendAPI
-      .post("/updatemedia", {
-        apiKey,
-        assetId: assetId || asset.id,
-        mediaLink,
-        urlSlug,
-      })
-      .then(() => {
-        setMessage({
-          dispatch: globalDispatch,
-          message: "Success!",
-          messageType: "success",
-        });
-      })
-      .catch((error) => {
-        setMessage({
-          dispatch: globalDispatch,
-          message: error,
-          messageType: "error",
-        });
-      });
-  };
-
   const calcVideos = () => {
     const min = randInt(EXAMPLE_VIDEOS.length - 20);
     return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
       const mediaLink = `https://www.youtube.com/watch?v=${id}`;
-      return VideoTrack(mediaLink, playMedia);
+      return VideoTrack(mediaLink, () =>
+        playMediaInAsset({
+          apiKey,
+          assetId: assetId || asset.id,
+          mediaLink,
+          urlSlug,
+          globalDispatch,
+        })
+      );
     });
   };
 
@@ -97,7 +80,7 @@ export function Jukebox() {
 
       <Grid container p={2} spacing={2}>
         <Grid item>
-          <YouTubeSearch />
+          <YouTubeSearch assetId={assetId || asset.id} />
         </Grid>
         {asset.id && (
           <Grid item>

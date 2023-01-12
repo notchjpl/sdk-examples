@@ -8,7 +8,7 @@ let externalAPI = axios.create({
   },
 });
 
-export const youtubeSearch = async (params) => {
-  const result = await externalAPI.get("youtube", params);
-  return result;
+export const youtubeSearch = async (q) => {
+  const result = await externalAPI.post("youtubesearch", { q });
+  return result.data;
 };

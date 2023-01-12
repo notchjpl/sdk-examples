@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { defaultMaxListeners } from "events";
 import router from "./routes.js";
+import externalRouter from "./externalRoutes.js";
 import cors from "cors";
 
 const PORT = process.env.PORT || 3001;
@@ -27,6 +28,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/backend", router);
+app.use("/external", externalRouter);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {

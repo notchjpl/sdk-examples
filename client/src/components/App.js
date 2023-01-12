@@ -30,10 +30,11 @@ export function App() {
       urlSlug: searchParams.get("url"),
     };
 
-    setInteractiveParams({
-      dispatch: globalDispatch,
-      ...interactiveParams,
-    });
+    if (interactiveParams.assetId)
+      setInteractiveParams({
+        dispatch: globalDispatch,
+        ...interactiveParams,
+      });
 
     const setupAPI = async () => {
       await setupBackendAPI(interactiveParams);

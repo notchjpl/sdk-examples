@@ -45,7 +45,7 @@ export function VideoTrack(mediaLink, playMedia) {
           />
         </Grid>
         <Grid item xs={4}>
-          <Button onClick={() => playMedia(mediaLink)} variant="contained">
+          <Button onClick={playMedia} variant="contained">
             Play
           </Button>
         </Grid>

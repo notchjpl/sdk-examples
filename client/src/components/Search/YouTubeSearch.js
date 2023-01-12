@@ -1,18 +1,46 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import { youtubeSearch } from "@utils";
-// import PropTypes from "prop-types";
+// context
+import { useGlobalDispatch, useGlobalState } from "@context";
+import { playMediaInAsset, youtubeSearch } from "@utils";
+import PropTypes from "prop-types";
 import { Search } from "./index";
+import { VideoTrack } from "../Videos";
 
-// YouTubeSearch.propTypes = {};
+YouTubeSearch.propTypes = {
+  assetId: PropTypes.string,
+};
 
-export function YouTubeSearch() {
+export function YouTubeSearch({ assetId }) {
   const [searchVal, setSearchVal] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState([]);
 
-  const runSearch = () => {
-    const result = youtubeSearch(searchVal);
-    console.log(result);
-    return result;
+  // context
+  const globalDispatch = useGlobalDispatch();
+  const globalState = useGlobalState();
+
+  const urlSlug = globalState.urlSlug;
+  const apiKey = localStorage.getItem("apiKey");
+
+  const runSearch = async () => {
+    const result = await youtubeSearch(searchVal);
+    setSearchResults(result.items);
+    // return result.items;
+  };
+
+  const createVideoCard = (item) => {
+    const { id } = item;
+    const { videoId } = id;
+    const mediaLink = `https://www.youtube.com/watch?v=${videoId}`;
+    return VideoTrack(mediaLink, () =>
+      playMediaInAsset({
+        apiKey,
+        assetId,
+        mediaLink,
+        urlSlug,
+        globalDispatch,
+      })
+    );
   };
 
   return (
@@ -22,6 +50,7 @@ export function YouTubeSearch() {
         runSearch={runSearch}
         searchVal={searchVal}
       ></Search>
+      {searchResults.map(createVideoCard)}
     </Grid>
   );
 }
