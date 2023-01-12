@@ -1,4 +1,5 @@
 export { EmptyRows } from "./EmptyRows";
+export { Jukebox } from "./Jukebox";
 export { ScenesTable } from "./ScenesTable";
 export { Search, YouTubeSearch } from "./Search";
 export { UniqueAssetTable } from "./UniqueAssetTable";

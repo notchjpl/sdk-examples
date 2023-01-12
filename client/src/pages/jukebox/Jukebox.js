@@ -16,7 +16,6 @@
 // Design at https://codepen.io/Roemerdt/pen/rOqVZx
 
 import React from "react";
-import { useSearchParams } from "react-router-dom";
 
 // components
 import { Grid, Paper } from "@mui/material";
