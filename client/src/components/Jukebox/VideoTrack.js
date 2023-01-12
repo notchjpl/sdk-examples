@@ -10,13 +10,18 @@ import useStyles from "./styles";
 
 VideoTrack.propTypes = {
   play: PropTypes.func,
+  videoInfo: PropTypes.object,
   youtubeId: PropTypes.string,
 };
 
-export function VideoTrack({ youtubeId, play }) {
+export function VideoTrack({ youtubeId, play, videoInfo }) {
   const classes = useStyles();
   const playing = false; // TODO Add equalizer to whatever is currently playing
 
+  console.log(videoInfo);
+  let { title, channelTitle } = videoInfo || {};
+  title = title || "Title";
+  const subheader = channelTitle || "Artist";
   return (
     <Grid
       alignItems="center"
@@ -25,26 +30,25 @@ export function VideoTrack({ youtubeId, play }) {
       direction="row"
       justifyContent="space-between"
     >
-      <Grid item>
+      <Grid item xs={8}>
         <Grid alignItems="center" container direction="row" p={2}>
           <Grid className={classes.thumbnail} item>
             <img
               alt="thumbnail"
-              src={`https://img.youtube.com/vi/${youtubeId}/sddefault.jpg`}
-              // src="https://www.shutterstock.com/image-vector/colorful-illustration-test-word-260nw-1438324490.jpg"
+              src={`https://i.ytimg.com/vi/${youtubeId}/default.jpg`}
             />
           </Grid>
-          <Grid item pl={2} pr={2}>
+          <Grid item pl={2} pr={2} xs={8}>
             <Grid
               alignItems="stretch"
               container
               direction="column"
               justifyContent="space-between"
             >
-              <Typography className={classes.title} variant="h6">
-                test title
+              <Typography className={classes.title} noWrap variant="h6">
+                {title}
               </Typography>
-              <Typography className={classes.artist}>test artist</Typography>
+              <Typography className={classes.artist}>{subheader}</Typography>
             </Grid>
           </Grid>
         </Grid>

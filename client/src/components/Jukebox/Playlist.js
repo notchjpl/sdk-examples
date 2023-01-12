@@ -1,3 +1,5 @@
+// Should be able to add video to end of playlist by pasting in a youtube link
+
 import React from "react";
 import PropTypes from "prop-types";
 import { useGlobalDispatch, useGlobalState } from "@context";

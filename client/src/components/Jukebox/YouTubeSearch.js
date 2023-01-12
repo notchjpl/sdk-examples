@@ -47,6 +47,7 @@ export function YouTubeSearch({ assetId }) {
               globalDispatch,
             })
           }
+          videoInfo={item.snippet}
           youtubeId={item.id.videoId}
         />
       ))}

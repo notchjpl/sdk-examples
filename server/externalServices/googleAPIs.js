@@ -33,9 +33,9 @@ const youtube = google.youtube("v3");
 export async function youtubeHighDefSearch(req, res) {
   try {
     const { q } = req.body;
-    console.log(q);
     const maxResults = 25;
-    const params = `?part=snippet&type=video&videoDefinition=high&order=viewCount&videoEmbeddable=true`;
+    // Can add &order=viewCount
+    const params = `?part=snippet&type=video&videoEmbeddable=true`;
     const query = `&maxResults=${maxResults}&q=${q}&key=${process.env.GOOGLE_API_KEY}`;
     const result = await axios.get(
       `https://youtube.googleapis.com/youtube/v3/search${params}${query}`

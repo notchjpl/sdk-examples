@@ -49,7 +49,7 @@ export default makeStyles((theme) => ({
   },
   title: {
     color: theme.palette.secondary.contrastText,
-    fontSize: "1.4rem !important",
+    fontSize: "1.2rem !important",
     fontWeight: "bold",
   },
   artist: {
