@@ -16,73 +16,13 @@
 // Design at https://codepen.io/Roemerdt/pen/rOqVZx
 
 import React from "react";
-import { useSearchParams } from "react-router-dom";
 
 // components
-import { Grid, Paper } from "@mui/material";
-import { UniqueAssetTable } from "@components";
-import { VideoTrack } from "./VideoTrack";
-
-// utils
-import { EXAMPLE_VIDEOS, backendAPI } from "@utils";
-
-// context
-import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
-
-function randInt(max) {
-  return Math.floor(Math.random() * max);
-}
+import { Grid } from "@mui/material";
+import { Jukebox as FeatureJukebox, UniqueAssetTable } from "@components";
 
 export function Jukebox() {
   const [asset, setAsset] = React.useState({});
-  const [searchParams] = useSearchParams();
-
-  // context
-  const globalDispatch = useGlobalDispatch();
-  const globalState = useGlobalState();
-
-  let assetId = searchParams.get("assetId") || globalState.assetId;
-  const urlSlug = searchParams.get("urlSlug") || globalState.urlSlug;
-  const apiKey = localStorage.getItem("apiKey");
-  // if (urlSlugParam) setUrlSlug(urlSlugParam);
-  // if (assetIdParam) setUrlSlug(assetIdParam)
-  // if (!playerId) {
-  //   // Meaning not coming from iframe
-  //   assetId = asset.id;
-  // }
-
-  const playMedia = async (mediaLink) => {
-    // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-    await backendAPI
-      .post("/updatemedia", {
-        apiKey,
-        assetId: assetId || asset.id,
-        mediaLink,
-        urlSlug,
-      })
-      .then(() => {
-        setMessage({
-          dispatch: globalDispatch,
-          message: "Success!",
-          messageType: "success",
-        });
-      })
-      .catch((error) => {
-        setMessage({
-          dispatch: globalDispatch,
-          message: error,
-          messageType: "error",
-        });
-      });
-  };
-
-  const calcVideos = () => {
-    const min = randInt(EXAMPLE_VIDEOS.length - 20);
-    return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
-      const mediaLink = `https://www.youtube.com/watch?v=${id}`;
-      return VideoTrack(mediaLink, playMedia);
-    });
-  };
 
   return (
     <Grid
@@ -98,7 +38,7 @@ export function Jukebox() {
 
       {asset.id && (
         <Grid item>
-          <Paper sx={{ p: 2 }}>{calcVideos()}</Paper>
+          <FeatureJukebox showVideoPlayer={true} />
         </Grid>
       )}
     </Grid>

@@ -1,3 +1,21 @@
+export const EXAMPLE_VIDEOS_SHORT = [
+  // First set of videos, gathered from playlists of classic old YT videos and unlisted videos
+  "_0qVd-ZRnfs",
+  "_8dRZ3atLW8",
+  "_Bm2cWqwysQ",
+  "_bwStttK3eI",
+  "_DL7zP7Da1o",
+  "_mS3j2sZYl8",
+  "_nFDnC8SSWQ",
+  "_NVwN_hqdJc",
+  "_pCumhjYOhA",
+  "_pGTLQJfDfo",
+  "_q6chUtSef4",
+  "_tFf2auREzs",
+  "_ual66cBNYs",
+  "_ubzL1Bm6d8",
+];
+
 export const EXAMPLE_VIDEOS = [
   // First set of videos, gathered from playlists of classic old YT videos and unlisted videos
   "_0qVd-ZRnfs",
