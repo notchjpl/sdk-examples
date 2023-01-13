@@ -103,6 +103,7 @@ const playNextSongInPlaylist = async (req) => {
     }
 
     newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
+    newReq.body.videoInfo = mediaLinkPlaylist[newReq.body.index];
     updateMedia(newReq);
   }
 };
