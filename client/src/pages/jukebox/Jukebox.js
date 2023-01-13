@@ -4,66 +4,47 @@
 // Controls: audio only or video?
 // Volume
 // Radius
-// Add YouTube search https://developers.google.com/youtube/v3/docs
-// https://github.com/mattwright324/youtube-metadata/blob/master/js/youtube-api-v3.js
+// Shuffle
 // Add a server listener for 'next track' and 'previous track'
 // Add a server listener for 'pause' and 'play'
 // Add a server listener for 'pause'.  Update data object with current track time.
 // https://sdk-examples.metaversecloud.com/jukebox?urlSlug=jukebox-demo-s9zdortms&playerId=1&assetId=-NJN9E9YVXSgR5yxaKG3&apiKey=4885c9eb-88ec-4792-a13f-fdb74fbf56a9
 
-// Make playlist draggable https://codesandbox.io/s/draggable-material-ui-oj3wz
+// Make playlist draggable https://codesandbox.io/s/draggable-material-ui-oj3wz?
 
-// Design at https://codepen.io/Roemerdt/pen/rOqVZx
+// Add a 'teleport to asset' button that portal teleports you to the selected asset
+// Add youtube playlist functionality
+// Should be able to add a video link in the playlist and have it add to end of videos.  Rather than having to search.
 
 import React from "react";
+import { useGlobalState } from "@context";
 import { useSearchParams } from "react-router-dom";
 
 // components
-import { Grid, Paper } from "@mui/material";
-import { UniqueAssetTable, VideoTrack, YouTubeSearch } from "@components";
-
-// utils
-import { EXAMPLE_VIDEOS, playMediaInAsset } from "@utils";
-
-// context
-import { useGlobalDispatch, useGlobalState } from "@context";
-
-function randInt(max) {
-  return Math.floor(Math.random() * max);
-}
+import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Playlist, UniqueAssetTable, YouTubeSearch } from "@components";
 
 export function Jukebox() {
   const [asset, setAsset] = React.useState({});
+  const [toggle, setToggle] = React.useState("playlist");
   const [searchParams] = useSearchParams();
 
-  // context
-  const globalDispatch = useGlobalDispatch();
   const globalState = useGlobalState();
-
   let assetId = searchParams.get("assetId") || globalState.assetId;
-  const urlSlug = searchParams.get("urlSlug") || globalState.urlSlug;
-  const apiKey = localStorage.getItem("apiKey");
-  // if (urlSlugParam) setUrlSlug(urlSlugParam);
-  // if (assetIdParam) setUrlSlug(assetIdParam)
-  // if (!playerId) {
-  //   // Meaning not coming from iframe
-  //   assetId = asset.id;
-  // }
 
-  const calcVideos = () => {
-    const min = randInt(EXAMPLE_VIDEOS.length - 20);
-    return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
-      const mediaLink = `https://www.youtube.com/watch?v=${id}`;
-      return VideoTrack(mediaLink, () =>
-        playMediaInAsset({
-          apiKey,
-          assetId: assetId || asset.id,
-          mediaLink,
-          urlSlug,
-          globalDispatch,
-        })
+  const displayContent = () => {
+    if (toggle === "search")
+      return (
+        <Grid item>
+          <YouTubeSearch assetId={assetId || asset.id} />
+        </Grid>
       );
-    });
+    else
+      return (
+        <Grid item>
+          <Playlist assetId={assetId || asset.id} />
+        </Grid>
+      );
   };
 
   return (
@@ -78,19 +59,23 @@ export function Jukebox() {
         <UniqueAssetTable handleChangeAsset={setAsset} />
       </Grid>
 
-      <Grid container p={2} spacing={2}>
-        <Grid item>
-          <YouTubeSearch assetId={assetId || asset.id} />
-        </Grid>
-        {asset.id && (
-          <Grid item>
-            <Paper sx={{ p: 2 }}>
-              <div>Playlist!</div>
-              {calcVideos()}
-            </Paper>
+      {(assetId || asset.id) && (
+        <Grid container direction="column" p={2} spacing={2}>
+          <Grid alignSelf="center" item xs={12}>
+            <ToggleButtonGroup
+              aria-label="Playlist vs Search"
+              color="primary"
+              exclusive
+              onChange={(e) => setToggle(e.target.value)}
+              value={toggle}
+            >
+              <ToggleButton value="playlist">Playlist</ToggleButton>
+              <ToggleButton value="search">YouTube Search</ToggleButton>
+            </ToggleButtonGroup>
           </Grid>
-        )}
-      </Grid>
+          {displayContent()}
+        </Grid>
+      )}
     </Grid>
   );
 }

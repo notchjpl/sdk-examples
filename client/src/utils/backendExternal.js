@@ -12,3 +12,8 @@ export const youtubeSearch = async (q) => {
   const result = await externalAPI.post("youtubesearch", { q });
   return result.data;
 };
+
+export const getYoutubeVideoInfo = async (id) => {
+  const result = await externalAPI.post("youtubevideoinfo", { id });
+  return result.data;
+};

@@ -1,0 +1,138 @@
+import React from "react";
+import PropTypes from "prop-types";
+
+// components
+import { Grid, Tooltip, Typography } from "@mui/material";
+import { Add, Equalizer, PlayArrow, Remove } from "@mui/icons-material";
+
+// styles
+import useStyles from "./styles";
+
+VideoTrack.propTypes = {
+  addToPlaylist: PropTypes.func,
+  play: PropTypes.func.isRequired,
+  removeFromPlaylist: PropTypes.func,
+  videoInfo: PropTypes.object,
+};
+
+export function VideoTrack({
+  addToPlaylist,
+  play,
+  removeFromPlaylist,
+  videoInfo,
+}) {
+  const classes = useStyles();
+  const playing = false; // TODO Add equalizer to whatever is currently playing
+  const { duration, id, snippet, viewCount } = videoInfo;
+
+  let { title, channelTitle } = snippet;
+  title = title || "Title";
+
+  // Format duration
+  let formattedDuration = "";
+  if (duration) {
+    const date = new Date(0);
+    date.setSeconds(duration / 1000);
+    const timeString = date.toISOString().substring(11, 19);
+    formattedDuration = timeString + " | ";
+  }
+
+  let formattedViews = "";
+  if (viewCount) {
+    let firstPart = "";
+    let thousands = 1000;
+    let millions = thousands * 1000;
+    let billions = millions * 1000;
+
+    if (viewCount > billions) {
+      firstPart = (viewCount / billions).toFixed(2) + "B";
+    } else if (viewCount > millions)
+      firstPart = (viewCount / millions).toFixed(0) + "M";
+    else if (viewCount > thousands)
+      firstPart = (viewCount / thousands).toFixed(0) + "K";
+    formattedViews = firstPart + " Views | ";
+  }
+
+  const subHeader = `${formattedViews}${formattedDuration}${channelTitle}`;
+
+  return (
+    <Grid
+      alignItems="center"
+      className={classes.menuItem}
+      container
+      direction="row"
+      justifyContent="space-between"
+    >
+      <Grid item lg={8} xs={12}>
+        <Grid alignItems="center" container direction="row" p={1} pl={2} pt={2}>
+          <Grid className={classes.thumbnail} item>
+            <a
+              href={`https://www.youtube.com/watch?v=${id}`}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <img
+                alt="thumbnail"
+                src={`https://i.ytimg.com/vi/${id}/default.jpg`}
+              />
+            </a>
+          </Grid>
+          <Grid item md={8} pl={2} pr={2} xs={11}>
+            <Grid
+              alignItems="stretch"
+              container
+              direction="column"
+              justifyContent="space-between"
+            >
+              <Typography className={classes.title} noWrap variant="h6">
+                {title}
+              </Typography>
+              <Typography className={classes.artist}>{subHeader}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid alignSelf="right" item p={1} pl={2} pr={2}>
+        {playing ? (
+          <Equalizer className={classes.active} />
+        ) : (
+          <Grid
+            container
+            justifyContent="space-between"
+            sx={{ flexDirection: { xs: "row", lg: "column" } }}
+          >
+            <Grid item>
+              <Tooltip placement="top" title="Play Now">
+                <PlayArrow
+                  onClick={play}
+                  sx={{ color: "white", "&:hover": { cursor: "pointer" } }}
+                />
+              </Tooltip>
+            </Grid>
+
+            {addToPlaylist && (
+              <Grid item>
+                <Tooltip placement="bottom" title="Add to end of playlist">
+                  <Add
+                    onClick={addToPlaylist}
+                    sx={{ color: "white", "&:hover": { cursor: "pointer" } }}
+                  />
+                </Tooltip>
+              </Grid>
+            )}
+            {removeFromPlaylist && (
+              <Grid item>
+                <Tooltip placement="bottom" title="Remove from playlist">
+                  <Remove
+                    onClick={removeFromPlaylist}
+                    sx={{ color: "white", "&:hover": { cursor: "pointer" } }}
+                  />
+                </Tooltip>
+              </Grid>
+            )}
+          </Grid>
+        )}
+      </Grid>
+    </Grid>
+  );
+}
