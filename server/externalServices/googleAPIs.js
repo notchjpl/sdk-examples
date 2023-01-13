@@ -40,9 +40,32 @@ export async function youtubeSearch(req, res) {
     const result = await axios.get(
       `https://youtube.googleapis.com/youtube/v3/search${params}${query}`
     );
-    return res.json(result.data);
+
+    const itemsMap = result.data.items.map((item) => {
+      return item.id.videoId;
+    });
+    // YouTube makes you do a detail lookup.  We need video duration for playlist to work properly, which can only look up separately.
+    // Batching YouTube API calls reduces quota usage.
+    const videoDetailsData = await getYoutubeVideoDetails(null, itemsMap);
+
+    let toReturn = videoDetailsData.items.map((item) => {
+      let cleaned = item;
+      cleaned.duration = YTDurationToMilliseconds(item.contentDetails.duration);
+      cleaned.viewCount = item.statistics.viewCount;
+      // Get rid of unnecessary information to reduce payloads
+      delete cleaned.contentDetails;
+      delete cleaned.statistics;
+      delete cleaned.snippet.thumbnails;
+      delete cleaned.snippet.localized;
+      delete cleaned.snippet.defaultAudioLanguage;
+      delete cleaned.snippet.categoryId;
+      delete cleaned.snippet.tags; // Could be useful for a more complex playlist search, but not necessary for our purposes.
+      return cleaned;
+    });
+
+    return res.json(toReturn);
   } catch (e) {
-    console.log(e.response);
+    console.log("Error", e.response);
     return res.status(403).send(e);
   }
 }
@@ -51,15 +74,16 @@ export async function youtubeSearch(req, res) {
 // Array is limited to 50 items per batch.
 export async function getYoutubeVideoDetails(videoId, videoIDArray) {
   try {
-    const params = `?part=contentDetails&statistics`;
+    const params = `?part=contentDetails&part=statistics&part=snippet`;
     const toGet = videoIDArray ? videoIDArray.join() : videoId;
     const query = `&id=${toGet}&key=${process.env.GOOGLE_API_KEY}`;
     const result = await axios.get(
       `https://youtube.googleapis.com/youtube/v3/videos${params}${query}`
     );
+
     return result.data;
   } catch (e) {
-    return res.status(403).send(e);
+    return console.log("Details Error", e);
   }
 }
 

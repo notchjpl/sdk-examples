@@ -13,7 +13,6 @@ VideoTrack.propTypes = {
   play: PropTypes.func.isRequired,
   removeFromPlaylist: PropTypes.func,
   videoInfo: PropTypes.object,
-  youtubeId: PropTypes.string.isRequired,
 };
 
 export function VideoTrack({
@@ -21,14 +20,41 @@ export function VideoTrack({
   play,
   removeFromPlaylist,
   videoInfo,
-  youtubeId,
 }) {
   const classes = useStyles();
   const playing = false; // TODO Add equalizer to whatever is currently playing
+  const { duration, id, snippet, viewCount } = videoInfo;
 
-  let { title, channelTitle } = videoInfo || {};
+  let { title, channelTitle } = snippet;
   title = title || "Title";
-  const subheader = channelTitle || "Artist";
+
+  // Format duration
+  let formattedDuration = "";
+  if (duration) {
+    const date = new Date(0);
+    date.setSeconds(duration / 1000);
+    const timeString = date.toISOString().substring(11, 19);
+    formattedDuration = timeString + " | ";
+  }
+
+  let formattedViews = "";
+  if (viewCount) {
+    let firstPart = "";
+    let thousands = 1000;
+    let millions = thousands * 1000;
+    let billions = millions * 1000;
+
+    if (viewCount > billions) {
+      firstPart = (viewCount / billions).toFixed(2) + "B";
+    } else if (viewCount > millions)
+      firstPart = (viewCount / millions).toFixed(0) + "M";
+    else if (viewCount > thousands)
+      firstPart = (viewCount / thousands).toFixed(0) + "K";
+    formattedViews = firstPart + " Views | ";
+  }
+
+  const subHeader = `${formattedViews}${formattedDuration}${channelTitle}`;
+
   return (
     <Grid
       alignItems="center"
@@ -41,13 +67,13 @@ export function VideoTrack({
         <Grid alignItems="center" container direction="row" p={1} pl={2} pt={2}>
           <Grid className={classes.thumbnail} item>
             <a
-              href={`https://www.youtube.com/watch?v=${youtubeId}`}
+              href={`https://www.youtube.com/watch?v=${id}`}
               rel="noreferrer"
               target="_blank"
             >
               <img
                 alt="thumbnail"
-                src={`https://i.ytimg.com/vi/${youtubeId}/default.jpg`}
+                src={`https://i.ytimg.com/vi/${id}/default.jpg`}
               />
             </a>
           </Grid>
@@ -61,7 +87,7 @@ export function VideoTrack({
               <Typography className={classes.title} noWrap variant="h6">
                 {title}
               </Typography>
-              <Typography className={classes.artist}>{subheader}</Typography>
+              <Typography className={classes.artist}>{subHeader}</Typography>
             </Grid>
           </Grid>
         </Grid>

@@ -7,11 +7,12 @@ Search.propTypes = {
   onChange: PropTypes.func.isRequired,
   runSearch: PropTypes.func.isRequired,
   searchVal: PropTypes.string.isRequired,
+  searching: PropTypes.bool.isRequired,
 };
 
-export function Search({ label, onChange, runSearch, searchVal }) {
+export function Search({ label, onChange, runSearch, searchVal, searching }) {
   const handleKeyDown = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && !searching) {
       e.target.blur();
       runSearch();
     }
@@ -31,7 +32,12 @@ export function Search({ label, onChange, runSearch, searchVal }) {
         />
       </Grid>
       <Grid item lg={1} md={1} sm={2}>
-        <Button onClick={runSearch} sx={{ height: "100%" }} variant="contained">
+        <Button
+          disabled={searching}
+          onClick={runSearch}
+          sx={{ height: "100%" }}
+          variant="contained"
+        >
           Search
         </Button>
       </Grid>

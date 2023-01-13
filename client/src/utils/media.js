@@ -71,9 +71,10 @@ export const playMediaInAsset = async ({
   apiKey,
   assetId,
   index,
-  videoId,
-  urlSlug,
   globalDispatch,
+  urlSlug,
+  videoId,
+  videoInfo,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
   await axios
@@ -83,6 +84,7 @@ export const playMediaInAsset = async ({
       index,
       urlSlug,
       videoId,
+      videoInfo,
     })
     .then(() => {
       setMessage({

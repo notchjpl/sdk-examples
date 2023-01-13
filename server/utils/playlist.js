@@ -1,14 +1,9 @@
 import { getAssetAndDataObject } from "../middleware/index.js";
-import {
-  getYoutubeVideoDetails,
-  YTDurationToMilliseconds,
-} from "../externalServices/googleAPIs.js";
 
 export const updateMedia = async (req, res) => {
   try {
     // index is used for saving position in playlist
-    const { index, mediaName, videoId } = req.body;
-    console.log("Index", index);
+    const { index, videoId, videoInfo } = req.body;
     const mediaLink = `https://www.youtube.com/watch?v=${videoId}`;
     const droppedAsset = await getAssetAndDataObject(req);
     let { dataObject } = droppedAsset;
@@ -16,7 +11,7 @@ export const updateMedia = async (req, res) => {
     await droppedAsset.updateMediaType({
       mediaLink,
       isVideo: true,
-      mediaName, // Will only change media name if one is sent from the frontend.
+      mediaName: videoInfo.snippet.title, // Will only change media name if one is sent from the frontend.
       mediaType: "link",
     });
 
@@ -28,7 +23,8 @@ export const updateMedia = async (req, res) => {
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true });
-    waitForSongToEndAndDoSomething(req);
+
+    setTimeout(() => playNextSongInPlaylist(req), videoInfo.duration);
   } catch (error) {
     console.log(error);
     res.status(502).send({ error, success: false });
@@ -41,19 +37,14 @@ export const addToAssetPlaylist = async (req, res) => {
     const { assetId, videoInfo } = req.body;
     const droppedAsset = await getAssetAndDataObject(req);
     let { dataObject } = droppedAsset;
-
     dataObject.mediaLinkPlaylist = dataObject.mediaLinkPlaylist || [];
-    let { snippet, etag, id, kind } = videoInfo;
-    delete snippet.thumbnails; // Unnecessary and takes up space
+
     const timestamp = new Date().valueOf();
 
     dataObject.mediaLinkPlaylist.push({
-      etag,
-      id,
-      kind,
-      snippet,
+      ...videoInfo,
       timeAdded: timestamp,
-      uniqueEntryId: `${id.videoId}_${timestamp}`,
+      uniqueEntryId: `${videoInfo.id}_${timestamp}`,
     });
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
@@ -80,17 +71,6 @@ export const removeFromAssetPlaylist = async (req, res) => {
   }
 };
 
-const waitForSongToEndAndDoSomething = async (req) => {
-  const videoDetails = await getYoutubeVideoDetails(req.body.videoId);
-  const { items } = videoDetails;
-  const { contentDetails } = items[0];
-  const durationMilliseconds = YTDurationToMilliseconds(
-    contentDetails.duration
-  );
-  console.log("Duration in milliseconds", durationMilliseconds);
-  setTimeout(() => playNextSongInPlaylist(req), durationMilliseconds);
-};
-
 const playNextSongInPlaylist = async (req) => {
   const droppedAsset = await getAssetAndDataObject(req);
   const { dataObject } = droppedAsset;
@@ -109,22 +89,19 @@ const playNextSongInPlaylist = async (req) => {
   ) {
     let newReq = req;
     if (!shufflePlaylist) {
-      console.log(lastPlaylistUniqueEntryIdPlayed);
-      console.log(mediaLinkPlaylist);
       // Saved this when last song was played so we could look it up in case playlist has been rearranged during video playing.
       const index = mediaLinkPlaylist.findIndex(
         (i) => i.uniqueEntryId === lastPlaylistUniqueEntryIdPlayed
       );
-
-      console.log("Old index", index);
       // At the end of the playlist... loop back to the beginning.  Optionally, could just stop.
       if (index === mediaLinkPlaylist.length - 1) newReq.body.index = 0;
       else newReq.body.index = index + 1; // Not at end of playlist
     } else {
+      // TODO: Add shuffle mode
       // Shuffle mode on
       // Don't play same song just played
     }
-    console.log("New index", newReq.body.index);
+
     newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id.videoId;
     updateMedia(newReq);
   }
