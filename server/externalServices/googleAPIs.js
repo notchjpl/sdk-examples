@@ -56,6 +56,7 @@ export async function youtubeSearch(req, res) {
       delete cleaned.contentDetails;
       delete cleaned.statistics;
       delete cleaned.snippet.thumbnails;
+      delete cleaned.snippet.description; // Some of these are extremely long and will take up too much space
       delete cleaned.snippet.localized;
       delete cleaned.snippet.defaultAudioLanguage;
       delete cleaned.snippet.categoryId;

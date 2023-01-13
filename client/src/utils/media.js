@@ -18,6 +18,7 @@ export const addToAssetPlaylist = async ({
       videoInfo,
     })
     .then((res) => {
+      // Will need to update DataObject if add from playlist
       console.log(res);
       setMessage({
         dispatch: globalDispatch,

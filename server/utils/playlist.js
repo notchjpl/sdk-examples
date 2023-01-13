@@ -102,7 +102,7 @@ const playNextSongInPlaylist = async (req) => {
       // Don't play same song just played
     }
 
-    newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id.videoId;
+    newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
     updateMedia(newReq);
   }
 };

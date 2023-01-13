@@ -26,7 +26,6 @@ export function YouTubeSearch({ assetId }) {
   const runSearch = async () => {
     setSearching(true);
     const result = await youtubeSearch(searchVal);
-    console.log(result);
     setSearchResults(result);
     setTimeout(() => setSearching(false), 1000); // Prevent over-using search due to YouTube quota.
   };
