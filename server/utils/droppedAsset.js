@@ -34,15 +34,8 @@ export const updateMedia = async (req, res) => {
 
 export const addToAssetPlaylist = async (req, res) => {
   try {
-    const { apiKey, assetId, videoInfo, urlSlug } = req.body;
-    const droppedAsset = new DroppedAsset({
-      apiKey: apiKey || process.env.API_KEY, // If an API Key is sent from frontend, use that.  Otherwise, use from .env
-      id: assetId,
-      args: {},
-      urlSlug,
-    });
-
-    await droppedAsset.fetchDroppedAssetDataObject();
+    const { assetId, videoInfo } = req.body;
+    const droppedAsset = await getAssetAndDataObject(req);
     let { dataObject } = droppedAsset;
 
     dataObject.mediaLinkPlaylist = dataObject.mediaLinkPlaylist || [];
@@ -57,9 +50,38 @@ export const addToAssetPlaylist = async (req, res) => {
     });
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
-    res.json({ success: true, dataObject });
+    res.json({ success: true, assetId, dataObject });
   } catch (error) {
     console.log(error);
     res.status(502).send({ error, success: false });
   }
+};
+
+export const getDataObject = async (req, res) => {
+  const droppedAsset = await getAssetAndDataObject(req);
+  if (droppedAsset) {
+    return res.json({
+      success: true,
+      assetId: req.body.assetId,
+      dataObject: droppedAsset.dataObject,
+    });
+  } else {
+    return res
+      .status(502)
+      .send({ error: "No dropped asset with that assetId", success: false });
+  }
+};
+
+// Middleware to get the asset and object
+export const getAssetAndDataObject = async (req) => {
+  const { apiKey, assetId, urlSlug } = req.body;
+  const droppedAsset = new DroppedAsset({
+    apiKey: apiKey || process.env.API_KEY, // If an API Key is sent from frontend, use that.  Otherwise, use from .env
+    id: assetId,
+    args: {},
+    urlSlug,
+  });
+
+  await droppedAsset.fetchDroppedAssetDataObject();
+  return droppedAsset;
 };
