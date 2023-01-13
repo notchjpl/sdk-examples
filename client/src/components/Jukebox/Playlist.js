@@ -7,6 +7,7 @@ import { useGlobalDispatch, useGlobalState } from "@context";
 // components
 import { Grid, Paper, Typography } from "@mui/material";
 import { Search, VideoTrack } from "@components";
+import { Controlz } from "./";
 
 // utils
 import {
@@ -115,16 +116,28 @@ export function Playlist({ assetId }) {
   return (
     <Grid item>
       <Paper sx={{ p: 2 }}>
-        <Typography variant="h4">Playlist</Typography>
-        <Search
-          buttonText="Add"
-          label="Enter YouTube Link to Add to End of Playlist"
-          onChange={setSearchVal}
-          runSearch={addVideo}
-          searching={searching}
-          searchVal={searchVal}
-        ></Search>
-        {CreateVideoTracks()}
+        <Grid alignItems="center" container>
+          <Grid item xs={12}>
+            <Typography variant="h4">Playlist</Typography>
+          </Grid>
+          <Grid alignItems="center" container justifyContent="start">
+            <Grid item xs={2}>
+              <Controlz assetId={assetId} dataObject={dataObject} />
+            </Grid>
+            <Grid item xs={10}>
+              <Search
+                buttonText="Add"
+                label="Enter YouTube Link to Add to End of Playlist"
+                onChange={setSearchVal}
+                runSearch={addVideo}
+                searching={searching}
+                searchVal={searchVal}
+              ></Search>
+            </Grid>
+
+            {CreateVideoTracks()}
+          </Grid>
+        </Grid>
       </Paper>
     </Grid>
   );

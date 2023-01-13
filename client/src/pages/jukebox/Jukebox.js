@@ -13,8 +13,8 @@
 // Make playlist draggable https://codesandbox.io/s/draggable-material-ui-oj3wz?
 
 // Add a 'teleport to asset' button that portal teleports you to the selected asset
-// Add youtube playlist functionality
-// Should be able to add a video link in the playlist and have it add to end of videos.  Rather than having to search.
+// Enable youtube playlists to work
+// Should be able to specify with a query parameter whether you want visitors to be able to add and remove from playlist or just select songs.
 
 import React from "react";
 import { useGlobalState } from "@context";

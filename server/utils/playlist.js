@@ -71,7 +71,7 @@ export const removeFromAssetPlaylist = async (req, res) => {
   }
 };
 
-const playNextSongInPlaylist = async (req) => {
+export const playNextSongInPlaylist = async (req) => {
   const droppedAsset = await getAssetAndDataObject(req);
   const { dataObject } = droppedAsset;
   const {
