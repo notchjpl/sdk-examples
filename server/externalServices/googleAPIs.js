@@ -29,6 +29,22 @@ const youtube = google.youtube("v3");
 //   return res.data;
 // }
 
+const cleanYoutubeVideo = (item) => {
+  let cleaned = item;
+  cleaned.duration = YTDurationToMilliseconds(item.contentDetails.duration);
+  cleaned.viewCount = item.statistics.viewCount;
+  // Get rid of unnecessary information to reduce payloads
+  delete cleaned.contentDetails;
+  delete cleaned.statistics;
+  delete cleaned.snippet.thumbnails;
+  delete cleaned.snippet.description; // Some of these are extremely long and will take up too much space
+  delete cleaned.snippet.localized;
+  delete cleaned.snippet.defaultAudioLanguage;
+  delete cleaned.snippet.categoryId;
+  delete cleaned.snippet.tags; // Could be useful for a more complex playlist search, but not necessary for our purposes.
+  return cleaned;
+};
+
 // Uses platform API key instead of Oauth credential (must be retrieved from https://console.cloud.google.com/apis/credentials)
 export async function youtubeSearch(req, res) {
   try {
@@ -48,27 +64,21 @@ export async function youtubeSearch(req, res) {
     // Batching YouTube API calls reduces quota usage.
     const videoDetailsData = await getYoutubeVideoDetails(null, itemsMap);
 
-    let toReturn = videoDetailsData.items.map((item) => {
-      let cleaned = item;
-      cleaned.duration = YTDurationToMilliseconds(item.contentDetails.duration);
-      cleaned.viewCount = item.statistics.viewCount;
-      // Get rid of unnecessary information to reduce payloads
-      delete cleaned.contentDetails;
-      delete cleaned.statistics;
-      delete cleaned.snippet.thumbnails;
-      delete cleaned.snippet.description; // Some of these are extremely long and will take up too much space
-      delete cleaned.snippet.localized;
-      delete cleaned.snippet.defaultAudioLanguage;
-      delete cleaned.snippet.categoryId;
-      delete cleaned.snippet.tags; // Could be useful for a more complex playlist search, but not necessary for our purposes.
-      return cleaned;
-    });
+    let toReturn = videoDetailsData.items.map((item) =>
+      cleanYoutubeVideo(item)
+    );
 
     return res.json(toReturn);
   } catch (e) {
     console.log("Error", e.response);
     return res.status(403).send(e);
   }
+}
+
+export async function fetchYouTubeVideoInfo(req, res) {
+  const result = await getYoutubeVideoDetails(req.body.id);
+  const videoInfo = cleanYoutubeVideo(result.items[0]);
+  res.json(videoInfo);
 }
 
 // Can pass in a single ID or an array of IDs.

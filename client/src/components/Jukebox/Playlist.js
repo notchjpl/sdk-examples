@@ -10,7 +10,9 @@ import { Search, VideoTrack } from "@components";
 
 // utils
 import {
+  addToAssetPlaylist,
   getDataObject,
+  getYoutubeVideoInfo,
   playMediaInAsset,
   removeFromAssetPlaylist,
 } from "@utils";
@@ -21,6 +23,7 @@ Playlist.propTypes = {
 
 export function Playlist({ assetId }) {
   const [searchVal, setSearchVal] = React.useState("");
+  const [searching, setSearching] = React.useState(false);
   const [dataObject, setDataObject] = React.useState({});
   // context
   const globalDispatch = useGlobalDispatch();
@@ -59,7 +62,7 @@ export function Playlist({ assetId }) {
         // .slice(0, 20)
         .map((item, index) => {
           const { id } = item;
-
+          if (!item.id || !item.snippet) return;
           return (
             <VideoTrack
               key={id + item.timeAdded}
@@ -83,8 +86,30 @@ export function Playlist({ assetId }) {
     );
   };
 
-  const runSearch = () => {
-    return;
+  const youTubeParser = (url) => {
+    var regExp =
+      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return match && match[7].length == 11 ? match[7] : false;
+  };
+
+  const addVideo = async () => {
+    setSearching(true);
+    const id = youTubeParser(searchVal);
+    const videoInfo = await getYoutubeVideoInfo(id);
+    await addToAssetPlaylist({
+      apiKey,
+      assetId,
+      urlSlug,
+      globalDispatch,
+      videoInfo,
+    });
+    // Get updated data object
+    const dataObject = await getDataObject({ assetId, urlSlug, apiKey });
+    setDataObject(dataObject);
+
+    setSearchVal("");
+    setSearching(false);
   };
 
   return (
@@ -92,9 +117,11 @@ export function Playlist({ assetId }) {
       <Paper sx={{ p: 2 }}>
         <Typography variant="h4">Playlist</Typography>
         <Search
+          buttonText="Add"
+          label="Enter YouTube Link to Add to End of Playlist"
           onChange={setSearchVal}
-          runSearch={runSearch}
-          searching={false}
+          runSearch={addVideo}
+          searching={searching}
           searchVal={searchVal}
         ></Search>
         {CreateVideoTracks()}
