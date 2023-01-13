@@ -4,8 +4,7 @@
 // Controls: audio only or video?
 // Volume
 // Radius
-// Add YouTube search https://developers.google.com/youtube/v3/docs
-// https://github.com/mattwright324/youtube-metadata/blob/master/js/youtube-api-v3.js
+// Shuffle
 // Add a server listener for 'next track' and 'previous track'
 // Add a server listener for 'pause' and 'play'
 // Add a server listener for 'pause'.  Update data object with current track time.
@@ -14,6 +13,7 @@
 // Make playlist draggable https://codesandbox.io/s/draggable-material-ui-oj3wz
 
 // Add a 'teleport to asset' button that portal teleports you to the selected asset
+// Add youtube playlist functionality
 
 import React from "react";
 import { useGlobalState } from "@context";

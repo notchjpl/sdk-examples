@@ -49,7 +49,6 @@ export const removeFromAssetPlaylist = async ({
       urlSlug,
     });
 
-    console.log(response);
     if (!response.data.success)
       throw `Error removing asset from playlist. ${response.data.error}`;
 
@@ -71,18 +70,19 @@ export const removeFromAssetPlaylist = async ({
 export const playMediaInAsset = async ({
   apiKey,
   assetId,
+  index,
   videoId,
   urlSlug,
   globalDispatch,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  const mediaLink = `https://www.youtube.com/watch?v=${videoId}`;
   await axios
     .post("/backend/updatemedia", {
       apiKey,
       assetId,
-      mediaLink,
+      index,
       urlSlug,
+      videoId,
     })
     .then(() => {
       setMessage({

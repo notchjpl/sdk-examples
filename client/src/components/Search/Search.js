@@ -24,7 +24,6 @@ export function Search({ label, onChange, runSearch, searchVal }) {
           fullWidth
           id="outlined-basic"
           label={label || "Search"}
-          onBlur={runSearch}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           value={searchVal}

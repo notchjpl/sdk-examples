@@ -6,7 +6,7 @@ import { useGlobalDispatch, useGlobalState } from "@context";
 
 // components
 import { Grid, Paper, Typography } from "@mui/material";
-import { VideoTrack } from "@components";
+import { Search, VideoTrack } from "@components";
 
 // utils
 import {
@@ -20,6 +20,7 @@ Playlist.propTypes = {
 };
 
 export function Playlist({ assetId }) {
+  const [searchVal, setSearchVal] = React.useState("");
   const [dataObject, setDataObject] = React.useState({});
   // context
   const globalDispatch = useGlobalDispatch();
@@ -51,7 +52,7 @@ export function Playlist({ assetId }) {
 
   // Should add pagination
   const CreateVideoTracks = () => {
-    if (!dataObject.mediaLinkPlaylist) return <div />;
+    if (!dataObject || !dataObject.mediaLinkPlaylist) return <div />;
     return (
       dataObject.mediaLinkPlaylist
         // .slice(0, 20)
@@ -65,6 +66,7 @@ export function Playlist({ assetId }) {
                 playMediaInAsset({
                   apiKey,
                   assetId,
+                  index,
                   globalDispatch,
                   urlSlug,
                   videoId,
@@ -82,10 +84,19 @@ export function Playlist({ assetId }) {
     );
   };
 
+  const runSearch = () => {
+    return;
+  };
+
   return (
     <Grid item>
       <Paper sx={{ p: 2 }}>
         <Typography variant="h4">Playlist</Typography>
+        <Search
+          onChange={setSearchVal}
+          runSearch={runSearch}
+          searchVal={searchVal}
+        ></Search>
         {CreateVideoTracks()}
       </Paper>
     </Grid>
