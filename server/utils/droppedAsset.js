@@ -57,6 +57,20 @@ export const addToAssetPlaylist = async (req, res) => {
   }
 };
 
+export const removeFromAssetPlaylist = async (req, res) => {
+  try {
+    const { assetId, index } = req.body;
+    const droppedAsset = await getAssetAndDataObject(req);
+    let { dataObject } = droppedAsset;
+    dataObject.mediaLinkPlaylist.splice(index, 1);
+    await droppedAsset.updateDroppedAssetDataObject(dataObject);
+    res.json({ success: true, assetId, dataObject });
+  } catch (error) {
+    console.log(error);
+    res.status(502).send({ error, success: false });
+  }
+};
+
 export const getDataObject = async (req, res) => {
   const droppedAsset = await getAssetAndDataObject(req);
   if (droppedAsset) {

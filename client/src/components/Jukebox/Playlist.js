@@ -9,7 +9,11 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { VideoTrack } from "@components";
 
 // utils
-import { getDataObject, playMediaInAsset } from "@utils";
+import {
+  getDataObject,
+  playMediaInAsset,
+  removeFromAssetPlaylist,
+} from "@utils";
 
 Playlist.propTypes = {
   assetId: PropTypes.string.isRequired,
@@ -34,13 +38,24 @@ export function Playlist({ assetId }) {
     fetchData();
   }, [apiKey, assetId, urlSlug]);
 
+  const handleRemoveFromPlaylist = async (index) => {
+    const newDataObject = await removeFromAssetPlaylist({
+      apiKey,
+      assetId,
+      globalDispatch,
+      index,
+      urlSlug,
+    });
+    if (newDataObject.mediaLinkPlaylist) setDataObject(newDataObject);
+  };
+
   // Should add pagination
   const CreateVideoTracks = () => {
     if (!dataObject.mediaLinkPlaylist) return <div />;
     return (
       dataObject.mediaLinkPlaylist
         // .slice(0, 20)
-        .map((item) => {
+        .map((item, index) => {
           const { id } = item;
           const { videoId } = id;
           return (
@@ -50,11 +65,12 @@ export function Playlist({ assetId }) {
                 playMediaInAsset({
                   apiKey,
                   assetId,
-                  videoId,
-                  urlSlug,
                   globalDispatch,
+                  urlSlug,
+                  videoId,
                 })
               }
+              removeFromPlaylist={() => handleRemoveFromPlaylist(index)}
               videoInfo={{
                 title: item.snippet.title,
                 channelTitle: item.snippet.channelTitle,

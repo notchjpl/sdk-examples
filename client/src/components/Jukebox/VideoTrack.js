@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 // components
 import { Grid, Tooltip, Typography } from "@mui/material";
-import { Add, Equalizer, PlayArrow } from "@mui/icons-material";
+import { Add, Equalizer, PlayArrow, Remove } from "@mui/icons-material";
 
 // styles
 import useStyles from "./styles";
@@ -11,11 +11,18 @@ import useStyles from "./styles";
 VideoTrack.propTypes = {
   addToPlaylist: PropTypes.func,
   play: PropTypes.func.isRequired,
+  removeFromPlaylist: PropTypes.func,
   videoInfo: PropTypes.object,
   youtubeId: PropTypes.string.isRequired,
 };
 
-export function VideoTrack({ addToPlaylist, youtubeId, play, videoInfo }) {
+export function VideoTrack({
+  addToPlaylist,
+  play,
+  removeFromPlaylist,
+  videoInfo,
+  youtubeId,
+}) {
   const classes = useStyles();
   const playing = false; // TODO Add equalizer to whatever is currently playing
 
@@ -82,6 +89,16 @@ export function VideoTrack({ addToPlaylist, youtubeId, play, videoInfo }) {
                 <Tooltip placement="bottom" title="Add to end of playlist">
                   <Add
                     onClick={addToPlaylist}
+                    sx={{ color: "white", "&:hover": { cursor: "pointer" } }}
+                  />
+                </Tooltip>
+              </Grid>
+            )}
+            {removeFromPlaylist && (
+              <Grid item>
+                <Tooltip placement="bottom" title="Remove from playlist">
+                  <Remove
+                    onClick={removeFromPlaylist}
                     sx={{ color: "white", "&:hover": { cursor: "pointer" } }}
                   />
                 </Tooltip>

@@ -3,6 +3,7 @@ const router = express.Router();
 import {
   addToAssetPlaylist,
   getDataObject,
+  removeFromAssetPlaylist,
   updateLeaderboard,
   updateMedia,
 } from "./utils/index.js";
@@ -15,4 +16,5 @@ router.get("/", (req, res) => {
 
 router.post("/updatemedia", updateMedia);
 router.post("/addtoassetplaylist", addToAssetPlaylist);
+router.post("/removefromassetplaylist", removeFromAssetPlaylist);
 router.post("/getdataobject", getDataObject);

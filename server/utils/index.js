@@ -3,6 +3,7 @@ import {
   addToAssetPlaylist,
   getDataObject,
   getDroppedAsset,
+  removeFromAssetPlaylist,
   updateMedia,
 } from "./droppedAsset.js";
 import { updateLeaderboard } from "./leaderboard.js";
@@ -12,6 +13,7 @@ export {
   getDataObject,
   getDroppedAsset,
   publicAPI,
+  removeFromAssetPlaylist,
   updateLeaderboard,
   updateMedia,
 };

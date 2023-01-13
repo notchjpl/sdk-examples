@@ -34,6 +34,40 @@ export const addToAssetPlaylist = async ({
     });
 };
 
+export const removeFromAssetPlaylist = async ({
+  apiKey,
+  assetId,
+  globalDispatch,
+  index,
+  urlSlug,
+}) => {
+  try {
+    const response = await axios.post("/backend/removefromassetplaylist", {
+      apiKey,
+      assetId,
+      index,
+      urlSlug,
+    });
+
+    console.log(response);
+    if (!response.data.success)
+      throw `Error removing asset from playlist. ${response.data.error}`;
+
+    setMessage({
+      dispatch: globalDispatch,
+      message: "Success!",
+      messageType: "success",
+    });
+    return response.data.dataObject;
+  } catch (error) {
+    setMessage({
+      dispatch: globalDispatch,
+      message: error,
+      messageType: "error",
+    });
+  }
+};
+
 export const playMediaInAsset = async ({
   apiKey,
   assetId,
