@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 // context
 import { useGlobalDispatch, useGlobalState } from "@context";
-import { playMediaInAsset, youtubeSearch } from "@utils";
+import { addToAssetPlaylist, playMediaInAsset, youtubeSearch } from "@utils";
 import PropTypes from "prop-types";
 import { Search } from "../Search/index";
 import { VideoTrack } from ".";
@@ -25,7 +25,6 @@ export function YouTubeSearch({ assetId }) {
   const runSearch = async () => {
     const result = await youtubeSearch(searchVal);
     setSearchResults(result.items);
-    // return result.items;
   };
 
   return (
@@ -37,7 +36,15 @@ export function YouTubeSearch({ assetId }) {
       ></Search>
       {searchResults.map((item) => (
         <VideoTrack
-          addToPlaylist={() => null}
+          addToPlaylist={() =>
+            addToAssetPlaylist({
+              apiKey,
+              assetId,
+              urlSlug,
+              globalDispatch,
+              videoInfo: item,
+            })
+          }
           key={item.id.videoId}
           play={() =>
             playMediaInAsset({
