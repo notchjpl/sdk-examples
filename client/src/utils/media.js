@@ -41,7 +41,6 @@ export const playMediaInAsset = async ({
   urlSlug,
   globalDispatch,
 }) => {
-  console.log("assetId to send", assetId);
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
   const mediaLink = `https://www.youtube.com/watch?v=${videoId}`;
   await axios

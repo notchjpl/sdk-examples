@@ -20,15 +20,31 @@ import { useGlobalState } from "@context";
 import { useSearchParams } from "react-router-dom";
 
 // components
-import { Grid } from "@mui/material";
+import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Playlist, UniqueAssetTable, YouTubeSearch } from "@components";
 
 export function Jukebox() {
   const [asset, setAsset] = React.useState({});
+  const [toggle, setToggle] = React.useState("playlist");
   const [searchParams] = useSearchParams();
 
   const globalState = useGlobalState();
   let assetId = searchParams.get("assetId") || globalState.assetId;
+
+  const displayContent = () => {
+    if (toggle === "search")
+      return (
+        <Grid item>
+          <YouTubeSearch assetId={assetId || asset.id} />
+        </Grid>
+      );
+    else
+      return (
+        <Grid item>
+          <Playlist assetId={assetId || asset.id} />
+        </Grid>
+      );
+  };
 
   return (
     <Grid
@@ -42,14 +58,23 @@ export function Jukebox() {
         <UniqueAssetTable handleChangeAsset={setAsset} />
       </Grid>
 
-      <Grid container p={2} spacing={2}>
-        <Grid item>
-          <YouTubeSearch assetId={assetId || asset.id} />
+      {(assetId || asset.id) && (
+        <Grid container direction="column" p={2} spacing={2}>
+          <Grid alignSelf="center" item xs={12}>
+            <ToggleButtonGroup
+              aria-label="Playlist vs Search"
+              color="primary"
+              exclusive
+              onChange={(e) => setToggle(e.target.value)}
+              value={toggle}
+            >
+              <ToggleButton value="playlist">Playlist</ToggleButton>
+              <ToggleButton value="search">YouTube Search</ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+          {displayContent()}
         </Grid>
-        <Grid item>
-          <Playlist assetId={assetId || asset.id} />
-        </Grid>
-      </Grid>
+      )}
     </Grid>
   );
 }

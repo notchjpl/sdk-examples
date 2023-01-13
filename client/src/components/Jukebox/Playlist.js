@@ -5,21 +5,18 @@ import PropTypes from "prop-types";
 import { useGlobalDispatch, useGlobalState } from "@context";
 
 // components
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { VideoTrack } from "@components";
 
 // utils
-import { EXAMPLE_VIDEOS, getDataObject, playMediaInAsset } from "@utils";
-
-function randInt(max) {
-  return Math.floor(Math.random() * max);
-}
+import { getDataObject, playMediaInAsset } from "@utils";
 
 Playlist.propTypes = {
   assetId: PropTypes.string.isRequired,
 };
 
 export function Playlist({ assetId }) {
+  const [dataObject, setDataObject] = React.useState({});
   // context
   const globalDispatch = useGlobalDispatch();
   const globalState = useGlobalState();
@@ -30,40 +27,50 @@ export function Playlist({ assetId }) {
   useEffect(() => {
     const fetchData = async () => {
       if (assetId) {
-        console.log("Asset ID", assetId);
         const dataObject = await getDataObject({ assetId, urlSlug, apiKey });
-        console.log(dataObject);
+        setDataObject(dataObject);
       }
     };
     fetchData();
   }, [apiKey, assetId, urlSlug]);
 
-  const calcVideos = () => {
-    const min = randInt(EXAMPLE_VIDEOS.length - 20);
-    return EXAMPLE_VIDEOS.slice(min, min + 20).map((id) => {
-      return (
-        <VideoTrack
-          key={id}
-          play={() =>
-            playMediaInAsset({
-              apiKey,
-              assetId,
-              videoId: id,
-              urlSlug,
-              globalDispatch,
-            })
-          }
-          youtubeId={id}
-        />
-      );
-    });
+  // Should add pagination
+  const CreateVideoTracks = () => {
+    if (!dataObject.mediaLinkPlaylist) return <div />;
+    return (
+      dataObject.mediaLinkPlaylist
+        // .slice(0, 20)
+        .map((item) => {
+          const { id } = item;
+          const { videoId } = id;
+          return (
+            <VideoTrack
+              key={videoId}
+              play={() =>
+                playMediaInAsset({
+                  apiKey,
+                  assetId,
+                  videoId,
+                  urlSlug,
+                  globalDispatch,
+                })
+              }
+              videoInfo={{
+                title: item.snippet.title,
+                channelTitle: item.snippet.channelTitle,
+              }}
+              youtubeId={videoId}
+            />
+          );
+        })
+    );
   };
 
   return (
     <Grid item>
       <Paper sx={{ p: 2 }}>
-        <div>Playlist!</div>
-        {calcVideos()}
+        <Typography variant="h4">Playlist</Typography>
+        {CreateVideoTracks()}
       </Paper>
     </Grid>
   );
