@@ -7,10 +7,10 @@ import { defaultMaxListeners } from "events";
 import router from "./routes.js";
 import externalRouter from "./externalRoutes.js";
 import cors from "cors";
+dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
-dotenv.config();
 
 // Node serves the files for the React app
 const __filename = fileURLToPath(import.meta.url);

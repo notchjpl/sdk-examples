@@ -27,6 +27,7 @@ export function App() {
       interactiveNonce: searchParams.get("interactiveNonce"),
       interactivePublicKey: searchParams.get("interactivePublicKey"),
       playerId: searchParams.get("playerId"),
+      url: searchParams.get("url"),
       urlSlug: searchParams.get("url"),
     };
 

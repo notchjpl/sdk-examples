@@ -1,13 +1,26 @@
-import { DroppedAsset } from "@rtsdk/topia";
+import { DroppedAsset } from "../utils/index.js";
 
 // Middleware to get the asset and object
 export const getAssetAndDataObject = async (req) => {
-  const { apiKey, assetId, urlSlug } = req.body;
-  const droppedAsset = new DroppedAsset({
-    apiKey: apiKey || process.env.API_KEY, // If an API Key is sent from frontend, use that.  Otherwise, use from .env
-    id: assetId,
-    args: {},
+  const {
+    assetId,
     urlSlug,
+    interactiveNonce,
+    playerId,
+    interactivePublicKey,
+  } = req.body;
+
+  let credentials = {};
+  if (interactivePublicKey) {
+    credentials = {
+      assetId,
+      interactiveNonce,
+      playerId,
+    };
+  }
+
+  const droppedAsset = DroppedAsset.create(assetId, urlSlug, {
+    creds: credentials,
   });
 
   await droppedAsset.fetchDroppedAssetDataObject();

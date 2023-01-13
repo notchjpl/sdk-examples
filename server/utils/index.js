@@ -6,6 +6,7 @@ import {
   removeFromAssetPlaylist,
   updateMedia,
 } from "./playlist.js";
+import { myTopiaInstance, DroppedAsset } from "./topiaInit.js";
 
 export {
   addToAssetPlaylist,
@@ -15,4 +16,6 @@ export {
   removeFromAssetPlaylist,
   updateLeaderboard,
   updateMedia,
+  myTopiaInstance,
+  DroppedAsset,
 };
