@@ -107,8 +107,10 @@ export const playNextSongInPlaylist = async (req, res) => {
       else newReq.body.index = index + 1; // Not at end of playlist
     } else {
       // If shuffle is engaged
-      if (mediaLinkPlaylist.length === 1) newReq.body.index = 0; // If there is only a single item, don't want to get stuck in recusive loop
-      newReq.body.index = randIndex(0, mediaLinkPlaylist.length, index);
+      // If there is only a single item, don't want to get stuck in recusive loop
+      if (!mediaLinkPlaylist.length || mediaLinkPlaylist.length === 1)
+        newReq.body.index = 0;
+      newReq.body.index = randIndex(0, mediaLinkPlaylist.length - 1, index);
     }
 
     newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
