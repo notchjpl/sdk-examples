@@ -5,6 +5,7 @@ import {
   addToAssetPlaylist,
   playNextSongInPlaylist,
   removeFromAssetPlaylist,
+  shufflePlaylist,
   updateMedia,
 } from "./playlist.js";
 
@@ -15,6 +16,7 @@ export {
   playNextSongInPlaylist,
   publicAPI,
   removeFromAssetPlaylist,
+  shufflePlaylist,
   updateLeaderboard,
   updateMedia,
 };

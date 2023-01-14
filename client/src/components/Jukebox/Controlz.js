@@ -12,7 +12,7 @@ import {
 } from "@mui/icons-material";
 
 import { useGlobalDispatch, useGlobalState } from "@context";
-import { playlistNext, volumeDown, volumeUp } from "@utils";
+import { playlistNext, shufflePlaylist, volumeDown, volumeUp } from "@utils";
 
 Controlz.propTypes = {
   assetId: PropTypes.object,
@@ -26,16 +26,20 @@ export function Controlz({ assetId, dataObject }) {
   const urlSlug = globalState.urlSlug;
   const apiKey = localStorage.getItem("apiKey");
 
-  const shufflePlaylist = (toggle) => {
-    console.log(toggle);
-  };
-
   const ShuffleComponent = () => {
     if (dataObject.playlistShuffle)
       return (
         <Tooltip placement="top" title="Stop Shuffle">
           <ShuffleOn
-            onClick={() => shufflePlaylist(false)}
+            onClick={() =>
+              shufflePlaylist({
+                apiKey,
+                assetId,
+                globalDispatch,
+                toggle: false,
+                urlSlug,
+              })
+            }
             sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
           />
         </Tooltip>
@@ -44,7 +48,15 @@ export function Controlz({ assetId, dataObject }) {
       return (
         <Tooltip placement="top" title="Shuffle">
           <Shuffle
-            onClick={() => shufflePlaylist(true)}
+            onClick={() =>
+              shufflePlaylist({
+                apiKey,
+                assetId,
+                globalDispatch,
+                toggle: true,
+                urlSlug,
+              })
+            }
             sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
           />
         </Tooltip>

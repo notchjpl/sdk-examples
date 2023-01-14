@@ -5,6 +5,7 @@ import {
   getDataObject,
   playNextSongInPlaylist,
   removeFromAssetPlaylist,
+  shufflePlaylist,
   updateLeaderboard,
   updateMedia,
   // volumeDown,
@@ -23,6 +24,7 @@ router.post("/removefromassetplaylist", removeFromAssetPlaylist);
 router.post("/getdataobject", getDataObject);
 
 router.post("/playlistnext", playNextSongInPlaylist);
+router.post("/shufflePlaylist", shufflePlaylist);
 
 // router.post("/volumedown", volumeDown);
 // router.post("/volumeUp", volumeUp);

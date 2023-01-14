@@ -88,7 +88,7 @@ export const playNextSongInPlaylist = async (req) => {
     lastPlayTimestamp,
     lastStopTimestamp,
     mediaLinkPlaylist,
-    shufflePlaylist,
+    playlistShuffle,
   } = dataObject;
 
   if (
@@ -97,18 +97,18 @@ export const playNextSongInPlaylist = async (req) => {
     mediaLinkPlaylist.length // Make sure there is a playlist
   ) {
     let newReq = req;
-    if (!shufflePlaylist) {
-      // Saved this when last song was played so we could look it up in case playlist has been rearranged during video playing.
-      const index = mediaLinkPlaylist.findIndex(
-        (i) => i.uniqueEntryId === lastPlaylistUniqueEntryIdPlayed
-      );
+    // Saved this when last song was played so we could look it up in case playlist has been rearranged during video playing.
+    const index = mediaLinkPlaylist.findIndex(
+      (i) => i.uniqueEntryId === lastPlaylistUniqueEntryIdPlayed
+    );
+    if (!playlistShuffle) {
       // At the end of the playlist... loop back to the beginning.  Optionally, could just stop.
       if (index === mediaLinkPlaylist.length - 1) newReq.body.index = 0;
       else newReq.body.index = index + 1; // Not at end of playlist
     } else {
-      // TODO: Add shuffle mode
-      // Shuffle mode on
-      // Don't play same song just played
+      // If shuffle is engaged
+      if (mediaLinkPlaylist.length === 1) newReq.body.index = 0; // If there is only a single item, don't want to get stuck in recusive loop
+      newReq.body.index = randIndex(0, mediaLinkPlaylist.length, index);
     }
 
     newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
@@ -116,3 +116,23 @@ export const playNextSongInPlaylist = async (req) => {
     updateMedia(newReq);
   }
 };
+
+export const shufflePlaylist = async (req, res) => {
+  try {
+    const { toggle } = req.body;
+    const droppedAsset = await getAssetAndDataObject(req);
+    let { dataObject } = droppedAsset;
+    dataObject.playlistShuffle = toggle;
+    await droppedAsset.updateDroppedAssetDataObject(dataObject);
+    if (res) res.json({ success: true, dataObject });
+  } catch (e) {
+    if (res) res.status(502).send({ error, success: false });
+  }
+};
+
+function randIndex(min, max, currentIndex) {
+  const newIndex = Math.floor(Math.random() * (max - min + 1) + min);
+  // Don't want to play same song again
+  if (newIndex === currentIndex) return rand(min, max, currentIndex);
+  return newIndex;
+}
