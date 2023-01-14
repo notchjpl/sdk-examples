@@ -4,7 +4,9 @@ import { DroppedAsset } from "../utils/index.js";
 export const getAssetAndDataObject = async (req) => {
   const { assetId, urlSlug } = req.body;
 
-  const droppedAsset = DroppedAsset.create(assetId, urlSlug, req.body);
+  const droppedAsset = DroppedAsset.create(assetId, urlSlug, {
+    credentials: req.body,
+  });
 
   await droppedAsset.fetchDroppedAssetDataObject();
   return droppedAsset;
