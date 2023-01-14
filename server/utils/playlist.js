@@ -32,7 +32,7 @@ export const updateMedia = async (req, res) => {
 
     timeoutTracker[assetId] = setTimeout(
       () => playNextSongInPlaylist(req),
-      videoInfo.duration
+      videoInfo.duration - 1000 // TODO make this more accurate
     );
   } catch (error) {
     console.log(error);
@@ -80,7 +80,7 @@ export const removeFromAssetPlaylist = async (req, res) => {
   }
 };
 
-export const playNextSongInPlaylist = async (req) => {
+export const playNextSongInPlaylist = async (req, res) => {
   const droppedAsset = await getAssetAndDataObject(req);
   const { dataObject } = droppedAsset;
   const {
@@ -113,7 +113,7 @@ export const playNextSongInPlaylist = async (req) => {
 
     newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
     newReq.body.videoInfo = mediaLinkPlaylist[newReq.body.index];
-    updateMedia(newReq);
+    return updateMedia(newReq, res);
   }
 };
 

@@ -15,31 +15,42 @@ import { useGlobalDispatch, useGlobalState } from "@context";
 import { playlistNext, shufflePlaylist, volumeDown, volumeUp } from "@utils";
 
 Controlz.propTypes = {
-  assetId: PropTypes.object,
+  assetId: PropTypes.string,
   dataObject: PropTypes.object,
+  updateDataObject: PropTypes.func,
 };
 
-export function Controlz({ assetId, dataObject }) {
+export function Controlz({ assetId, dataObject, updateDataObject }) {
   const globalDispatch = useGlobalDispatch();
   const globalState = useGlobalState();
 
   const urlSlug = globalState.urlSlug;
   const apiKey = localStorage.getItem("apiKey");
 
+  const sendEveryReq = {
+    apiKey,
+    assetId,
+    globalDispatch,
+    urlSlug,
+  };
+
+  const next = async () => {
+    await playlistNext(sendEveryReq);
+    updateDataObject();
+  };
+
+  const shuffle = async (toggle) => {
+    // Want to update shuffle button state
+    await shufflePlaylist({ ...sendEveryReq, toggle });
+    updateDataObject();
+  };
+
   const ShuffleComponent = () => {
     if (dataObject.playlistShuffle)
       return (
         <Tooltip placement="top" title="Stop Shuffle">
           <ShuffleOn
-            onClick={() =>
-              shufflePlaylist({
-                apiKey,
-                assetId,
-                globalDispatch,
-                toggle: false,
-                urlSlug,
-              })
-            }
+            onClick={() => shuffle(false)}
             sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
           />
         </Tooltip>
@@ -48,15 +59,7 @@ export function Controlz({ assetId, dataObject }) {
       return (
         <Tooltip placement="top" title="Shuffle">
           <Shuffle
-            onClick={() =>
-              shufflePlaylist({
-                apiKey,
-                assetId,
-                globalDispatch,
-                toggle: true,
-                urlSlug,
-              })
-            }
+            onClick={() => shuffle(true)}
             sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
           />
         </Tooltip>
@@ -70,9 +73,7 @@ export function Controlz({ assetId, dataObject }) {
         <Grid container>
           <Tooltip title="Seek Next">
             <SkipNext
-              onClick={() =>
-                playlistNext({ apiKey, assetId, globalDispatch, urlSlug })
-              }
+              onClick={next}
               sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
             />
           </Tooltip>
@@ -81,17 +82,13 @@ export function Controlz({ assetId, dataObject }) {
       <Grid container direction="column">
         <Tooltip placement="top" title="Increase Volume">
           <VolumeUp
-            onClick={() =>
-              volumeUp({ apiKey, assetId, globalDispatch, urlSlug })
-            }
+            onClick={() => volumeUp(sendEveryReq)}
             sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
           />
         </Tooltip>
         <Tooltip placement="bottom" title="Decrease Volume">
           <VolumeDown
-            onClick={() =>
-              volumeDown({ apiKey, assetId, globalDispatch, urlSlug })
-            }
+            onClick={() => volumeDown(sendEveryReq)}
             sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
           />
         </Tooltip>

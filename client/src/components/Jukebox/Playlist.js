@@ -6,15 +6,14 @@ import { useGlobalDispatch, useGlobalState } from "@context";
 
 // components
 import { Grid, Paper, Typography } from "@mui/material";
-import { Search, VideoTrack } from "@components";
-import { Controlz } from "./";
+import { Search } from "@components";
+import { Controlz, PlaylistTracksWrapper } from "./";
 
 // utils
 import {
   addToAssetPlaylist,
   getDataObject,
   getYoutubeVideoInfo,
-  playMediaInAsset,
   removeFromAssetPlaylist,
 } from "@utils";
 
@@ -34,13 +33,11 @@ export function Playlist({ assetId }) {
   const apiKey = localStorage.getItem("apiKey");
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (assetId) {
-        const dataObject = await getDataObject({ assetId, urlSlug, apiKey });
-        setDataObject(dataObject);
-      }
+    const fetchDataObject = async () => {
+      const dataObject = await getDataObject({ assetId, urlSlug, apiKey });
+      setDataObject(dataObject);
     };
-    fetchData();
+    fetchDataObject();
   }, [apiKey, assetId, urlSlug]);
 
   const handleRemoveFromPlaylist = async (index) => {
@@ -52,39 +49,6 @@ export function Playlist({ assetId }) {
       urlSlug,
     });
     if (newDataObject.mediaLinkPlaylist) setDataObject(newDataObject);
-  };
-
-  // Should add pagination
-  const CreateVideoTracks = () => {
-    if (!dataObject || !dataObject.mediaLinkPlaylist) return <div />;
-
-    return (
-      dataObject.mediaLinkPlaylist
-        // .slice(0, 20)
-        .map((item, index) => {
-          const { id } = item;
-          if (!item.id || !item.snippet) return;
-          return (
-            <VideoTrack
-              key={id + item.timeAdded}
-              play={() =>
-                playMediaInAsset({
-                  apiKey,
-                  assetId,
-                  index,
-                  globalDispatch,
-                  urlSlug,
-                  videoId: id,
-                  videoInfo: item,
-                })
-              }
-              removeFromPlaylist={() => handleRemoveFromPlaylist(index)}
-              videoInfo={item}
-              youtubeId={id}
-            />
-          );
-        })
-    );
   };
 
   const youTubeParser = (url) => {
@@ -106,11 +70,16 @@ export function Playlist({ assetId }) {
       videoInfo,
     });
     // Get updated data object
-    const dataObject = await getDataObject({ assetId, urlSlug, apiKey });
-    setDataObject(dataObject);
+    await updateDataObject();
 
     setSearchVal("");
     setSearching(false);
+  };
+
+  const updateDataObject = async () => {
+    const dataObject = await getDataObject({ assetId, urlSlug, apiKey });
+    setDataObject(dataObject);
+    return;
   };
 
   return (
@@ -122,7 +91,11 @@ export function Playlist({ assetId }) {
           </Grid>
           <Grid alignItems="center" container justifyContent="start">
             <Grid item xs={2}>
-              <Controlz assetId={assetId} dataObject={dataObject} />
+              <Controlz
+                assetId={assetId}
+                dataObject={dataObject}
+                updateDataObject={updateDataObject}
+              />
             </Grid>
             <Grid item xs={10}>
               <Search
@@ -135,7 +108,11 @@ export function Playlist({ assetId }) {
               ></Search>
             </Grid>
 
-            {CreateVideoTracks()}
+            <PlaylistTracksWrapper
+              assetId={assetId}
+              dataObject={dataObject}
+              handleRemoveFromPlaylist={handleRemoveFromPlaylist}
+            />
           </Grid>
         </Grid>
       </Paper>
