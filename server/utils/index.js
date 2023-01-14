@@ -8,6 +8,7 @@ import {
   shufflePlaylist,
   updateMedia,
 } from "./playlist.js";
+import { myTopiaInstance, DroppedAsset, User } from "./topiaInit.js";
 
 export {
   addToAssetPlaylist,
@@ -19,4 +20,7 @@ export {
   shufflePlaylist,
   updateLeaderboard,
   updateMedia,
+  myTopiaInstance,
+  DroppedAsset,
+  User,
 };

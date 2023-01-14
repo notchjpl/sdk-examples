@@ -1,8 +1,8 @@
-import axios from "axios";
+import backendAPI from "@utils/backendApi";
 
 export const getDataObject = async ({ assetId, urlSlug, apiKey }) => {
   try {
-    const result = await axios.post("/backend/getdataobject", {
+    const result = await backendAPI().post("/getdataobject", {
       apiKey,
       assetId,
       urlSlug,

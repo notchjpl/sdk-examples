@@ -24,7 +24,8 @@ const setupBackendAPI = (interactiveParams) => {
       config.data["interactiveNonce"] = interactiveParams.interactiveNonce;
       config.data["interactivePublicKey"] =
         interactiveParams.interactivePublicKey;
-      config.data["urlSlug"] = interactiveParams.urlSlug;
+      config.data["url"] = interactiveParams.url;
+      config.data["urlSlug"] = interactiveParams.url;
 
       return config;
     });
