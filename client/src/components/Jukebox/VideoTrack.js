@@ -11,6 +11,7 @@ import useStyles from "./styles";
 VideoTrack.propTypes = {
   addToPlaylist: PropTypes.func,
   play: PropTypes.func.isRequired,
+  playing: PropTypes.bool.isRequired,
   removeFromPlaylist: PropTypes.func,
   videoInfo: PropTypes.object,
 };
@@ -18,11 +19,11 @@ VideoTrack.propTypes = {
 export function VideoTrack({
   addToPlaylist,
   play,
+  playing,
   removeFromPlaylist,
   videoInfo,
 }) {
   const classes = useStyles();
-  const playing = false; // TODO Add equalizer to whatever is currently playing
   const { duration, id, snippet, viewCount } = videoInfo;
 
   let { title, channelTitle } = snippet;

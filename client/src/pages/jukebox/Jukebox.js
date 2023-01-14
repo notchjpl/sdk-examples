@@ -3,9 +3,7 @@
 
 // Controls: audio only or video?
 // Volume
-// Radius
 // Shuffle
-// Add a server listener for 'next track' and 'previous track'
 // Add a server listener for 'pause' and 'play'
 // Add a server listener for 'pause'.  Update data object with current track time.
 // https://sdk-examples.metaversecloud.com/jukebox?urlSlug=jukebox-demo-s9zdortms&playerId=1&assetId=-NJN9E9YVXSgR5yxaKG3&apiKey=4885c9eb-88ec-4792-a13f-fdb74fbf56a9
@@ -13,8 +11,13 @@
 // Make playlist draggable https://codesandbox.io/s/draggable-material-ui-oj3wz?
 
 // Add a 'teleport to asset' button that portal teleports you to the selected asset
-// Add youtube playlist functionality
-// Should be able to add a video link in the playlist and have it add to end of videos.  Rather than having to search.
+// Enable youtube playlists to work
+// Should be able to specify with a query parameter whether you want visitors to be able to add and remove from playlist or just select songs.
+
+// IN WORLD
+// Should have action buttons
+// List 10 songs from the playlist and user can click one to play it.  Or click 'next' to show the next 10 songs from the playlist.
+// Similar to leaderboard updating
 
 import React from "react";
 import { useGlobalState } from "@context";

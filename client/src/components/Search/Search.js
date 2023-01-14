@@ -3,6 +3,7 @@ import { Button, Grid, TextField } from "@mui/material";
 import PropTypes from "prop-types";
 
 Search.propTypes = {
+  buttonText: PropTypes.string,
   label: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   runSearch: PropTypes.func.isRequired,
@@ -10,7 +11,14 @@ Search.propTypes = {
   searching: PropTypes.bool.isRequired,
 };
 
-export function Search({ label, onChange, runSearch, searchVal, searching }) {
+export function Search({
+  buttonText,
+  label,
+  onChange,
+  runSearch,
+  searchVal,
+  searching,
+}) {
   const handleKeyDown = (e) => {
     if (e.keyCode === 13 && !searching) {
       e.target.blur();
@@ -38,7 +46,7 @@ export function Search({ label, onChange, runSearch, searchVal, searching }) {
           sx={{ height: "100%" }}
           variant="contained"
         >
-          Search
+          {buttonText || "Search"}
         </Button>
       </Grid>
     </Grid>
