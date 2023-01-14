@@ -133,6 +133,6 @@ export const shufflePlaylist = async (req, res) => {
 function randIndex(min, max, currentIndex) {
   const newIndex = Math.floor(Math.random() * (max - min + 1) + min);
   // Don't want to play same song again
-  if (newIndex === currentIndex) return rand(min, max, currentIndex);
+  if (newIndex === currentIndex) return randIndex(min, max, currentIndex);
   return newIndex;
 }

@@ -11,9 +11,9 @@ import useStyles from "./styles";
 VideoTrack.propTypes = {
   addToPlaylist: PropTypes.func,
   play: PropTypes.func.isRequired,
-  playing: PropTypes.bool.isRequired,
+  playing: PropTypes.bool,
   removeFromPlaylist: PropTypes.func,
-  videoInfo: PropTypes.object,
+  videoInfo: PropTypes.object.isRequired,
 };
 
 export function VideoTrack({
