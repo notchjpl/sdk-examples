@@ -46,7 +46,7 @@ export function Controlz({ assetId, dataObject, updateDataObject }) {
   };
 
   const ShuffleComponent = () => {
-    if (dataObject.playlistShuffle)
+    if (dataObject?.playlistShuffle)
       return (
         <Tooltip placement="top" title="Stop Shuffle">
           <ShuffleOn
