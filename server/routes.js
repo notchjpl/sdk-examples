@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import {
+  addPlaylistToWorld,
   addToAssetPlaylist,
   getDataObject,
   playNextSongInPlaylist,
@@ -25,6 +26,8 @@ router.post("/getdataobject", getDataObject);
 
 router.post("/playlistnext", playNextSongInPlaylist);
 router.post("/shufflePlaylist", shufflePlaylist);
+
+router.post("/addplaylistcontrols", addPlaylistToWorld);
 
 // router.post("/volumedown", volumeDown);
 // router.post("/volumeUp", volumeUp);

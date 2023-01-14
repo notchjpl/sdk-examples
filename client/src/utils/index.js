@@ -8,6 +8,7 @@ export {
 } from "./media";
 export { getDataObject } from "./dataObject";
 export {
+  addPlaylistToWorld,
   playlistNext,
   shufflePlaylist,
   volumeDown,
