@@ -103,6 +103,7 @@ export function UniqueAssetTable({ handleChangeAsset }) {
                   {uniqueAssets
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((asset) => {
+                      console.log(asset);
                       return (
                         <TableRow
                           hover
@@ -117,10 +118,10 @@ export function UniqueAssetTable({ handleChangeAsset }) {
                             {asset.name}
                           </TableCell>
                           <TableCell align="right">
-                            {asset.x.toFixed(0)}
+                            {parseInt(asset.x).toFixed(0)}
                           </TableCell>
                           <TableCell align="right">
-                            {asset.y.toFixed(0)}
+                            {parseInt(asset.y).toFixed(0)}
                           </TableCell>
                         </TableRow>
                       );

@@ -14,13 +14,13 @@ import {
 import { useGlobalDispatch, useGlobalState } from "@context";
 import { playlistNext, shufflePlaylist, volumeDown, volumeUp } from "@utils";
 
-Controlz.propTypes = {
+Controls.propTypes = {
   assetId: PropTypes.string,
   dataObject: PropTypes.object,
   updateDataObject: PropTypes.func,
 };
 
-export function Controlz({ assetId, dataObject, updateDataObject }) {
+export function Controls({ assetId, dataObject, updateDataObject }) {
   const globalDispatch = useGlobalDispatch();
   const globalState = useGlobalState();
 

@@ -1,6 +1,7 @@
 import { publicAPI } from "./publicAPI.js";
 import { getDataObject, getDroppedAsset } from "./droppedAsset.js";
 import { updateLeaderboard } from "./leaderboard.js";
+import { addPlaylistToWorld } from "./playlistGenerator.js";
 import {
   addToAssetPlaylist,
   playNextSongInPlaylist,
@@ -11,6 +12,7 @@ import {
 import { myTopiaInstance, DroppedAsset, User } from "./topiaInit.js";
 
 export {
+  addPlaylistToWorld,
   addToAssetPlaylist,
   getDataObject,
   getDroppedAsset,
