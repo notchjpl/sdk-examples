@@ -7,9 +7,4 @@ export {
   removeFromAssetPlaylist,
 } from "./media";
 export { getDataObject } from "./dataObject";
-export {
-  playlistNext,
-  playlistPrevious,
-  volumeDown,
-  volumeUp,
-} from "./playlistControls";
+export { playlistNext, volumeDown, volumeUp } from "./playlistControls";

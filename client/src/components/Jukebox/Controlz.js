@@ -7,22 +7,12 @@ import {
   Shuffle,
   ShuffleOn,
   SkipNext,
-  SkipPrevious, // TODO need to save previous video played to dataObject
   VolumeDown,
   VolumeUp,
 } from "@mui/icons-material";
 
 import { useGlobalDispatch, useGlobalState } from "@context";
-
-import { playlistNext, playlistPrevious, volumeDown, volumeUp } from "@utils";
-// // utils
-// import {
-//   addToAssetPlaylist,
-//   getDataObject,
-//   getYoutubeVideoInfo,
-//   playMediaInAsset,
-//   removeFromAssetPlaylist,
-// } from "@utils";
+import { playlistNext, volumeDown, volumeUp } from "@utils";
 
 Controlz.propTypes = {
   assetId: PropTypes.object,
@@ -63,18 +53,9 @@ export function Controlz({ assetId, dataObject }) {
 
   return (
     <Grid container justifyContent="start" sx={{ flexWrap: "nowrap" }}>
-      <Grid container direction="column">
+      <Grid container direction="column" xs={3}>
         <ShuffleComponent />
         <Grid container>
-          <Tooltip title="Previous">
-            <SkipPrevious
-              disabled={!dataObject.previousPlaylistSong}
-              onClick={() =>
-                playlistPrevious({ apiKey, assetId, globalDispatch, urlSlug })
-              }
-              sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
-            />
-          </Tooltip>
           <Tooltip title="Seek Next">
             <SkipNext
               onClick={() =>
@@ -88,7 +69,6 @@ export function Controlz({ assetId, dataObject }) {
       <Grid container direction="column">
         <Tooltip placement="top" title="Increase Volume">
           <VolumeUp
-            disabled={!dataObject.previousPlaylistSong}
             onClick={() =>
               volumeUp({ apiKey, assetId, globalDispatch, urlSlug })
             }
@@ -97,7 +77,6 @@ export function Controlz({ assetId, dataObject }) {
         </Tooltip>
         <Tooltip placement="bottom" title="Decrease Volume">
           <VolumeDown
-            disabled={!dataObject.previousPlaylistSong}
             onClick={() =>
               volumeDown({ apiKey, assetId, globalDispatch, urlSlug })
             }

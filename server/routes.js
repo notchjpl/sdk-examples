@@ -4,7 +4,6 @@ import {
   addToAssetPlaylist,
   getDataObject,
   playNextSongInPlaylist,
-  // playlistPrevious,
   removeFromAssetPlaylist,
   updateLeaderboard,
   updateMedia,
@@ -24,6 +23,6 @@ router.post("/removefromassetplaylist", removeFromAssetPlaylist);
 router.post("/getdataobject", getDataObject);
 
 router.post("/playlistnext", playNextSongInPlaylist);
-// router.post("/playlistprevious", playlistPrevious);
+
 // router.post("/volumedown", volumeDown);
 // router.post("/volumeUp", volumeUp);

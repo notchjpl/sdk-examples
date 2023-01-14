@@ -17,7 +17,7 @@ export const updateMedia = async (req, res) => {
     await droppedAsset.updateMediaType({
       mediaLink,
       isVideo: true,
-      mediaName: videoInfo.snippet.title, // Will only change media name if one is sent from the frontend.
+      mediaName: videoInfo?.snippet?.title, // Will only change media name if one is sent from the frontend.
       mediaType: "link",
     });
 
@@ -36,7 +36,7 @@ export const updateMedia = async (req, res) => {
     );
   } catch (error) {
     console.log(error);
-    res.status(502).send({ error, success: false });
+    if (res) res.status(502).send({ error, success: false });
   }
 };
 
