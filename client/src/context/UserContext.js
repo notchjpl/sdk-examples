@@ -1,5 +1,5 @@
 import React from "react";
-// import { User } from "@rtsdk/topia";
+import { Topia, UserFactory } from "@rtsdk/topia";
 
 const UserStateContext = React.createContext();
 const UserDispatchContext = React.createContext();
@@ -47,10 +47,11 @@ function useUserDispatch() {
 function fetchUser(apiKey, dispatch) {
   if (!apiKey) return;
   setTimeout(async () => {
-    // const user = await new User({ apiKey });
-    // localStorage.setItem("apiKey", apiKey);
-    // dispatch({ payload: user, type: "FETCH_USER_SUCCESS" });
-    // // history.push("/");
+    const topia = new Topia({ apiKey });
+    const user = new UserFactory(topia).create({ apiKey });
+    localStorage.setItem("apiKey", apiKey);
+    dispatch({ payload: user, type: "FETCH_USER_SUCCESS" });
+    // history.push("/");
   }, 2000);
 }
 

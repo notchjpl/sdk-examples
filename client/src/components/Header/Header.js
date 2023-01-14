@@ -25,7 +25,7 @@ import {
 
 export function Header() {
   const classes = useStyles();
-  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey"));
+  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
   const [urlSlug, setUrlSlug] = useState("");
 
   // context

@@ -1,5 +1,5 @@
 import React from "react";
-// import { World } from "@rtsdk/topia";
+import { Topia, WorldFactory } from "@rtsdk/topia";
 
 const GlobalStateContext = React.createContext();
 const GlobalDispatchContext = React.createContext();
@@ -91,21 +91,20 @@ function setInteractiveParams({
 // eslint-disable-next-line no-unused-vars
 async function fetchWorld({ apiKey, dispatch, urlSlug }) {
   if (!apiKey || !urlSlug) return;
-  // const selectedWorld = await new World({ apiKey, urlSlug });
-  // await selectedWorld
-  //   .fetchDetails()
-  //   .then(() => {
-  //     dispatch({
-  //       type: "SELECT_WORLD",
-  //       payload: {
-  //         urlSlug,
-  //         selectedWorld,
-  //       },
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     setMessage({ dispatch, message: error, messageType: "error" });
-  //   });
+  const topia = new Topia({ apiKey });
+  const selectedWorld = new WorldFactory(topia).create(urlSlug);
+  try {
+    await selectedWorld.fetchDetails();
+    dispatch({
+      type: "SELECT_WORLD",
+      payload: {
+        urlSlug,
+        selectedWorld,
+      },
+    });
+  } catch (error) {
+    setMessage({ dispatch, message: error, messageType: "error" });
+  }
 }
 
 function setMessage({ dispatch, message, messageType }) {
