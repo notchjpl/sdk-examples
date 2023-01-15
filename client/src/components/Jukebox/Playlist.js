@@ -5,12 +5,15 @@ import PropTypes from "prop-types";
 import { useGlobalDispatch, useGlobalState } from "@context";
 
 // components
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid, Paper, Tooltip, Typography } from "@mui/material";
+
+import { AddBox } from "@mui/icons-material";
 import { Search } from "@components";
-import { Controlz, PlaylistTracksWrapper } from "./";
+import { Controls, PlaylistTracksWrapper } from "./";
 
 // utils
 import {
+  addPlaylistToWorld,
   addToAssetPlaylist,
   getDataObject,
   getYoutubeVideoInfo,
@@ -86,12 +89,27 @@ export function Playlist({ assetId }) {
     <Grid item>
       <Paper sx={{ p: 2 }}>
         <Grid alignItems="center" container>
-          <Grid item xs={12}>
+          <Grid item xs={11}>
             <Typography variant="h4">Playlist</Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Tooltip title="Add Controls to World">
+              <AddBox
+                onClick={() =>
+                  addPlaylistToWorld({
+                    apiKey,
+                    assetId,
+                    globalDispatch,
+                    urlSlug,
+                  })
+                }
+                sx={{ "&:hover": { cursor: "pointer" } }}
+              />
+            </Tooltip>
           </Grid>
           <Grid alignItems="center" container justifyContent="start">
             <Grid item xs={2}>
-              <Controlz
+              <Controls
                 assetId={assetId}
                 dataObject={dataObject}
                 updateDataObject={updateDataObject}

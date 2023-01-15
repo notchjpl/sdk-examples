@@ -127,3 +127,32 @@ export const volumeUp = async ({
       });
     });
 };
+
+export const addPlaylistToWorld = async ({
+  apiKey,
+  assetId,
+  globalDispatch,
+  urlSlug,
+}) => {
+  axios
+    .post("/backend/addplaylistcontrols", {
+      apiKey,
+      assetId,
+      urlSlug,
+    })
+    .then(() => {
+      setMessage({
+        dispatch: globalDispatch,
+        message: "Success!",
+        messageType: "success",
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      setMessage({
+        dispatch: globalDispatch,
+        message: error,
+        messageType: "error",
+      });
+    });
+};

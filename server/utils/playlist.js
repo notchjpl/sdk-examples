@@ -98,9 +98,11 @@ export const playNextSongInPlaylist = async (req, res) => {
   ) {
     let newReq = req;
     // Saved this when last song was played so we could look it up in case playlist has been rearranged during video playing.
-    const index = mediaLinkPlaylist.findIndex(
-      (i) => i.uniqueEntryId === lastPlaylistUniqueEntryIdPlayed
+    const index = getPlayedCurrentIndex(
+      mediaLinkPlaylist,
+      lastPlaylistUniqueEntryIdPlayed
     );
+
     if (!playlistShuffle) {
       // At the end of the playlist... loop back to the beginning.  Optionally, could just stop.
       if (index === mediaLinkPlaylist.length - 1) newReq.body.index = 0;
@@ -138,3 +140,6 @@ function randIndex(min, max, currentIndex) {
   if (newIndex === currentIndex) return randIndex(min, max, currentIndex);
   return newIndex;
 }
+
+export const getPlayedCurrentIndex = (playlist, lastPlayedUniqueId) =>
+  playlist.findIndex((i) => i.uniqueEntryId === lastPlayedUniqueId);
