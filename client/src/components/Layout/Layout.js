@@ -31,11 +31,8 @@ export function Layout({ children }) {
     messageType,
     selectedWorld,
     urlSlug,
-    visitorId,
-    interactiveNonce,
-    assetId,
+    isInteractiveIframe,
   } = useGlobalState();
-  const isInteractiveIframe = visitorId && interactiveNonce && assetId;
 
   const handleCloseSnackbar = () => {
     removeMessage(globalDispatch);
