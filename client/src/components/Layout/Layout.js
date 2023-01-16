@@ -25,8 +25,17 @@ export function Layout({ children }) {
 
   // context
   const globalDispatch = useGlobalDispatch();
-  const { hasMessage, message, messageType, selectedWorld, urlSlug } =
-    useGlobalState();
+  const {
+    hasMessage,
+    message,
+    messageType,
+    selectedWorld,
+    urlSlug,
+    visitorId,
+    interactiveNonce,
+    assetId,
+  } = useGlobalState();
+  const isInteractiveIframe = visitorId && interactiveNonce && assetId;
 
   const handleCloseSnackbar = () => {
     removeMessage(globalDispatch);
@@ -34,8 +43,12 @@ export function Layout({ children }) {
 
   return (
     <div className={classes.root}>
-      <Header />
-      <Sidebar />
+      {!isInteractiveIframe && (
+        <>
+          <Header />
+          <Sidebar />
+        </>
+      )}
       <Grid className={classes.content} container spacing={4}>
         <Grid item xs={12}>
           <Typography component="h1" variant="h3">
