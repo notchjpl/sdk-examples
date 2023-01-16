@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { updateMedia } from "./utils/index.js";
+import { playNextSongInPlaylist, updateMedia } from "./utils/index.js";
 export default router;
 
 router.post("/playlist", (req, res) => {
@@ -19,6 +19,16 @@ router.post("/playlist", (req, res) => {
       uniqueEntryId,
     };
     updateMedia(updateObject);
+  }
+
+  if (action === "next-clicked") {
+    console.log("Next clicked");
+    let updateObject = req;
+    updateObject.body = {
+      urlSlug,
+      assetId: jukeboxId,
+    };
+    playNextSongInPlaylist(updateObject);
   }
   res.json({ message: "Hello from server!" });
 });

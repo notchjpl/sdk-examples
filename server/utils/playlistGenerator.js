@@ -51,6 +51,7 @@ export const addPlaylistToWorld = async (req, res) => {
     });
 
     addPlaylistFrame({ apiKey, id: assetId, position, urlSlug });
+    addNextButton({ apiKey, id: assetId, position, urlSlug });
 
     // addControl({
 
@@ -88,6 +89,48 @@ const addPlaylistFrame = async ({ apiKey, id, position, urlSlug }) => {
   });
 
   frameAsset.updateScale(1.45);
+};
+
+const addNextButton = async ({ apiKey, id, position, urlSlug }) => {
+  const result = await dropAsset({
+    body: {
+      apiKey,
+      assetId: "8kiBYqfayeJF5TcoUtpK", // Custom text asset
+      // Doing this as quick fix until we add position to SDK class
+      position: {
+        x: position ? position.x + 400 : 400,
+        y: position ? position.y + 450 : 450,
+      },
+      uniqueName: `sdk-examples_playlist_${id}_control_next`, // ID here is the jukebox's assetId
+      urlSlug,
+    },
+  });
+
+  const assetId = result.data.id;
+
+  const nextAsset = await getAssetAndDataObject({
+    body: {
+      assetId,
+      urlSlug,
+    },
+  });
+
+  const description = `Next button clicked`;
+  const title = "Next clicked";
+  const dataObject = { action: "next-clicked", jukeboxId: id };
+
+  const clickableTitle = `Next click`;
+
+  addWebhookWithClick({
+    apiKey,
+    assetId,
+    clickableTitle,
+    dataObject,
+    description,
+    title,
+    droppedAsset: nextAsset,
+    urlSlug,
+  });
 };
 
 const addTrack = async ({
@@ -145,19 +188,8 @@ const addTrack = async ({
   // TODO: Add clickType: "displayText" to the public API
   // TODO: Dropped text seems to high.  Need to set max height of asset?
 
-  await trackAsset.updateClickType({
-    clickType: "link",
-    clickableLink: `https://track${index}.com`,
-    clickableLinkTitle: `Track ${index}`,
-  });
-
-  // Webhook
-
   const description = `Play song by clicking here`;
   const title = "Track clicked";
-  const type = "assetClicked";
-  const url =
-    "https://7357-2603-8000-c001-4f05-3cdf-60e5-471f-8919.ngrok.io/webhooks/playlist";
   const dataObject = {
     action: "track-clicked",
     index,
@@ -167,7 +199,42 @@ const addTrack = async ({
     videoInfo,
   };
 
-  const trackWebhook = await addWebhook({
+  const clickableTitle = `Track ${index}`;
+
+  addWebhookWithClick({
+    apiKey,
+    assetId,
+    clickableTitle,
+    dataObject,
+    description,
+    title,
+    droppedAsset: trackAsset,
+    urlSlug,
+  });
+};
+
+const addWebhookWithClick = async ({
+  apiKey,
+  assetId,
+  clickableTitle,
+  dataObject,
+  description,
+  title,
+  droppedAsset,
+  urlSlug,
+}) => {
+  await droppedAsset.updateClickType({
+    clickType: "link",
+    clickableLink: `https://topia.io`,
+    clickableLinkTitle: clickableTitle,
+  });
+
+  // Webhook
+  const type = "assetClicked";
+  const url =
+    "https://7357-2603-8000-c001-4f05-3cdf-60e5-471f-8919.ngrok.io/webhooks/playlist";
+
+  await addWebhook({
     body: {
       apiKey,
       assetId,
@@ -176,22 +243,6 @@ const addTrack = async ({
       title,
       type,
       url,
-      urlSlug,
-    },
-  });
-};
-
-const addControl = async () => {
-  const control = await dropAsset({
-    body: {
-      apiKey,
-      assetId: "rXLgzCs1wxpx96YLZAN5", // Custom text asset
-      // Doing this as quick fix until we add position to SDK class
-      position: {
-        x: position ? position.x : 0,
-        y: position ? position.y + 100 + index * 50 : 0 + 100 + index * 50,
-      },
-      uniqueName: `sdk-examples_playlist_${id}_track_${index}`, // ID here is the jukebox's assetId
       urlSlug,
     },
   });
