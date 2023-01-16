@@ -1,3 +1,5 @@
+// TODO: Add 'next page' and 'previous page' buttons to in-world playlist so can browse through the entire playlist
+
 import { getAssetAndDataObject } from "../middleware/index.js";
 import {
   addWebhook,
@@ -178,7 +180,7 @@ const addTrack = async ({
       textFontFamily: "Arial",
       textSize: 12,
       textWeight: "normal",
-      textWidth: 400,
+      textWidth: 350,
     },
     trackData.snippet.title
   );

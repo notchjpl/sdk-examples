@@ -14,6 +14,8 @@ export const updateMedia = async (req, res) => {
     const droppedAsset = await getAssetAndDataObject(req);
     let { dataObject } = droppedAsset;
 
+    // TODO: Remove (or just update) playlist text assets when song changes if the assets exist in world.
+
     // TODO: Rather than passing in videoInfo, should pull the info from dataObject.
     // Should send uniqueEntryId rather than videoId and videoInfo.  Then do a lookup.
 

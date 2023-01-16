@@ -22,7 +22,6 @@ router.post("/playlist", (req, res) => {
   }
 
   if (action === "next-clicked") {
-    console.log("Next clicked");
     let updateObject = req;
     updateObject.body = {
       urlSlug,
