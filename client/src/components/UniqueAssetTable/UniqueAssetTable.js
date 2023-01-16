@@ -36,7 +36,6 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
     for (const asset of Object.values(selectedWorld.droppedAssets)) {
       // TODO: Should be able to only pull assets by unique name prefix to select relevant assets rather than doing this filter.
       if (asset.uniqueName) {
-        console.log("Should Show", asset.uniqueName.includes(uniqueNamePrefix));
         if (!uniqueNamePrefix || asset.uniqueName.includes(uniqueNamePrefix))
           uniqueAssets.push({
             id: asset.id,
@@ -49,7 +48,9 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
     if (uniqueAssets.length === 0) {
       setMessage({
         dispatch: globalDispatch,
-        message: "No dropped assets with unique names found.",
+        message: uniqueNamePrefix
+          ? `Get started by adding any asset with a unique name that starts with '${uniqueNamePrefix}'`
+          : "No dropped assets with unique names found.",
         messageType: "warning",
       });
     }
