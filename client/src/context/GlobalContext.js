@@ -75,6 +75,8 @@ function setInteractiveParams({
   interactivePublicKey,
   urlSlug,
 }) {
+  const isInteractiveIframe =
+    visitorId && interactiveNonce && interactivePublicKey && assetId;
   dispatch({
     type: "SET_INTERACTIVE_PARAMS",
     payload: {
@@ -83,6 +85,7 @@ function setInteractiveParams({
       interactiveNonce,
       interactivePublicKey,
       urlSlug,
+      isInteractiveIframe,
     },
   });
 }

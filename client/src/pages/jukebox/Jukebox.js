@@ -32,8 +32,7 @@ export function Jukebox() {
   const [asset, setAsset] = React.useState({});
   const [toggle, setToggle] = React.useState("playlist");
 
-  const { visitorId, interactiveNonce, assetId } = useGlobalState();
-  const isInteractiveIframe = visitorId && interactiveNonce && assetId;
+  const { isInteractiveIframe, assetId } = useGlobalState();
 
   const displayContent = () => {
     if (toggle === "search")
