@@ -6,6 +6,7 @@ import {
   getDataObject,
   playNextSongInPlaylist,
   removeFromAssetPlaylist,
+  removePlaylistFromWorld,
   shufflePlaylist,
   updateLeaderboard,
   updateMedia,
@@ -28,6 +29,7 @@ router.post("/playlistnext", playNextSongInPlaylist);
 router.post("/shufflePlaylist", shufflePlaylist);
 
 router.post("/addplaylistcontrols", addPlaylistToWorld);
+router.post("/removeplaylistcontrols", removePlaylistFromWorld);
 
 // router.post("/volumedown", volumeDown);
 // router.post("/volumeUp", volumeUp);

@@ -14,6 +14,9 @@ export const updateMedia = async (req, res) => {
     const droppedAsset = await getAssetAndDataObject(req);
     let { dataObject } = droppedAsset;
 
+    // TODO: Rather than passing in videoInfo, should pull the info from dataObject.
+    // Should send uniqueEntryId rather than videoId and videoInfo.  Then do a lookup.
+
     await droppedAsset.updateMediaType({
       mediaLink,
       isVideo: true,

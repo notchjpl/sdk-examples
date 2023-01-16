@@ -19,6 +19,7 @@
 // Should have action buttons
 // List 10 songs from the playlist and user can click one to play it.  Or click 'next' to show the next 10 songs from the playlist.
 // Similar to leaderboard updating
+// Should be able to generate in-world jukebox scene and remove.  Use Unique Name convention to easily identify and remove associated assets.
 
 import React from "react";
 import { useGlobalState } from "@context";
@@ -60,7 +61,10 @@ export function Jukebox() {
       spacing={2}
     >
       <Grid item>
-        <UniqueAssetTable handleChangeAsset={setAsset} />
+        <UniqueAssetTable
+          handleChangeAsset={setAsset}
+          uniqueNamePrefix="sdk-examples_jukebox"
+        />
       </Grid>
 
       {(assetId || asset.id) && (

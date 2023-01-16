@@ -13,9 +13,12 @@ export const addWebhook = async (req, res) => {
     urlSlug,
   } = req.body;
   const webhook = await publicAPI(apiKey).post(`/world/${urlSlug}/webhooks`, {
+    active: true,
     assetId,
     dataObject,
     description,
+    enteredBy: "",
+    isUniqueOnly: false,
     title,
     type,
     url,
@@ -40,7 +43,34 @@ export const dropAsset = async (req, res) => {
     if (res) res.json(droppedAsset);
     return droppedAsset;
   } catch (e) {
-    console.log("Response", e.data.errors);
+    console.log("Response", e.data);
     return e.data;
+  }
+};
+
+export const getDroppedAssetsWithUniqueName = async ({
+  apiKey,
+  partial,
+  uniqueName,
+  urlSlug,
+}) => {
+  try {
+    const isPartial = !!partial;
+    const droppedAssets = await publicAPI(apiKey).get(
+      `/world/${urlSlug}/assets-with-unique-name/${uniqueName}?partial=${isPartial}`
+    );
+    return droppedAssets;
+  } catch (e) {
+    return { success: false };
+    // console.log("Get Assets with Unique Name Error", e);
+    // return e;
+  }
+};
+
+export const deleteAsset = async ({ apiKey, assetId, urlSlug }) => {
+  try {
+    await publicAPI(apiKey).delete(`/world/${urlSlug}/assets/${assetId}`);
+  } catch (e) {
+    console.log("Delete Asset Error", e);
   }
 };

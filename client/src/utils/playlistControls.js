@@ -156,3 +156,32 @@ export const addPlaylistToWorld = async ({
       });
     });
 };
+
+export const removePlaylistFromWorld = async ({
+  apiKey,
+  assetId,
+  globalDispatch,
+  urlSlug,
+}) => {
+  axios
+    .post("/backend/removeplaylistcontrols", {
+      apiKey,
+      assetId,
+      urlSlug,
+    })
+    .then(() => {
+      setMessage({
+        dispatch: globalDispatch,
+        message: "Success!",
+        messageType: "success",
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      setMessage({
+        dispatch: globalDispatch,
+        message: error,
+        messageType: "error",
+      });
+    });
+};
