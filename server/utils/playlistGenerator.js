@@ -115,8 +115,8 @@ const addTrack = async ({
 
   await trackAsset.updateClickType({
     clickType: "link",
-    clickableLink: "https://topia.io",
-    clickableLinkTitle: "My awesome link!",
+    clickableLink: `https://track${index}.com`,
+    clickableLinkTitle: `Track ${index}`,
   });
 
   // Webhook
