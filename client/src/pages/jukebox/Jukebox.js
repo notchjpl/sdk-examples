@@ -23,7 +23,6 @@
 
 import React from "react";
 import { useGlobalState } from "@context";
-import { useSearchParams } from "react-router-dom";
 
 // components
 import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
@@ -32,10 +31,8 @@ import { Playlist, UniqueAssetTable, YouTubeSearch } from "@components";
 export function Jukebox() {
   const [asset, setAsset] = React.useState({});
   const [toggle, setToggle] = React.useState("playlist");
-  const [searchParams] = useSearchParams();
 
-  const globalState = useGlobalState();
-  let assetId = searchParams.get("assetId") || globalState.assetId;
+  const { isInteractiveIframe, assetId } = useGlobalState();
 
   const displayContent = () => {
     if (toggle === "search")
@@ -60,12 +57,14 @@ export function Jukebox() {
       p={1}
       spacing={2}
     >
-      <Grid item>
-        <UniqueAssetTable
-          handleChangeAsset={setAsset}
-          uniqueNamePrefix="sdk-examples_jukebox"
-        />
-      </Grid>
+      {!isInteractiveIframe && (
+        <Grid item>
+          <UniqueAssetTable
+            handleChangeAsset={setAsset}
+            uniqueNamePrefix="sdk-examples_jukebox"
+          />
+        </Grid>
+      )}
 
       {(assetId || asset.id) && (
         <Grid container direction="column" p={2} spacing={2}>

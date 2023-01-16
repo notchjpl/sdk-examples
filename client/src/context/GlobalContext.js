@@ -70,20 +70,22 @@ function useGlobalDispatch() {
 function setInteractiveParams({
   assetId,
   dispatch,
-  playerId,
+  visitorId,
   interactiveNonce,
   interactivePublicKey,
-  url,
+  urlSlug,
 }) {
+  const isInteractiveIframe =
+    visitorId && interactiveNonce && interactivePublicKey && assetId;
   dispatch({
     type: "SET_INTERACTIVE_PARAMS",
     payload: {
       assetId,
-      playerId,
+      visitorId,
       interactiveNonce,
       interactivePublicKey,
-      url,
-      urlSlug: url,
+      urlSlug,
+      isInteractiveIframe,
     },
   });
 }
