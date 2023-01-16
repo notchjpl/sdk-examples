@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { defaultMaxListeners } from "events";
 import router from "./routes.js";
+import webhookRouter from "./webhookRoutes.js";
 import externalRouter from "./externalRoutes.js";
 import cors from "cors";
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(cors(corsOptions));
 
 app.use("/backend", router);
 app.use("/external", externalRouter);
+app.use("/webhooks", webhookRouter);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {

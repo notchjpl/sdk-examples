@@ -47,8 +47,10 @@ export const addPlaylistToWorld = async (req, res) => {
       position,
       trackData: mediaLinkPlaylist[videoIndex],
       urlSlug,
-      isCurrentlyPlaying: currentIndex === i + 1, // Offset as we are putting the previous song as #1
+      isCurrentlyPlaying: i === currentIndex + 1, // Offset as we are putting the previous song as #1
     });
+
+    // addControls({});
   }
   try {
   } catch (e) {
@@ -66,8 +68,9 @@ const addTrack = async ({
   urlSlug,
   isCurrentlyPlaying,
 }) => {
-  console.log("Track data", index, trackData);
   const videoId = trackData.id;
+  const { uniqueEntryId } = trackData;
+  const videoInfo = trackData;
   const trackEntry = await dropAsset({
     body: {
       apiKey,
@@ -94,7 +97,7 @@ const addTrack = async ({
     },
   });
 
-  trackAsset.updateCustomText(
+  await trackAsset.updateCustomText(
     {
       textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
       textFontFamily: "Arial",
@@ -105,16 +108,31 @@ const addTrack = async ({
     trackData.snippet.title
   );
 
-  const description = "Play next song!";
-  const title = "Next button clicked";
+  // TODO: Need to make so can send developer public key when adding webhook and specify that can add visitor session credentials.
+  // TODO: Need to add clickType: webhook
+  // TODO: Add clickType: "displayText" to the public API
+  // TODO: Dropped text seems to high.  Need to set max height of asset?
+
+  await trackAsset.updateClickType({
+    clickType: "link",
+    clickableLink: "https://topia.io",
+    clickableLinkTitle: "My awesome link!",
+  });
+
+  // Webhook
+
+  const description = `Play song by clicking here`;
+  const title = "Track clicked";
   const type = "assetClicked";
   const url =
-    "https://9bb3-2603-8000-c001-4f05-e9b8-5fc9-6a6c-b46b.ngrok.io/webhooks/playlist";
+    "https://7357-2603-8000-c001-4f05-3cdf-60e5-471f-8919.ngrok.io/webhooks/playlist";
   const dataObject = {
     action: "track-clicked",
     index,
-    assetId,
+    uniqueEntryId,
+    jukeboxId: id,
     videoId,
+    videoInfo,
   };
 
   const trackWebhook = await addWebhook({
@@ -129,19 +147,35 @@ const addTrack = async ({
       urlSlug,
     },
   });
+};
 
-  console.log("Webhook added");
+const addControl = async () => {
+  const control = await dropAsset({
+    body: {
+      apiKey,
+      assetId: "rXLgzCs1wxpx96YLZAN5", // Custom text asset
+      // Doing this as quick fix until we add position to SDK class
+      position: {
+        x: position ? position.x : 0,
+        y: position ? position.y + 100 + index * 50 : 0 + 100 + index * 50,
+      },
+      uniqueName: `sdk-examples_playlist_${id}_track_${index}`, // ID here is the jukebox's assetId
+      urlSlug,
+    },
+  });
 };
 
 export const removePlaylistFromWorld = async (req, res) => {
   const { apiKey, assetId, urlSlug } = req.body;
-  const droppedAssets = getDroppedAssetsWithUniqueName({
+  const droppedAssets = await getDroppedAssetsWithUniqueName({
     apiKey,
+    partial: true, // Pulls all dropped assets with unique name that starts with 'uniqueName' below
     uniqueName: `sdk-examples_playlist_${assetId}`,
     urlSlug,
   });
-  console.log(droppedAssets.data);
-  droppedAssets.data.forEach((item) => {
+  if (!droppedAssets || !droppedAssets.data || !droppedAssets.data.assets)
+    return res.status(403).send("No playlist in world to remove");
+  droppedAssets.data.assets.forEach((item) => {
     deleteAsset({
       apiKey,
       assetId: item.id,
