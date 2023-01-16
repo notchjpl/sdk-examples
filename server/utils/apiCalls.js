@@ -40,7 +40,32 @@ export const dropAsset = async (req, res) => {
     if (res) res.json(droppedAsset);
     return droppedAsset;
   } catch (e) {
-    console.log("Response", e.data.errors);
+    console.log("Response", e.data);
     return e.data;
+  }
+};
+
+export const getDroppedAssetsWithUniqueName = async ({
+  apiKey,
+  uniqueName,
+  urlSlug,
+}) => {
+  try {
+    const droppedAssets = await publicAPI(apiKey).post(
+      `/world/${urlSlug}/assets-with-unique-name/${uniqueName}`
+    );
+    if (res) res.json(droppedAssets);
+    return droppedAssets;
+  } catch (e) {
+    console.log("Response", e.data);
+    return e.data;
+  }
+};
+
+export const deleteAsset = async ({ apiKey, assetId, urlSlug }) => {
+  try {
+    await publicAPI(apiKey).delete(`/world/${urlSlug}/assets/${assetId}`);
+  } catch (e) {
+    console.log("Response", e.data);
   }
 };

@@ -1,5 +1,10 @@
 import { getAssetAndDataObject } from "../middleware/index.js";
-import { addWebhook, dropAsset } from "./apiCalls.js";
+import {
+  addWebhook,
+  deleteAsset,
+  dropAsset,
+  getDroppedAssetsWithUniqueName,
+} from "./apiCalls.js";
 import { getPlayedCurrentIndex } from "./playlist.js";
 
 // TODO replace Track to change highlighting when it's playing
@@ -26,16 +31,23 @@ export const addPlaylistToWorld = async (req, res) => {
     );
   // Show the previous song at the top
   if (currentIndex > 0) currentIndex--;
-  for (var i = currentIndex; i < 10; i++) {
-    const { apiKey, id, urlSlug } = req;
+
+  for (var i = currentIndex; i < currentIndex + 10; i++) {
+    let videoIndex = i;
+    // Loop around to beginning of playlist if current index is near the end
+    if (i > mediaLinkPlaylist.length - 1) {
+      videoIndex = i - mediaLinkPlaylist.length;
+    }
+    const { apiKey, assetId, urlSlug } = req.body;
 
     addTrack({
       apiKey,
-      id,
-      index: i,
+      id: assetId,
+      index: i - currentIndex, // Put the track currently playing in the top spot
       position,
-      trackData: mediaLinkPlaylist[i],
+      trackData: mediaLinkPlaylist[videoIndex],
       urlSlug,
+      isCurrentlyPlaying: currentIndex === i + 1, // Offset as we are putting the previous song as #1
     });
   }
   try {
@@ -52,7 +64,9 @@ const addTrack = async ({
   position,
   trackData,
   urlSlug,
+  isCurrentlyPlaying,
 }) => {
+  console.log("Track data", index, trackData);
   const videoId = trackData.id;
   const trackEntry = await dropAsset({
     body: {
@@ -63,13 +77,15 @@ const addTrack = async ({
         x: position ? position.x : 0,
         y: position ? position.y + 100 + index * 50 : 0 + 100 + index * 50,
       },
-      uniqueName: `playlist_${id}_track_${index}`, // ID here is the jukebox's assetId
+      uniqueName: `sdk-examples_playlist_${id}_track_${index}`, // ID here is the jukebox's assetId
       urlSlug,
     },
   });
 
+  if (!trackEntry || !trackEntry.data)
+    return console.log("Track not successfully added", trackEntry);
+
   const assetId = trackEntry.data.id;
-  console.log("Track entry", assetId);
 
   const trackAsset = await getAssetAndDataObject({
     body: {
@@ -80,11 +96,11 @@ const addTrack = async ({
 
   trackAsset.updateCustomText(
     {
-      textColor: "#000000",
+      textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
       textFontFamily: "Arial",
       textSize: 12,
       textWeight: "normal",
-      textWidth: 200,
+      textWidth: 400,
     },
     trackData.snippet.title
   );
@@ -117,14 +133,19 @@ const addTrack = async ({
   console.log("Webhook added");
 };
 
-const removeTrack = async ({ apiKey, id, index, position, urlSlug }) => {
-  const trackEntry = await deleteAsset({
-    body: {
+export const removePlaylistFromWorld = async (req, res) => {
+  const { apiKey, assetId, urlSlug } = req.body;
+  const droppedAssets = getDroppedAssetsWithUniqueName({
+    apiKey,
+    uniqueName: `sdk-examples_playlist_${assetId}`,
+    urlSlug,
+  });
+  console.log(droppedAssets.data);
+  droppedAssets.data.forEach((item) => {
+    deleteAsset({
       apiKey,
-      assetId: "rXLgzCs1wxpx96YLZAN5", // Custom text asset
-      position: { x: position.x + 20, y: position.y + 200 },
-      uniqueName: `playlist_${id}_track_${index}`,
+      assetId: item.id,
       urlSlug,
-    },
+    });
   });
 };
