@@ -20,7 +20,10 @@ const setupBackendAPI = (interactiveParams) => {
     backendAPI.interceptors.request.use((config) => {
       if (!config?.data) config.data = {};
       config.data["assetId"] = interactiveParams.assetId;
-      config.data["playerId"] = interactiveParams.playerId;
+      config.data["playerId"] =
+        interactiveParams.visitorId || interactiveParams.playerId;
+      config.data["visitorId"] =
+        interactiveParams.visitorId || interactiveParams.playerId;
       config.data["interactiveNonce"] = interactiveParams.interactiveNonce;
       config.data["interactivePublicKey"] =
         interactiveParams.interactivePublicKey;
