@@ -20,7 +20,7 @@ import { EmptyRows } from "@components/EmptyRows";
 // context
 import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
-export function UniqueAssetTable({ handleChangeAsset }) {
+export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
   const [uniqueAssets, setAssetsWithUniqueNames] = useState({});
   const [selectedAsset, setSelectedAsset] = useState([]);
   const [page, setPage] = useState(0);
@@ -34,19 +34,23 @@ export function UniqueAssetTable({ handleChangeAsset }) {
     const uniqueAssets = [];
     await selectedWorld.fetchDroppedAssets();
     for (const asset of Object.values(selectedWorld.droppedAssets)) {
+      // TODO: Should be able to only pull assets by unique name prefix to select relevant assets rather than doing this filter.
       if (asset.uniqueName) {
-        uniqueAssets.push({
-          id: asset.id,
-          name: asset.uniqueName,
-          x: asset.position.x,
-          y: asset.position.y,
-        });
+        if (!uniqueNamePrefix || asset.uniqueName.includes(uniqueNamePrefix))
+          uniqueAssets.push({
+            id: asset.id,
+            name: asset.uniqueName,
+            x: asset.position.x,
+            y: asset.position.y,
+          });
       }
     }
     if (uniqueAssets.length === 0) {
       setMessage({
         dispatch: globalDispatch,
-        message: "No dropped assets with unique names found.",
+        message: uniqueNamePrefix
+          ? `Get started by adding any asset with a unique name that starts with '${uniqueNamePrefix}'`
+          : "No dropped assets with unique names found.",
         messageType: "warning",
       });
     }
@@ -155,6 +159,7 @@ export function UniqueAssetTable({ handleChangeAsset }) {
 
 UniqueAssetTable.propTypes = {
   handleChangeAsset: PropTypes.func.isRequired,
+  uniqueNamePrefix: PropTypes.string,
 };
 
 export default UniqueAssetTable;

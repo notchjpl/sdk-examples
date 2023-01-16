@@ -7,7 +7,7 @@ import { useGlobalDispatch, useGlobalState } from "@context";
 // components
 import { Grid, Paper, Tooltip, Typography } from "@mui/material";
 
-import { AddBox } from "@mui/icons-material";
+import { AddBox, Remove } from "@mui/icons-material";
 import { Search } from "@components";
 import { Controls, PlaylistTracksWrapper } from "./";
 
@@ -18,6 +18,7 @@ import {
   getDataObject,
   getYoutubeVideoInfo,
   removeFromAssetPlaylist,
+  removePlaylistFromWorld,
 } from "@utils";
 
 Playlist.propTypes = {
@@ -97,6 +98,19 @@ export function Playlist({ assetId }) {
               <AddBox
                 onClick={() =>
                   addPlaylistToWorld({
+                    apiKey,
+                    assetId,
+                    globalDispatch,
+                    urlSlug,
+                  })
+                }
+                sx={{ "&:hover": { cursor: "pointer" } }}
+              />
+            </Tooltip>
+            <Tooltip title="Remove Playlist Controls from World">
+              <Remove
+                onClick={() =>
+                  removePlaylistFromWorld({
                     apiKey,
                     assetId,
                     globalDispatch,

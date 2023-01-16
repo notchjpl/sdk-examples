@@ -1,7 +1,10 @@
 import { publicAPI } from "./publicAPI.js";
 import { getDataObject, getDroppedAsset } from "./droppedAsset.js";
 import { updateLeaderboard } from "./leaderboard.js";
-import { addPlaylistToWorld } from "./playlistGenerator.js";
+import {
+  addPlaylistToWorld,
+  removePlaylistFromWorld,
+} from "./playlistGenerator.js";
 import {
   addToAssetPlaylist,
   playNextSongInPlaylist,
@@ -19,6 +22,7 @@ export {
   playNextSongInPlaylist,
   publicAPI,
   removeFromAssetPlaylist,
+  removePlaylistFromWorld,
   shufflePlaylist,
   updateLeaderboard,
   updateMedia,

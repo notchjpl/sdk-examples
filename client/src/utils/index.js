@@ -10,6 +10,7 @@ export { getDataObject } from "./dataObject";
 export {
   addPlaylistToWorld,
   playlistNext,
+  removePlaylistFromWorld,
   shufflePlaylist,
   volumeDown,
   volumeUp,

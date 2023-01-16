@@ -45,11 +45,12 @@ export function Header() {
     setUrlSlug(globalState.urlSlug || "");
   }, [globalState.urlSlug]);
 
-  useEffect(() => {
-    if (apiKey && urlSlug) {
-      fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
-    }
-  }, [apiKey, globalDispatch, urlSlug]);
+  // useEffect(() => {
+  //   if (apiKey && urlSlug) {
+  //     // TODO: This is causing issues where fetching world on every key stroke in text field
+  //     fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
+  //   }
+  // }, [apiKey, globalDispatch, urlSlug]);
 
   const handleUpdateContext = async () => {
     await fetchUser(apiKey, userDispatch);
