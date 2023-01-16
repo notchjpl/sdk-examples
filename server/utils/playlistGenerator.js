@@ -50,13 +50,44 @@ export const addPlaylistToWorld = async (req, res) => {
       isCurrentlyPlaying: i === currentIndex + 1, // Offset as we are putting the previous song as #1
     });
 
-    // addControls({});
+    addPlaylistFrame({ apiKey, id: assetId, position, urlSlug });
+
+    // addControl({
+
+    // });
   }
   try {
   } catch (e) {
     // console.log(e);
     if (res) res.status(403).send(e);
   }
+};
+
+const addPlaylistFrame = async ({ apiKey, id, position, urlSlug }) => {
+  const result = await dropAsset({
+    body: {
+      apiKey,
+      assetId: "lldvC2nqOzMXmgqmZJ8f", // Custom text asset
+      // Doing this as quick fix until we add position to SDK class
+      position: {
+        x: position ? position.x : 0,
+        y: position ? position.y + 450 : 450,
+      },
+      uniqueName: `sdk-examples_playlist_${id}_frame`, // ID here is the jukebox's assetId
+      urlSlug,
+    },
+  });
+
+  const assetId = result.data.id;
+
+  const frameAsset = await getAssetAndDataObject({
+    body: {
+      assetId,
+      urlSlug,
+    },
+  });
+
+  frameAsset.updateScale(1.45);
 };
 
 const addTrack = async ({
@@ -71,6 +102,7 @@ const addTrack = async ({
   const videoId = trackData.id;
   const { uniqueEntryId } = trackData;
   const videoInfo = trackData;
+  const offset = 220 + index * 50;
   const trackEntry = await dropAsset({
     body: {
       apiKey,
@@ -78,7 +110,7 @@ const addTrack = async ({
       // Doing this as quick fix until we add position to SDK class
       position: {
         x: position ? position.x : 0,
-        y: position ? position.y + 100 + index * 50 : 0 + 100 + index * 50,
+        y: position ? position.y + offset : offset,
       },
       uniqueName: `sdk-examples_playlist_${id}_track_${index}`, // ID here is the jukebox's assetId
       urlSlug,
