@@ -23,24 +23,12 @@ export function EditTextAsset() {
 
   // context
   const globalDispatch = useGlobalDispatch();
-  const {
-    assetId,
-    dispatch,
-    visitorId,
-    interactiveNonce,
-    interactivePublicKey,
-    isInteractiveIframe,
-    urlSlug,
-  } = useGlobalState();
+  const { assetId, isInteractiveIframe, urlSlug } = useGlobalState();
 
   useEffect(() => {
     const getDroppedAsset = async () => {
       const droppedAsset = await getDataObject({
         assetId,
-        dispatch,
-        visitorId,
-        interactiveNonce,
-        interactivePublicKey,
         urlSlug,
       });
       setAsset(droppedAsset);
@@ -56,7 +44,7 @@ export function EditTextAsset() {
 
   const handleUpdateAsset = async () => {
     await backendAPI
-      .post("/updatetextasset", { asset, assetText })
+      .post("/updatetextasset", { assetId: asset.id, assetText, urlSlug })
       .then(() => {
         setMessage({
           dispatch: globalDispatch,
