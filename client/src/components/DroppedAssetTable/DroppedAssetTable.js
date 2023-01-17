@@ -20,8 +20,12 @@ import { EmptyRows } from "@components/EmptyRows";
 // context
 import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
-export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
-  const [uniqueAssets, setAssetsWithUniqueNames] = useState({});
+export function DroppedAssetTable({
+  assetType = "unique",
+  handleChangeAsset,
+  uniqueNamePrefix,
+}) {
+  const [assets, setAssets] = useState({});
   const [selectedAsset, setSelectedAsset] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -31,21 +35,18 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
   const { selectedWorld } = useGlobalState();
 
   const handleFetchAssets = async () => {
-    const uniqueAssets = [];
+    const assets = [];
     await selectedWorld.fetchDroppedAssets();
     for (const asset of Object.values(selectedWorld.droppedAssets)) {
       // TODO: Should be able to only pull assets by unique name prefix to select relevant assets rather than doing this filter.
-      if (asset.uniqueName) {
-        if (!uniqueNamePrefix || asset.uniqueName.includes(uniqueNamePrefix))
-          uniqueAssets.push({
-            id: asset.id,
-            name: asset.uniqueName,
-            x: asset.position.x,
-            y: asset.position.y,
-          });
+      if (
+        (assetType === "unique" && asset.uniqueName) ||
+        (assetType === "text" && asset.specialType === "text")
+      ) {
+        assets.push(asset);
       }
     }
-    if (uniqueAssets.length === 0) {
+    if (assets.length === 0) {
       setMessage({
         dispatch: globalDispatch,
         message: uniqueNamePrefix
@@ -54,7 +55,7 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
         messageType: "warning",
       });
     }
-    setAssetsWithUniqueNames(uniqueAssets);
+    setAssets(assets);
   };
 
   const handleClick = (asset) => {
@@ -83,7 +84,7 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
         <Grid container justifyContent="space-between" p={1} spacing={2}>
           <Grid item>
             <Typography color="black" variant="h6">
-              Unique Assets
+              Dropped Assets
             </Typography>
           </Grid>
           <Grid item>
@@ -92,22 +93,22 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
             </Button>
           </Grid>
         </Grid>
-        {uniqueAssets.length > 0 && (
+        {assets.length > 0 && (
           <Grid item sx={{ width: "100%" }}>
             <TableContainer>
               <Table aria-labelledby="tableTitle" size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Unique Name</TableCell>
+                    <TableCell>Name</TableCell>
+                    {assetType === "text" && <TableCell>Text</TableCell>}
                     <TableCell align="right">X</TableCell>
                     <TableCell align="right">Y</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {uniqueAssets
+                  {assets
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((asset) => {
-                      console.log(asset);
                       return (
                         <TableRow
                           hover
@@ -119,29 +120,34 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
                           tabIndex={-1}
                         >
                           <TableCell component="th" scope="row">
-                            {asset.name}
+                            {asset.uniqueName || asset.assetName}
+                          </TableCell>
+                          {assetType === "text" && (
+                            <TableCell component="th" scope="row">
+                              {asset.text}
+                            </TableCell>
+                          )}
+                          <TableCell align="right">
+                            {parseInt(asset.position.x).toFixed(0)}
                           </TableCell>
                           <TableCell align="right">
-                            {parseInt(asset.x).toFixed(0)}
-                          </TableCell>
-                          <TableCell align="right">
-                            {parseInt(asset.y).toFixed(0)}
+                            {parseInt(asset.position.y).toFixed(0)}
                           </TableCell>
                         </TableRow>
                       );
                     })}
                   <EmptyRows
-                    length={uniqueAssets.length}
+                    length={assets.length}
                     page={page}
                     rowsPerPage={rowsPerPage}
                   />
                 </TableBody>
               </Table>
             </TableContainer>
-            {uniqueAssets.length > 10 && (
+            {assets.length > 10 && (
               <TablePagination
                 component="div"
-                count={uniqueAssets.length}
+                count={assets.length}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 page={page}
@@ -157,9 +163,10 @@ export function UniqueAssetTable({ handleChangeAsset, uniqueNamePrefix }) {
   );
 }
 
-UniqueAssetTable.propTypes = {
+DroppedAssetTable.propTypes = {
+  assetType: PropTypes.string,
   handleChangeAsset: PropTypes.func.isRequired,
   uniqueNamePrefix: PropTypes.string,
 };
 
-export default UniqueAssetTable;
+export default DroppedAssetTable;
