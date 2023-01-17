@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+// styles
+import { styled, useTheme } from "@mui/system";
+
 // components
 import {
   AppBar,
@@ -9,9 +12,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
-// styles
-import useStyles from "./styles";
 
 // context
 import {
@@ -24,9 +24,9 @@ import {
 } from "@context";
 
 export function Header() {
-  const classes = useStyles();
   const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
   const [urlSlug, setUrlSlug] = useState("");
+  const theme = useTheme();
 
   // context
   const globalDispatch = useGlobalDispatch();
@@ -45,21 +45,41 @@ export function Header() {
     setUrlSlug(globalState.urlSlug || "");
   }, [globalState.urlSlug]);
 
-  // useEffect(() => {
-  //   if (apiKey && urlSlug) {
-  //     // TODO: This is causing issues where fetching world on every key stroke in text field
-  //     fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
-  //   }
-  // }, [apiKey, globalDispatch, urlSlug]);
-
   const handleUpdateContext = async () => {
     await fetchUser(apiKey, userDispatch);
     if (urlSlug) fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
   };
 
+  const StyledTextField = styled(TextField)(() => ({
+    width: "100%",
+    "& .MuiFormLabel-root": {
+      color: "white",
+      top: -6,
+    },
+    "& .MuiInputLabel-shrink": {
+      "background-color": `${theme.palette.secondary.main} !important`,
+      top: 0,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
+    "& input": {
+      padding: 8,
+      border: "1px solid rgba(200,200,200,0.8)",
+      "border-radius": 4,
+      color: "white",
+      "background-color": `${theme.palette.secondary.main} !important`,
+    },
+  }));
+
   return (
-    <AppBar className={classes.appBar} position="fixed">
-      <Toolbar className={classes.toolbar}>
+    <AppBar
+      position="fixed"
+      sx={{
+        zIndex: 2000,
+        backgroundColor: `${theme.palette.secondary.main} !important`,
+      }}
+    >
+      <Toolbar sx={{ padding: theme.spacing(1) }}>
         <Grid
           alignItems="center"
           container
@@ -77,8 +97,7 @@ export function Header() {
           <Grid item>
             <Grid alignItems="center" container spacing={2}>
               <Grid item>
-                <TextField
-                  className={classes.inputField}
+                <StyledTextField
                   id="apiKeyInput"
                   label="API Key"
                   onChange={(event) => setApiKey(event.target.value)}
@@ -87,8 +106,7 @@ export function Header() {
                 />
               </Grid>
               <Grid item>
-                <TextField
-                  className={classes.inputField}
+                <StyledTextField
                   disabled={!apiKey}
                   id="urlSlugInput"
                   label="URL Slug"

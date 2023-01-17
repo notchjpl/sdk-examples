@@ -5,30 +5,62 @@ import { Link } from "react-router-dom";
 import { Button, Grid, Paper, Typography } from "@mui/material";
 
 // styles
-import useStyles from "./styles";
+import { styled, useTheme } from "@mui/system";
 
 export function Error() {
-  const classes = useStyles();
+  const theme = useTheme();
   // const error = useRouteError();
 
+  const StyledTextRow = styled(Typography)(() => ({
+    paddingBottom: theme.spacing(4),
+    textAlign: "center",
+  }));
+
   return (
-    <Grid className={classes.container} container>
-      <Paper classes={{ root: classes.paperRoot }}>
-        <Typography className={classes.textRow} color="primary" variant="h1">
+    <Grid
+      container
+      sx={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: theme.palette.secondary.main,
+        position: "absolute",
+        top: 0,
+        left: 0,
+      }}
+    >
+      <Paper
+        sx={{
+          boxShadow: theme.customShadows.widgetDark,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: theme.spacing(6),
+          maxWidth: 500,
+        }}
+      >
+        <StyledTextRow color="primary" variant="h1">
           404
-        </Typography>
-        <Typography className={classes.textRow} color="primary" variant="h5">
+        </StyledTextRow>
+        <StyledTextRow color="primary" variant="h5">
           Oops. Looks like the page you&apos;re looking for no longer exists.
           {/* <i>{error.statusText || error.message}</i> */}
-        </Typography>
-        <Typography className={classes.textRow} color="text" variant="h6">
+        </StyledTextRow>
+        <StyledTextRow color="text" variant="h6">
           But we&apos;re here to bring you back to safety
-        </Typography>
+        </StyledTextRow>
         <Button
-          className={classes.backButton}
           color="primary"
           component={Link}
           size="large"
+          sx={{
+            boxShadow: theme.customShadows.widget,
+            textTransform: "none",
+            fontSize: 22,
+          }}
           to="/"
           variant="contained"
         >

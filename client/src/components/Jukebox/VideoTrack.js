@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// styles
+import { useTheme } from "@mui/system";
+
 // components
 import { Grid, Tooltip, Typography } from "@mui/material";
 import { Add, Equalizer, PlayArrow, Remove } from "@mui/icons-material";
-
-// styles
-import useStyles from "./styles";
 
 VideoTrack.propTypes = {
   addToPlaylist: PropTypes.func,
@@ -23,7 +23,7 @@ export function VideoTrack({
   removeFromPlaylist,
   videoInfo,
 }) {
-  const classes = useStyles();
+  const theme = useTheme();
   const { duration, id, snippet, viewCount } = videoInfo;
 
   let { title, channelTitle } = snippet;
@@ -59,14 +59,26 @@ export function VideoTrack({
   return (
     <Grid
       alignItems="center"
-      className={classes.menuItem}
       container
       direction="row"
       justifyContent="space-between"
+      sx={{
+        background: theme.palette.secondary.main,
+        borderBottom: `1px solid ${theme.palette.secondary.light}`,
+      }}
     >
       <Grid item lg={8} xs={12}>
         <Grid alignItems="center" container direction="row" p={1} pl={2} pt={2}>
-          <Grid className={classes.thumbnail} item>
+          <Grid
+            item
+            sx={{
+              "& img": {
+                height: 60,
+                objectFit: "cover",
+                width: 60,
+              },
+            }}
+          >
             <a
               href={`https://www.youtube.com/watch?v=${id}`}
               rel="noreferrer"
@@ -85,17 +97,32 @@ export function VideoTrack({
               direction="column"
               justifyContent="space-between"
             >
-              <Typography className={classes.title} noWrap variant="h6">
+              <Typography
+                noWrap
+                sx={{
+                  color: theme.palette.secondary.contrastText,
+                  fontSize: "1.2rem !important",
+                  fontWeight: "bold",
+                }}
+                variant="h6"
+              >
                 {title}
               </Typography>
-              <Typography className={classes.artist}>{subHeader}</Typography>
+              <Typography
+                sx={{
+                  color: theme.palette.text.hint,
+                  fontSize: ".9rem !important",
+                }}
+              >
+                {subHeader}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
       <Grid alignSelf="right" item p={1} pl={2} pr={2}>
         {playing ? (
-          <Equalizer className={classes.active} />
+          <Equalizer sx={{ color: theme.palette.primary.light }} />
         ) : (
           <Grid
             container
