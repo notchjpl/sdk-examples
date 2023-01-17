@@ -34,13 +34,13 @@ export const addPlaylistToWorld = async (req, res) => {
   // Show the previous song at the top
   if (currentIndex > 0) currentIndex--;
 
+  const { apiKey, assetId, urlSlug } = req.body;
   for (var i = currentIndex; i < currentIndex + 10; i++) {
     let videoIndex = i;
     // Loop around to beginning of playlist if current index is near the end
     if (i > mediaLinkPlaylist.length - 1) {
       videoIndex = i - mediaLinkPlaylist.length;
     }
-    const { apiKey, assetId, urlSlug } = req.body;
 
     addTrack({
       apiKey,
@@ -52,13 +52,12 @@ export const addPlaylistToWorld = async (req, res) => {
       isCurrentlyPlaying: i === currentIndex + 1, // Offset as we are putting the previous song as #1
     });
 
-    addPlaylistFrame({ apiKey, id: assetId, position, urlSlug });
-    addNextButton({ apiKey, id: assetId, position, urlSlug });
-
     // addControl({
 
     // });
   }
+  addPlaylistFrame({ apiKey, id: assetId, position, urlSlug });
+  addNextButton({ apiKey, id: assetId, position, urlSlug });
   try {
   } catch (e) {
     // console.log(e);

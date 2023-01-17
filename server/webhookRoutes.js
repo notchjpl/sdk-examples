@@ -3,17 +3,22 @@ const router = express.Router();
 import { playNextSongInPlaylist, updateMedia } from "./utils/index.js";
 export default router;
 
-router.post("/playlist", (req, res) => {
-  const { dataObject, interactiveNonce, interactivePublicKey, urlSlug } =
-    req.body;
-  const { videoId, index, jukeboxId, action, videoInfo, uniqueEntryId } =
-    dataObject;
+router.post("/playlist/:param", (req, res) => {
+  const {
+    assetId,
+    dataObject,
+    interactiveNonce,
+    interactivePublicKey,
+    urlSlug,
+  } = req.body;
 
-  if (action === "track-clicked") {
+  if (dataObject && dataObject.action === "track-clicked") {
+    if (!dataObject) return;
+    let { videoId, index, jukeboxId, videoInfo, uniqueEntryId } = dataObject;
     let updateObject = req;
     updateObject.body = {
       urlSlug,
-      assetId: jukeboxId,
+      assetId,
       videoId,
       videoInfo,
       uniqueEntryId,
@@ -21,13 +26,26 @@ router.post("/playlist", (req, res) => {
     updateMedia(updateObject);
   }
 
-  if (action === "next-clicked") {
+  if (
+    (dataObject && dataObject.action === "next-clicked") ||
+    req.params.param === "next"
+  ) {
     let updateObject = req;
     updateObject.body = {
       urlSlug,
-      assetId: jukeboxId,
+      assetId,
     };
     playNextSongInPlaylist(updateObject);
+    // mediaZonePlayEnded webhook
+    // mediaPlayTime_media-next-track used as lockId
+    // Mutex only works for updating data objects.
+    // {lockId
+    // releaseLock: false}
+    // Second parameter, which is object with {lockId: blah, releaseLock: false}
+    // New SDK endpoint for updating data object (instead of just replacing entire thing)
+    // If successful, you do the next action.  If you are not successful, exit - because someone else did it.
+    // TODO: Change all updateDroppedAssetDataObject to setDroppedAssetDataObject
   }
+
   res.json({ message: "Hello from server!" });
 });

@@ -3,6 +3,7 @@ let timeoutTracker = {};
 
 export const updateMedia = async (req, res) => {
   try {
+    // Change current song showing in world if there are in-world controls
     // index is used for saving position in playlist
     const { assetId, index, videoId, videoInfo } = req.body;
 
@@ -11,7 +12,11 @@ export const updateMedia = async (req, res) => {
     if (timeoutTracker[assetId]) clearTimeout(timeoutTracker[assetId]);
 
     const mediaLink = `https://www.youtube.com/watch?v=${videoId}`;
-    const droppedAsset = await getAssetAndDataObject(req);
+    let droppedAsset = req.body.jukeboxAsset;
+
+    if (!droppedAsset) {
+      droppedAsset = await getAssetAndDataObject(req);
+    }
     let { dataObject } = droppedAsset;
 
     // TODO: Remove (or just update) playlist text assets when song changes if the assets exist in world.
@@ -30,15 +35,16 @@ export const updateMedia = async (req, res) => {
     if (index || index === 0) dataObject.lastPlaylistIndex = index;
     if (index || index === 0)
       dataObject.lastPlaylistUniqueEntryIdPlayed =
-        dataObject.mediaLinkPlaylist[index].uniqueEntryId;
+        dataObject?.mediaLinkPlaylist[index]?.uniqueEntryId;
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true });
 
-    timeoutTracker[assetId] = setTimeout(
-      () => playNextSongInPlaylist(req),
-      videoInfo.duration - 1000 // TODO make this more accurate
-    );
+    // Removed timeouts and replaced with new Media Play Finish webhook handler.
+    // timeoutTracker[assetId] = setTimeout(
+    // () => playNextSongInPlaylist(req),
+    //   videoInfo.duration - 1000 // TODO make this more accurate
+    // );
   } catch (error) {
     console.log(error);
     if (res) res.status(502).send({ error, success: false });
@@ -86,8 +92,8 @@ export const removeFromAssetPlaylist = async (req, res) => {
 };
 
 export const playNextSongInPlaylist = async (req, res) => {
-  const droppedAsset = await getAssetAndDataObject(req);
-  const { dataObject } = droppedAsset;
+  const jukeboxAsset = await getAssetAndDataObject(req);
+  const { dataObject } = jukeboxAsset;
   const {
     lastPlaylistUniqueEntryIdPlayed,
     lastPlayTimestamp,
@@ -99,6 +105,7 @@ export const playNextSongInPlaylist = async (req, res) => {
   if (
     lastPlaylistUniqueEntryIdPlayed && // Last song played from the playlist
     (!lastStopTimestamp || lastPlayTimestamp > lastStopTimestamp) && // Check whether someone has intentionally stopped the videos
+    mediaLinkPlaylist &&
     mediaLinkPlaylist.length // Make sure there is a playlist
   ) {
     let newReq = req;
@@ -120,8 +127,27 @@ export const playNextSongInPlaylist = async (req, res) => {
       newReq.body.index = randIndex(0, mediaLinkPlaylist.length - 1, index);
     }
 
+    const result = await jukeboxAsset.updateDroppedAssetDataObject(
+      {
+        ...dataObject,
+        previousPlayed: mediaLinkPlaylist[newReq.body.index].uniqueEntryId,
+      },
+      // Mutex to prevent multiple updates.  Works on update object.  Only the first ping will work.
+      // If it fails, don't do anything else.  If it succeeds, it means this was the first webhook received and you should do the rest of the work.
+      {
+        lockId: `${jukeboxAsset.id}_${jukeboxAsset.mediaPlayTime}`,
+        releaseLock: false, // If false, will only ever work once.  Make sure lockId is something unique that you'll never ping again.
+      }
+    );
+
+    console.log(result);
+
+    if (!result || result != "Success!")
+      return console.log("Not moving forward due to mutex");
+    else console.log("Successfully moving forward with mutex");
     newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
     newReq.body.videoInfo = mediaLinkPlaylist[newReq.body.index];
+    newReq.body.jukeboxAsset = jukeboxAsset;
     return updateMedia(newReq, res);
   }
 };
