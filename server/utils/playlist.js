@@ -127,32 +127,30 @@ export const playNextSongInPlaylist = async (req, res) => {
       newReq.body.index = randIndex(0, mediaLinkPlaylist.length - 1, index);
     }
 
-    console.log(jukeboxAsset.id, jukeboxAsset.mediaPlayTime);
-
-    const result = await jukeboxAsset.updateDroppedAssetDataObject(
-      {
-        ...dataObject,
-        previousPlayed: mediaLinkPlaylist[newReq.body.index].uniqueEntryId,
-      },
-      // Mutex to prevent multiple updates.  Works on update object.  Only the first ping will work.
-      // If it fails, don't do anything else.  If it succeeds, it means this was the first webhook received and you should do the rest of the work.
-      {
-        lock: {
-          lockId: `${jukeboxAsset.id}_${jukeboxAsset.mediaPlayTime}`,
-          releaseLock: false, // If false, will only ever work once.  Make sure lockId is something unique that you'll never ping again.
+    try {
+      await jukeboxAsset.updateDroppedAssetDataObject(
+        {
+          ...dataObject,
+          previousPlayed: mediaLinkPlaylist[newReq.body.index].uniqueEntryId,
         },
-      }
-    );
+        // Mutex to prevent multiple updates.  Works on update object.  Only the first ping will work.
+        // If it fails, don't do anything else.  If it succeeds, it means this was the first webhook received and you should do the rest of the work.
+        {
+          lock: {
+            lockId: `${jukeboxAsset.id}_${jukeboxAsset.mediaPlayTime}`,
+            releaseLock: false, // If false, will only ever work once.  Make sure lockId is something unique that you'll never ping again.
+          },
+        }
+      );
 
-    console.log(result);
-
-    if (!result || result != "Success!")
-      return console.log("Not moving forward due to mutex");
-    else console.log("Successfully moving forward with mutex");
-    newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
-    newReq.body.videoInfo = mediaLinkPlaylist[newReq.body.index];
-    newReq.body.jukeboxAsset = jukeboxAsset;
-    return updateMedia(newReq, res);
+      newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
+      newReq.body.videoInfo = mediaLinkPlaylist[newReq.body.index];
+      newReq.body.jukeboxAsset = jukeboxAsset;
+      return updateMedia(newReq, res);
+    } catch (e) {
+      console.log("Update is properly locked due to mutex");
+      return;
+    }
   }
 };
 
