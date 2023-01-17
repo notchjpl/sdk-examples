@@ -1,15 +1,13 @@
 import { getAssetAndDataObject } from "../middleware/index.js";
-let timeoutTracker = {};
 
 export const updateMedia = async (req, res) => {
   try {
     // Change current song showing in world if there are in-world controls
     // index is used for saving position in playlist
-    const { assetId, index, videoId, videoInfo } = req.body;
+    const { index, videoId, videoInfo } = req.body;
 
     // Remove all timeouts related to this asset.  Going to be problematic if using clustering.
     // TODO: Improve by adding Redis?  Or add webhook firing on media state change in core application, then catch webhook to change song and don't use timeouts.
-    if (timeoutTracker[assetId]) clearTimeout(timeoutTracker[assetId]);
 
     const mediaLink = `https://www.youtube.com/watch?v=${videoId}`;
     let droppedAsset = req.body.jukeboxAsset;
@@ -39,12 +37,6 @@ export const updateMedia = async (req, res) => {
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true });
-
-    // Removed timeouts and replaced with new Media Play Finish webhook handler.
-    // timeoutTracker[assetId] = setTimeout(
-    // () => playNextSongInPlaylist(req),
-    //   videoInfo.duration - 1000 // TODO make this more accurate
-    // );
   } catch (error) {
     console.log(error);
     if (res) res.status(502).send({ error, success: false });
