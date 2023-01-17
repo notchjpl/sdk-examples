@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // components
 import {
@@ -12,10 +12,10 @@ import {
 import { DroppedAssetTable } from "@components";
 
 // context
-import { setMessage, useGlobalDispatch } from "@context";
+import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 
 // utils
-import { backendAPI } from "@utils";
+import { backendAPI, getDataObject } from "@utils";
 
 export function EditTextAsset() {
   const [asset, setAsset] = React.useState();
@@ -23,6 +23,31 @@ export function EditTextAsset() {
 
   // context
   const globalDispatch = useGlobalDispatch();
+  const {
+    assetId,
+    dispatch,
+    visitorId,
+    interactiveNonce,
+    interactivePublicKey,
+    isInteractiveIframe,
+    urlSlug,
+  } = useGlobalState();
+
+  useEffect(() => {
+    const getDroppedAsset = async () => {
+      const droppedAsset = await getDataObject({
+        assetId,
+        dispatch,
+        visitorId,
+        interactiveNonce,
+        interactivePublicKey,
+        urlSlug,
+      });
+      setAsset(droppedAsset);
+    };
+    if (assetId) getDroppedAsset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSetAsset = (asset) => {
     setAsset(asset);
@@ -51,13 +76,15 @@ export function EditTextAsset() {
   return (
     <>
       <Grid container justifyContent="space-around" p={4} spacing={2}>
-        <Grid item xs={8}>
-          <DroppedAssetTable
-            assetType="text"
-            handleChangeAsset={handleSetAsset}
-          />
-        </Grid>
-        <Grid item xs={4}>
+        {!isInteractiveIframe && (
+          <Grid item xs={8}>
+            <DroppedAssetTable
+              assetType="text"
+              handleChangeAsset={handleSetAsset}
+            />
+          </Grid>
+        )}
+        <Grid item xs={isInteractiveIframe ? 12 : 4}>
           <Paper sx={{ p: 2 }}>
             {asset ? (
               <Grid

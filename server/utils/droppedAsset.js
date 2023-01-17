@@ -26,10 +26,6 @@ export const getDataObject = async (req, res) => {
 
 export const updateTextAsset = async (req, res) => {
   const { asset, assetText } = req.body;
-  console.log(
-    "🚀 ~ file: droppedAsset.js:29 ~ updateTextAsset ~ req.body",
-    req.body
-  );
   await asset.updateCustomText({}, assetText);
   return res.json({
     success: true,
