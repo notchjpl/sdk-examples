@@ -28,6 +28,6 @@ export const getDataObject = async (req, res) => {
 export const updateTextAsset = async (req, res) => {
   const { assetId, assetText, urlSlug } = req.body;
   const droppedAsset = DroppedAsset.create(assetId, urlSlug);
-  await droppedAsset.updateCustomText({}, assetText);
+  await droppedAsset.updateCustomTextAsset({}, assetText);
   return res.json({ success: true });
 };
