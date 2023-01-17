@@ -1,11 +1,15 @@
-import { getAssetAndDataObject } from "../middleware/index.js";
+// TODO: Add 'next page' and 'previous page' buttons to in-world playlist so can browse through the entire playlist
+
+import { getAssetAndDataObject } from "../../middleware/index.js";
 import {
   addWebhook,
   deleteAsset,
   dropAsset,
   getDroppedAssetsWithUniqueName,
-} from "./apiCalls.js";
+} from "../../utils/apiCalls.js";
 import { getPlayedCurrentIndex } from "./playlist.js";
+
+const base = "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
 
 // TODO replace Track to change highlighting when it's playing
 
@@ -32,13 +36,13 @@ export const addPlaylistToWorld = async (req, res) => {
   // Show the previous song at the top
   if (currentIndex > 0) currentIndex--;
 
+  const { apiKey, assetId, urlSlug } = req.body;
   for (var i = currentIndex; i < currentIndex + 10; i++) {
     let videoIndex = i;
     // Loop around to beginning of playlist if current index is near the end
     if (i > mediaLinkPlaylist.length - 1) {
       videoIndex = i - mediaLinkPlaylist.length;
     }
-    const { apiKey, assetId, urlSlug } = req.body;
 
     addTrack({
       apiKey,
@@ -50,13 +54,12 @@ export const addPlaylistToWorld = async (req, res) => {
       isCurrentlyPlaying: i === currentIndex + 1, // Offset as we are putting the previous song as #1
     });
 
-    addPlaylistFrame({ apiKey, id: assetId, position, urlSlug });
-    addNextButton({ apiKey, id: assetId, position, urlSlug });
-
     // addControl({
 
     // });
   }
+  addPlaylistFrame({ apiKey, id: assetId, position, urlSlug });
+  addNextButton({ apiKey, id: assetId, position, urlSlug });
   try {
   } catch (e) {
     // console.log(e);
@@ -178,7 +181,7 @@ const addTrack = async ({
       textFontFamily: "Arial",
       textSize: 12,
       textWeight: "normal",
-      textWidth: 400,
+      textWidth: 350,
     },
     trackData.snippet.title
   );
@@ -231,8 +234,7 @@ const addWebhookWithClick = async ({
 
   // Webhook
   const type = "assetClicked";
-  const url =
-    "https://7357-2603-8000-c001-4f05-3cdf-60e5-471f-8919.ngrok.io/webhooks/playlist";
+  const url = `${base}/webhooks/playlist`;
 
   await addWebhook({
     body: {
