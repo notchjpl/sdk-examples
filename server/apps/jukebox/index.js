@@ -1,7 +1,7 @@
 import {
   addPlaylistToWorld,
   removePlaylistFromWorld,
-} from "./playlistGenerator.js";
+} from "./generator/playlistGenerator.js";
 import {
   addToAssetPlaylist,
   removeFromAssetPlaylist,
