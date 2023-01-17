@@ -1,12 +1,12 @@
 // TODO: Add 'next page' and 'previous page' buttons to in-world playlist so can browse through the entire playlist
 
-import { getAssetAndDataObject } from "../middleware/index.js";
+import { getAssetAndDataObject } from "../../middleware/index.js";
 import {
   addWebhook,
   deleteAsset,
   dropAsset,
   getDroppedAssetsWithUniqueName,
-} from "./apiCalls.js";
+} from "../../utils/apiCalls.js";
 import { getPlayedCurrentIndex } from "./playlist.js";
 
 const base = "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
