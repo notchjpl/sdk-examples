@@ -9,6 +9,8 @@ import {
 } from "./apiCalls.js";
 import { getPlayedCurrentIndex } from "./playlist.js";
 
+const base = "https://7357-2603-8000-c001-4f05-3cdf-60e5-471f-8919.ngrok.io";
+
 // TODO replace Track to change highlighting when it's playing
 
 export const addPlaylistToWorld = async (req, res) => {
@@ -232,8 +234,7 @@ const addWebhookWithClick = async ({
 
   // Webhook
   const type = "assetClicked";
-  const url =
-    "https://7357-2603-8000-c001-4f05-3cdf-60e5-471f-8919.ngrok.io/webhooks/playlist";
+  const url = `${base}/webhooks/playlist`;
 
   await addWebhook({
     body: {

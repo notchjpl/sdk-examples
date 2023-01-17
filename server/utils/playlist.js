@@ -127,6 +127,8 @@ export const playNextSongInPlaylist = async (req, res) => {
       newReq.body.index = randIndex(0, mediaLinkPlaylist.length - 1, index);
     }
 
+    console.log(jukeboxAsset.id, jukeboxAsset.mediaPlayTime);
+
     const result = await jukeboxAsset.updateDroppedAssetDataObject(
       {
         ...dataObject,
@@ -135,8 +137,10 @@ export const playNextSongInPlaylist = async (req, res) => {
       // Mutex to prevent multiple updates.  Works on update object.  Only the first ping will work.
       // If it fails, don't do anything else.  If it succeeds, it means this was the first webhook received and you should do the rest of the work.
       {
-        lockId: `${jukeboxAsset.id}_${jukeboxAsset.mediaPlayTime}`,
-        releaseLock: false, // If false, will only ever work once.  Make sure lockId is something unique that you'll never ping again.
+        lock: {
+          lockId: `${jukeboxAsset.id}_${jukeboxAsset.mediaPlayTime}`,
+          releaseLock: false, // If false, will only ever work once.  Make sure lockId is something unique that you'll never ping again.
+        },
       }
     );
 
