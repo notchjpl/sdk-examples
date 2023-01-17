@@ -4,9 +4,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { defaultMaxListeners } from "events";
-import router from "./routes.js";
-import webhookRouter from "./webhookRoutes.js";
-import externalRouter from "./externalRoutes.js";
+import backendRouter from "./routes/backendRoutes.js";
+import webhookRouter from "./routes/webhookRoutes.js";
+import externalRouter from "./routes/externalRoutes.js";
 import cors from "cors";
 dotenv.config();
 
@@ -28,7 +28,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use("/backend", router);
+app.use("/backend", backendRouter);
 app.use("/external", externalRouter);
 app.use("/webhooks", webhookRouter);
 

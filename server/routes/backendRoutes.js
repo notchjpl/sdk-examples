@@ -1,18 +1,18 @@
 import express from "express";
 const router = express.Router();
+import { getDataObject, updateLeaderboard } from "../utils/index.js";
+
 import {
   addPlaylistToWorld,
   addToAssetPlaylist,
-  getDataObject,
   playNextSongInPlaylist,
   removeFromAssetPlaylist,
   removePlaylistFromWorld,
   shufflePlaylist,
-  updateLeaderboard,
   updateMedia,
   // volumeDown,
   // volumeUp,
-} from "./utils/index.js";
+} from "../apps/jukebox/index.js";
 export default router;
 
 router.post("/leaderboardupdate", updateLeaderboard);
