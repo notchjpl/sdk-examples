@@ -14,5 +14,6 @@ const myTopiaInstance = new Topia(config);
 
 const DroppedAsset = new DroppedAssetFactory(myTopiaInstance);
 const User = new UserFactory(myTopiaInstance);
+const World = new WorldFactory(myTopiaInstance);
 
-export { myTopiaInstance, DroppedAsset, User };
+export { myTopiaInstance, DroppedAsset, User, World };

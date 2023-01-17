@@ -79,6 +79,7 @@ export function DroppedAssetTable({
         container
         direction="column"
         justifyContent="space-between"
+        p={1}
         spacing={1}
       >
         <Grid container justifyContent="space-between" p={1} spacing={2}>

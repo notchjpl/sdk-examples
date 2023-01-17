@@ -14,6 +14,9 @@ import { DroppedAssetTable } from "@components";
 // context
 import { setMessage, useGlobalDispatch } from "@context";
 
+// utils
+import { backendAPI } from "@utils";
+
 export function EditTextAsset() {
   const [asset, setAsset] = React.useState();
   const [assetText, setAssetText] = React.useState("");
@@ -27,8 +30,8 @@ export function EditTextAsset() {
   };
 
   const handleUpdateAsset = async () => {
-    await asset
-      .updateCustomText({}, assetText)
+    await backendAPI
+      .post("/updatetextasset", { asset, assetText })
       .then(() => {
         setMessage({
           dispatch: globalDispatch,
