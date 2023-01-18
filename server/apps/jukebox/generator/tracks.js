@@ -50,7 +50,6 @@ export const addTrack = async ({
   const clickableTitle = `Track ${index}`;
 
   addWebhookWithClick({
-    apiKey,
     clickableTitle,
     dataObject,
     description,

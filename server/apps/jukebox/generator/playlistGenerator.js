@@ -2,9 +2,7 @@
 
 import { getAssetAndDataObject } from "../../../middleware/index.js";
 import {
-  addWebhook,
   deleteAsset,
-  dropAsset,
   getDroppedAssetsWithUniqueName,
 } from "../../../utils/apiCalls.js";
 import { getPlayedCurrentIndex } from "../playlist.js";
@@ -84,7 +82,6 @@ export const addPlaylistToWorld = async (req, res) => {
 };
 
 export const addWebhookWithClick = async ({
-  apiKey,
   clickableTitle,
   dataObject,
   description,
@@ -102,17 +99,15 @@ export const addWebhookWithClick = async ({
   const type = "assetClicked";
   const url = `${base}/webhooks/playlist`;
 
-  await addWebhook({
-    body: {
-      apiKey,
-      assetId: droppedAsset.id,
-      dataObject,
-      description,
-      title,
-      type,
-      url,
-      urlSlug,
-    },
+  await droppedAsset.addWebhook({
+    isUniqueOnly: false,
+    assetId: droppedAsset.id,
+    dataObject,
+    description,
+    title,
+    type,
+    url,
+    urlSlug,
   });
 };
 
