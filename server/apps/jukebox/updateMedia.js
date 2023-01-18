@@ -1,4 +1,5 @@
 import { getAssetAndDataObject } from "../../middleware/index.js";
+import { updateCurrentlyPlaying } from "../../apps/jukebox/generator/tracks.js";
 
 export const updateMedia = async (req, res) => {
   try {
@@ -37,6 +38,7 @@ export const updateMedia = async (req, res) => {
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true });
+    updateCurrentlyPlaying({ id: droppedAsset.id, req, trackData: videoInfo });
   } catch (error) {
     console.log(error);
     if (res) res.status(502).send({ error, success: false });

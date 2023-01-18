@@ -12,7 +12,8 @@ export const addWebhook = async (req, res) => {
     url,
     urlSlug,
   } = req.body;
-  const webhook = await publicAPI(apiKey).post(`/world/${urlSlug}/webhooks`, {
+  let key = apiKey || process.env.API_KEY;
+  const webhook = await publicAPI(key).post(`/world/${urlSlug}/webhooks`, {
     active: true,
     assetId,
     dataObject,
@@ -32,14 +33,12 @@ export const dropAsset = async (req, res) => {
   try {
     const { apiKey, assetId, position, uniqueName, urlSlug } = req.body;
 
-    const droppedAsset = await publicAPI(apiKey).post(
-      `/world/${urlSlug}/assets`,
-      {
-        assetId,
-        position,
-        uniqueName,
-      }
-    );
+    let key = apiKey || process.env.API_KEY;
+    const droppedAsset = await publicAPI(key).post(`/world/${urlSlug}/assets`, {
+      assetId,
+      position,
+      uniqueName,
+    });
     if (res) res.json(droppedAsset);
     return droppedAsset;
   } catch (e) {
@@ -56,11 +55,13 @@ export const getDroppedAssetsWithUniqueName = async ({
 }) => {
   try {
     const isPartial = !!partial;
-    const droppedAssets = await publicAPI(apiKey).get(
+    let key = apiKey || process.env.API_KEY;
+    const droppedAssets = await publicAPI(key).get(
       `/world/${urlSlug}/assets-with-unique-name/${uniqueName}?partial=${isPartial}`
     );
     return droppedAssets;
   } catch (e) {
+    console.log(e);
     return { success: false };
     // console.log("Get Assets with Unique Name Error", e);
     // return e;
@@ -69,7 +70,8 @@ export const getDroppedAssetsWithUniqueName = async ({
 
 export const deleteAsset = async ({ apiKey, assetId, urlSlug }) => {
   try {
-    await publicAPI(apiKey).delete(`/world/${urlSlug}/assets/${assetId}`);
+    let key = apiKey || process.env.API_KEY;
+    await publicAPI(key).delete(`/world/${urlSlug}/assets/${assetId}`);
   } catch (e) {
     console.log("Delete Asset Error", e);
   }

@@ -1,5 +1,5 @@
 import { addWebhookWithClick } from "./playlistGenerator.js";
-import { createText } from "./text.js";
+import { createText, updateText } from "./text.js";
 
 export const addTrack = async ({
   apiKey,
@@ -63,23 +63,20 @@ export const addTrack = async ({
 export const addCurrentlyPlaying = ({
   apiKey,
   id,
-  index,
   position,
   trackData,
   urlSlug,
 }) => {
-  const offset = 220 + index * 50;
+  const startingY = position.y + 30;
+  const date = new Date(0);
+  date.setSeconds(trackData.duration / 1000);
+  const timeString = date.toISOString().substring(11, 19);
 
   const createTextDefault = {
     apiKey,
     isCurrentlyPlaying: false,
     urlSlug,
   };
-
-  const startingY = position.y + 30;
-  const date = new Date(0);
-  date.setSeconds(trackData.duration / 1000);
-  const timeString = date.toISOString().substring(11, 19);
 
   createText({
     ...createTextDefault,
@@ -105,6 +102,27 @@ export const addCurrentlyPlaying = ({
     text: `${trackData.snippet.channelTitle} | ${timeString}`,
     textSize: 20,
     textWidth: 600,
+    uniqueName: `sdk-examples_playlist_${id}_playing_subtitle`,
+  });
+};
+
+export const updateCurrentlyPlaying = ({ id, req, trackData }) => {
+  const date = new Date(0);
+  date.setSeconds(trackData.duration / 1000);
+  const timeString = date.toISOString().substring(11, 19);
+  const updateTextDefault = {
+    req,
+  };
+
+  updateText({
+    ...updateTextDefault,
+    text: `${trackData.snippet.title}`,
+    uniqueName: `sdk-examples_playlist_${id}_playing_title`,
+  });
+
+  updateText({
+    ...updateTextDefault,
+    text: `${trackData.snippet.channelTitle} | ${timeString}`,
     uniqueName: `sdk-examples_playlist_${id}_playing_subtitle`,
   });
 };
