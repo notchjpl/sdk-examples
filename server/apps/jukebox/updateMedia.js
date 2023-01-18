@@ -1,5 +1,6 @@
 import { getAssetAndDataObject } from "../../middleware/index.js";
-import { updateCurrentlyPlaying } from "../../apps/jukebox/generator/tracks.js";
+// import { updateCurrentlyPlaying } from "../../apps/jukebox/generator/tracks.js";
+import { updatePlaylist } from "./generator/updatePlaylist.js";
 
 export const updateMedia = async (req, res) => {
   try {
@@ -38,7 +39,15 @@ export const updateMedia = async (req, res) => {
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true, dataObject });
-    updateCurrentlyPlaying({ id: droppedAsset.id, req, trackData: videoInfo });
+    // Moved to generator/updatePlaylist
+    // updateCurrentlyPlaying({ id: droppedAsset.id, req, trackData: videoInfo });
+    updatePlaylist({
+      dataObject,
+      isAdding: false, // Updating instead of adding
+      position: droppedAsset.position,
+      req: { ...req, body: { ...req.body, assetId: droppedAsset.id } },
+      videoInfo,
+    });
   } catch (error) {
     console.log(error);
     if (res) res.status(502).send({ error, success: false });

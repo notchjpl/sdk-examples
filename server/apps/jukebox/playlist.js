@@ -55,3 +55,30 @@ export const shufflePlaylist = async (req, res) => {
 
 export const getPlayedCurrentIndex = (playlist, lastPlayedUniqueId) =>
   playlist.findIndex((i) => i.uniqueEntryId === lastPlayedUniqueId);
+
+// TODO: This doesn't currently work.  Need to add API endpoint
+export const volumeDown = async (req, res) => {
+  try {
+    const droppedAsset = await getAssetAndDataObject(req);
+    droppedAsset.updateMediaType({
+      audioVolume: Math.max(droppedAsset.audioVolume - 10, 0),
+    });
+
+    res.send("Success");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+// This doesn't currently work.  Need to add API endpoint
+export const volumeUp = async (req, res) => {
+  try {
+    const droppedAsset = await getAssetAndDataObject(req);
+    droppedAsset.updateMediaType({
+      audioVolume: Math.min(droppedAsset.audioVolume + 10, 100),
+    });
+    res.send("Success");
+  } catch (e) {
+    console.log(e);
+  }
+};

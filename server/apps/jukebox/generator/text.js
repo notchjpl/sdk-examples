@@ -68,11 +68,11 @@ export const updateText = async ({
   const toUpdateAsset = assets?.data?.assets[0];
   if (!toUpdateAsset) return; // No asset to update - controls aren't in world.
   const assetId = toUpdateAsset.id;
-
   try {
-    const droppedAsset = await DroppedAsset.create(assetId, urlSlug, {
+    const droppedAsset = await DroppedAsset.get(assetId, urlSlug, {
       credentials: req.body,
     });
+    // console.log(droppedAsset);
     try {
       await droppedAsset.updateCustomText(textOptions, text);
     } catch (e) {

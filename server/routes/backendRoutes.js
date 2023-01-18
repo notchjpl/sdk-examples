@@ -10,8 +10,8 @@ import {
   removePlaylistFromWorld,
   shufflePlaylist,
   updateMedia,
-  // volumeDown,
-  // volumeUp,
+  volumeDown,
+  volumeUp,
 } from "../apps/jukebox/index.js";
 export default router;
 
@@ -31,5 +31,5 @@ router.post("/shufflePlaylist", shufflePlaylist);
 router.post("/addplaylistcontrols", addPlaylistToWorld);
 router.post("/removeplaylistcontrols", removePlaylistFromWorld);
 
-// router.post("/volumedown", volumeDown);
-// router.post("/volumeUp", volumeUp);
+router.post("/volumedown", volumeDown);
+router.post("/volumeUp", volumeUp);
