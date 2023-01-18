@@ -1,4 +1,8 @@
 export const pageContent = {
+  EDIT_TEXT_ASSET: {
+    title: "Edit Text Assets",
+    requiresUrlSlug: true,
+  },
   ERROR: {
     title: "Oops!",
   },
@@ -11,12 +15,12 @@ export const pageContent = {
     title: "Jukebox",
     requiresUrlSlug: true,
   },
-  MOVE_VISITORS: {
-    title: "Move Visitors",
-    requiresUrlSlug: true,
-  },
   LEADERBOARD: {
     title: "Leaderboard",
+    requiresUrlSlug: true,
+  },
+  MOVE_VISITORS: {
+    title: "Move Visitors",
     requiresUrlSlug: true,
   },
   REPLACE_SCENE: {

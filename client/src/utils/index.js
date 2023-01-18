@@ -1,5 +1,17 @@
 export { backendAPI } from "./backendApi";
-export { youtubeSearch } from "./backendExternal";
-export { EXAMPLE_VIDEOS } from "./createYouTubeSamples";
+export { getYoutubeVideoInfo, youtubeSearch } from "./backendExternal";
 export { getRouteByPath, routes, sidebarRoutes } from "./routes";
-export { playMediaInAsset } from "./media";
+export {
+  addToAssetPlaylist,
+  playMediaInAsset,
+  removeFromAssetPlaylist,
+} from "./media";
+export { getDataObject } from "./dataObject";
+export {
+  addPlaylistToWorld,
+  playlistNext,
+  removePlaylistFromWorld,
+  shufflePlaylist,
+  volumeDown,
+  volumeUp,
+} from "./playlistControls";

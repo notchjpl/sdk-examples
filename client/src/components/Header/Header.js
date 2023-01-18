@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+// styles
+import { styled, useTheme } from "@mui/system";
+
 // components
 import {
   AppBar,
@@ -9,9 +12,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
-// styles
-import useStyles from "./styles";
 
 // context
 import {
@@ -23,16 +23,40 @@ import {
   useUserState,
 } from "@context";
 
+const StyledTextField = styled(TextField)(({ theme }) => {
+  return {
+    width: "100%",
+    "& .MuiFormLabel-root": {
+      color: "white",
+      top: -6,
+    },
+    "& .MuiInputLabel-shrink": {
+      backgroundColor: `${theme.palette.secondary.main} !important`,
+      top: 0,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
+    "& input": {
+      backgroundColor: `${theme.palette.secondary.main} !important`,
+      border: "1px solid rgba(200,200,200,0.8)",
+      borderRadius: 4,
+      color: "white",
+      padding: 8,
+    },
+  };
+});
+
 export function Header() {
-  const classes = useStyles();
-  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey"));
-  const [urlSlug, setUrlSlug] = useState("");
+  const { urlSlug: contextUrlSlug } = useGlobalState();
+  const { user } = useUserState();
+
+  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
+  const [urlSlug, setUrlSlug] = useState(contextUrlSlug);
+  const theme = useTheme();
 
   // context
   const globalDispatch = useGlobalDispatch();
   const userDispatch = useUserDispatch();
-  const { user } = useUserState();
-  const globalState = useGlobalState();
 
   useEffect(() => {
     if (apiKey && !user) {
@@ -41,24 +65,20 @@ export function Header() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    setUrlSlug(globalState.urlSlug || "");
-  }, [globalState.urlSlug]);
-
-  useEffect(() => {
-    if (apiKey && urlSlug) {
-      fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
-    }
-  }, [apiKey, globalDispatch, urlSlug]);
-
   const handleUpdateContext = async () => {
     await fetchUser(apiKey, userDispatch);
     if (urlSlug) fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
   };
 
   return (
-    <AppBar className={classes.appBar} position="fixed">
-      <Toolbar className={classes.toolbar}>
+    <AppBar
+      position="fixed"
+      sx={{
+        zIndex: 2000,
+        backgroundColor: `${theme.palette.secondary.main} !important`,
+      }}
+    >
+      <Toolbar sx={{ padding: theme.spacing(1) }}>
         <Grid
           alignItems="center"
           container
@@ -76,22 +96,29 @@ export function Header() {
           <Grid item>
             <Grid alignItems="center" container spacing={2}>
               <Grid item>
-                <TextField
-                  className={classes.inputField}
+                <StyledTextField
                   id="apiKeyInput"
                   label="API Key"
-                  onChange={(event) => setApiKey(event.target.value)}
+                  onChange={(event) => {
+                    event.preventDefault();
+                    setApiKey(event.target.value);
+                  }}
                   sx={{ width: 320 }}
+                  theme={theme}
                   value={apiKey}
                 />
               </Grid>
               <Grid item>
-                <TextField
-                  className={classes.inputField}
+                <StyledTextField
                   disabled={!apiKey}
                   id="urlSlugInput"
                   label="URL Slug"
-                  onChange={(event) => setUrlSlug(event.target.value)}
+                  onChange={(event) => {
+                    console.log(event.target.value, urlSlug);
+                    event.preventDefault();
+                    setUrlSlug(event.target.value);
+                  }}
+                  theme={theme}
                   value={urlSlug}
                 />
               </Grid>

@@ -26,8 +26,8 @@ export function App() {
       assetId: searchParams.get("assetId"),
       interactiveNonce: searchParams.get("interactiveNonce"),
       interactivePublicKey: searchParams.get("interactivePublicKey"),
-      playerId: searchParams.get("playerId"),
-      urlSlug: searchParams.get("url"),
+      visitorId: searchParams.get("visitorId"),
+      urlSlug: searchParams.get("urlSlug"),
     };
 
     if (interactiveParams.assetId)

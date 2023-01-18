@@ -1,20 +1,24 @@
 import React from "react";
 
-// styles
-import useStyles from "./styles";
-
 // components
 import { Drawer } from "@mui/material";
-import SidebarLink from "./components/SidebarLink/SidebarLink";
+import { SidebarLink } from "./SidebarLink";
 
 // utils
 import { sidebarRoutes } from "@utils";
 
 export function Sidebar() {
-  const classes = useStyles();
-
   return (
-    <Drawer className={classes.drawerOpen} open variant="permanent">
+    <Drawer
+      open
+      sx={{
+        width: 240,
+        height: "100vh",
+        zIndex: 1000,
+        "& .MuiDrawer-paper": { paddingTop: 9, width: 240 },
+      }}
+      variant="permanent"
+    >
       {sidebarRoutes.map((route, index) => {
         return <SidebarLink key={index} path={route.path} text={route.text} />;
       })}

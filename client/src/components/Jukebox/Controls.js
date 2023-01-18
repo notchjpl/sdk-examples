@@ -2,142 +2,101 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // components
-import { Grid } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 import {
-  Pause,
-  PlayArrow,
-  Replay,
+  Shuffle,
+  ShuffleOn,
   SkipNext,
-  SkipPrevious,
-  VolumeUp,
+  // VolumeDown,
+  // VolumeUp,
 } from "@mui/icons-material";
 
-// styles
-import useStyles from "./styles";
+import { useGlobalDispatch, useGlobalState } from "@context";
+import {
+  playlistNext,
+  shufflePlaylist,
+  // volumeDown, volumeUp
+} from "@utils";
 
-export function Controls({
-  // artistName,
-  controlRef,
-  // currentTime,
-  // duration,
-  onPlayPause,
-  onReplay,
-  playing,
-  // title,
-}) {
-  const classes = useStyles();
+Controls.propTypes = {
+  assetId: PropTypes.string,
+  dataObject: PropTypes.object,
+  updateDataObject: PropTypes.func,
+};
 
-  // TODO: work in progress. need to establish what controls and information we want to display
-  // return (
-  //   <Grid
-  //     alignItems="flex-end"
-  //     className={classes.controls}
-  //     container
-  //     direction="column"
-  //     justifyContent="space-between"
-  //     ref={controlRef}
-  //   >
-  //     <Grid item>
-  //       <Typography color="white" variant="h4">
-  //         {title}
-  //       </Typography>
-  //     </Grid>
-  //     <Grid container justifyContent="space-between" p={2}>
-  //       <Grid item>
-  //         <Replay onClick={onReplay} sx={{ color: "white" }} />
-  //       </Grid>
-  //       <Grid item>
-  //         <Typography color="white">{artistName}</Typography>
-  //       </Grid>
-  //       <Grid item>
-  //         <VolumeUp sx={{ color: "white" }} />
-  //       </Grid>
-  //     </Grid>
-  //     {/* <Grid className={classes.progress} item>
-  //       <div
-  //         className={classes.played}
-  //         style={{ width: currentTime / duration }}
-  //       >
-  //         <div className={classes.circle}></div>
-  //       </div>
-  //     </Grid> */}
-  //     <Grid container justifyContent="space-between" p={2}>
-  //       <Grid item>
-  //         <SkipPrevious sx={{ color: "white" }} />
-  //       </Grid>
-  //       <Grid item>
-  //         {playing ? (
-  //           <Pause onClick={onPlayPause} sx={{ color: "white" }} />
-  //         ) : (
-  //           <PlayArrow onClick={onPlayPause} sx={{ color: "white" }} />
-  //         )}
-  //       </Grid>
-  //       <Grid item>
-  //         <SkipNext sx={{ color: "white" }} />
-  //       </Grid>
-  //     </Grid>
-  //   </Grid>
-  // );
+export function Controls({ assetId, dataObject, updateDataObject }) {
+  const globalDispatch = useGlobalDispatch();
+  const globalState = useGlobalState();
+
+  const urlSlug = globalState.urlSlug;
+  const apiKey = localStorage.getItem("apiKey");
+
+  const sendEveryReq = {
+    apiKey,
+    assetId,
+    globalDispatch,
+    urlSlug,
+  };
+
+  const next = async () => {
+    await playlistNext(sendEveryReq);
+    updateDataObject();
+  };
+
+  const shuffle = async (toggle) => {
+    // Want to update shuffle button state
+    await shufflePlaylist({ ...sendEveryReq, toggle });
+    updateDataObject();
+  };
+
+  const ShuffleComponent = () => {
+    if (dataObject?.playlistShuffle)
+      return (
+        <Tooltip placement="top" title="Stop Shuffle">
+          <ShuffleOn
+            onClick={() => shuffle(false)}
+            sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
+          />
+        </Tooltip>
+      );
+    else
+      return (
+        <Tooltip placement="top" title="Shuffle">
+          <Shuffle
+            onClick={() => shuffle(true)}
+            sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
+          />
+        </Tooltip>
+      );
+  };
 
   return (
-    <Grid
-      alignItems="center"
-      className={classes.controls}
-      container
-      direction="row"
-      justifyContent="space-between"
-      p={4}
-      ref={controlRef}
-    >
-      <Grid item>
-        <Replay onClick={onReplay} sx={{ color: "white" }} />
-      </Grid>
-      <Grid item>
-        <Grid
-          alignItems="center"
-          container
-          justifyContent="space-between"
-          p={2}
-        >
-          <Grid item>
-            <SkipPrevious sx={{ color: "white" }} />
-          </Grid>
-          <Grid item p={2}>
-            {playing ? (
-              <Pause
-                fontSize="large"
-                onClick={onPlayPause}
-                sx={{ color: "white" }}
-              />
-            ) : (
-              <PlayArrow
-                fontSize="large"
-                onClick={onPlayPause}
-                sx={{ color: "white" }}
-              />
-            )}
-          </Grid>
-          <Grid item>
-            <SkipNext sx={{ color: "white" }} />
-          </Grid>
+    <Grid container justifyContent="start" sx={{ flexWrap: "nowrap" }}>
+      <Grid container direction="column" xs={3}>
+        <ShuffleComponent />
+        <Grid container>
+          <Tooltip title="Seek Next">
+            <SkipNext
+              onClick={next}
+              sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
+            />
+          </Tooltip>
         </Grid>
       </Grid>
-      <Grid item>
-        <VolumeUp sx={{ color: "white" }} />
-      </Grid>
+      {/*<Grid container direction="column">
+        <Tooltip placement="top" title="Increase Volume">
+          <VolumeUp
+            onClick={() => volumeUp(sendEveryReq)}
+            sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
+          />
+        </Tooltip>
+        <Tooltip placement="bottom" title="Decrease Volume">
+          <VolumeDown
+            onClick={() => volumeDown(sendEveryReq)}
+            sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
+          />
+        </Tooltip>
+      </Grid>*/}
     </Grid>
   );
 }
-
-Controls.propTypes = {
-  // artistName: PropTypes.string,
-  controlRef: PropTypes.object,
-  // currentTime: PropTypes.string,
-  // duration: PropTypes.string,
-  onPlayPause: PropTypes.func,
-  onReplay: PropTypes.func,
-  playing: PropTypes.bool,
-  // title: PropTypes.string,
-};
-
-export default Controls;

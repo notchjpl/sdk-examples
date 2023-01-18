@@ -1,3 +1,5 @@
 export { Controls } from "./Controls";
-export { Jukebox } from "./Jukebox";
-export { MenuItem } from "./MenuItem";
+export { Playlist } from "./Playlist";
+export { VideoTrack } from "./VideoTrack";
+export { YouTubeSearch } from "./YouTubeSearch";
+export { PlaylistTracksWrapper } from "./PlaylistTracksWrapper";

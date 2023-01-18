@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 // styles
-import useStyles from "./styles";
+import { useTheme } from "@mui/system";
 
 // components
 import { Header } from "../Header";
@@ -17,7 +17,7 @@ import { getRouteByPath } from "@utils";
 import { pageContent } from "../../content/pageContent";
 
 export function Layout({ children }) {
-  const classes = useStyles();
+  const theme = useTheme();
   const location = useLocation();
   const route = getRouteByPath(location.pathname);
   const routeId = route ? route.id : "ERROR";
@@ -25,18 +25,45 @@ export function Layout({ children }) {
 
   // context
   const globalDispatch = useGlobalDispatch();
-  const { hasMessage, message, messageType, selectedWorld, urlSlug } =
-    useGlobalState();
+  const {
+    hasMessage,
+    message,
+    messageType,
+    selectedWorld,
+    urlSlug,
+    isInteractiveIframe,
+  } = useGlobalState();
 
   const handleCloseSnackbar = () => {
     removeMessage(globalDispatch);
   };
 
   return (
-    <div className={classes.root}>
-      <Header />
-      <Sidebar />
-      <Grid className={classes.content} container spacing={4}>
+    <Grid
+      sx={{
+        display: "flex",
+        maxWidth: "100vw",
+        overflowX: "hidden",
+      }}
+    >
+      {!isInteractiveIframe && (
+        <>
+          <Header />
+          <Sidebar />
+        </>
+      )}
+      <Grid
+        container
+        spacing={4}
+        sx={{
+          flexGrow: 1,
+          padding: theme.spacing(3),
+          top: theme.spacing(8),
+          width: `calc(100vw - 240px)`,
+          position: "relative",
+          alignSelf: "flex-start",
+        }}
+      >
         <Grid item xs={12}>
           <Typography component="h1" variant="h3">
             {title}
@@ -74,7 +101,7 @@ export function Layout({ children }) {
           {message}
         </Alert>
       </Snackbar>
-    </div>
+    </Grid>
   );
 }
 

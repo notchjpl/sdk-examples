@@ -4,13 +4,14 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { defaultMaxListeners } from "events";
-import router from "./routes.js";
-import externalRouter from "./externalRoutes.js";
+import backendRouter from "./routes/backendRoutes.js";
+import webhookRouter from "./routes/webhookRoutes.js";
+import externalRouter from "./routes/externalRoutes.js";
 import cors from "cors";
+dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
-dotenv.config();
 
 // Node serves the files for the React app
 const __filename = fileURLToPath(import.meta.url);
@@ -27,8 +28,9 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use("/backend", router);
+app.use("/backend", backendRouter);
 app.use("/external", externalRouter);
+app.use("/webhooks", webhookRouter);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
