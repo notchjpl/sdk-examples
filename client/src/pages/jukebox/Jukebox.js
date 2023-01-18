@@ -20,10 +20,11 @@ import { useSearchParams } from "react-router-dom";
 
 // components
 import { Grid, Paper } from "@mui/material";
-import { UniqueAssetTable, VideoTrack, YouTubeSearch } from "@components";
+import { DroppedAssetTable, VideoTrack, YouTubeSearch } from "@components";
 
 // utils
-import { EXAMPLE_VIDEOS, playMediaInAsset } from "@utils";
+import { playMediaInAsset } from "@utils";
+import { EXAMPLE_VIDEOS } from "@utils/createYouTubeSamples";
 
 // context
 import { useGlobalDispatch, useGlobalState } from "@context";
@@ -75,7 +76,7 @@ export function Jukebox() {
       spacing={2}
     >
       <Grid item>
-        <UniqueAssetTable handleChangeAsset={setAsset} />
+        <DroppedAssetTable handleChangeAsset={setAsset} />
       </Grid>
 
       <Grid container p={2} spacing={2}>
