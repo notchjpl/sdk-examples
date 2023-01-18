@@ -12,6 +12,5 @@ export { Layout } from "./Layout";
 export { ScenesTable } from "./ScenesTable";
 export { Search } from "./Search";
 export { Sidebar } from "./Sidebar";
-export { DroppedAssetTable } from "./DroppedAssetTable";
 export { VisitorsTable } from "./VisitorsTable";
 export { WorldsTable } from "./WorldsTable";
