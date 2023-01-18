@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.API_URL || "http://localhost:3001";
+const BASE_URL = process.env.API_URL || "";
 let externalAPI = axios.create({
   baseURL: `${BASE_URL}/external`,
   headers: {

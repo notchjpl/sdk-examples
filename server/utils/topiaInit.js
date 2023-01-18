@@ -10,7 +10,7 @@ import {
 } from "@rtsdk/topia";
 
 const config = {
-  apiDomain: process.env.INSTANCE_DOMAIN || "https://api.topia.io/",
+  apiDomain: process.env.INSTANCE_DOMAIN || "api.topia.io",
   apiKey: process.env.API_KEY,
   interactiveKey: process.env.INTERACTIVE_KEY,
   interactiveSecret: process.env.INTERACTIVE_SECRET,
