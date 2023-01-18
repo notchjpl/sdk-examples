@@ -6,9 +6,9 @@ const path = require("path");
 module.exports = override(
   useBabelRc(),
   addWebpackAlias({
-    ["@components"]: path.resolve(__dirname, "./src/components"),
-    ["@context"]: path.resolve(__dirname, "./src/context"),
-    ["@pages"]: path.resolve(__dirname, "./src/pages"),
-    ["@utils"]: path.resolve(__dirname, "./src/utils"),
+    ["@components"]: path.resolve(__dirname, "./client/src/components"),
+    ["@context"]: path.resolve(__dirname, "./client/src/context"),
+    ["@pages"]: path.resolve(__dirname, "./client/src/pages"),
+    ["@utils"]: path.resolve(__dirname, "./client/src/utils"),
   })
 );
