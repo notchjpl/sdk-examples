@@ -1,4 +1,4 @@
-import axios from "axios";
+import backendAPI from "@utils/backendApi";
 // context
 import { setMessage } from "@context";
 
@@ -9,8 +9,8 @@ export const playlistNext = async ({
   urlSlug,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  await axios
-    .post("/backend/playlistnext", {
+  await backendAPI()
+    .post("/playlistnext", {
       apiKey,
       assetId,
       urlSlug,
@@ -41,8 +41,8 @@ export const shufflePlaylist = async ({
   urlSlug,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  await axios
-    .post("/backend/shuffleplaylist", {
+  await backendAPI()
+    .post("/shuffleplaylist", {
       apiKey,
       assetId,
       toggle,
@@ -73,8 +73,8 @@ export const volumeDown = async ({
   urlSlug,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  await axios
-    .post("/backend/volumedown", {
+  await backendAPI()
+    .post("/volumedown", {
       apiKey,
       assetId,
       urlSlug,
@@ -104,8 +104,8 @@ export const volumeUp = async ({
   urlSlug,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  await axios
-    .post("/backend/volumeup", {
+  await backendAPI()
+    .post("/volumeup", {
       apiKey,
       assetId,
       urlSlug,
@@ -134,8 +134,8 @@ export const addPlaylistToWorld = async ({
   globalDispatch,
   urlSlug,
 }) => {
-  axios
-    .post("/backend/addplaylistcontrols", {
+  backendAPI()
+    .post("/addplaylistcontrols", {
       apiKey,
       assetId,
       urlSlug,
@@ -163,8 +163,8 @@ export const removePlaylistFromWorld = async ({
   globalDispatch,
   urlSlug,
 }) => {
-  axios
-    .post("/backend/removeplaylistcontrols", {
+  backendAPI()
+    .post("/removeplaylistcontrols", {
       apiKey,
       assetId,
       urlSlug,

@@ -15,7 +15,7 @@ export function Sidebar() {
         width: 240,
         height: "100vh",
         zIndex: 1000,
-        "& .MuiDrawer-paper": { "padding-top": 80, width: 240 },
+        "& .MuiDrawer-paper": { paddingTop: 9, width: 240 },
       }}
       variant="permanent"
     >
