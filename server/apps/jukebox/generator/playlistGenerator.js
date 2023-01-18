@@ -1,13 +1,11 @@
 // TODO: Add 'next page' and 'previous page' buttons to in-world playlist so can browse through the entire playlist
 
 import { getAssetAndDataObject } from "../../../middleware/index.js";
-import {
-  deleteAsset,
-  getDroppedAssetsWithUniqueName,
-} from "../../../utils/apiCalls.js";
+import { deleteAsset } from "../../../utils/apiCalls.js";
 import { getPlayedCurrentIndex } from "../playlist.js";
 import { addCurrentlyPlaying, addTrack } from "./tracks.js";
 import { addPlaylistFrame, addNextButton } from "./buttons.js";
+import { World } from "../../../utils/topiaInit.js";
 
 const base = "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
 
@@ -113,15 +111,12 @@ export const addWebhookWithClick = async ({
 
 export const removePlaylistFromWorld = async (req, res) => {
   const { apiKey, assetId, urlSlug } = req.body;
-  const droppedAssets = await getDroppedAssetsWithUniqueName({
-    apiKey,
-    partial: true, // Pulls all dropped assets with unique name that starts with 'uniqueName' below
+  const world = World.create(urlSlug, { credentials: req.body });
+  const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
+    isPartial: true,
     uniqueName: `sdk-examples_playlist_${assetId}`,
-    urlSlug,
   });
-  if (!droppedAssets || !droppedAssets.data || !droppedAssets.data.assets)
-    return res.status(403).send("No playlist in world to remove");
-  droppedAssets.data.assets.forEach((item) => {
+  droppedAssets.forEach((item) => {
     deleteAsset({
       apiKey,
       assetId: item.id,

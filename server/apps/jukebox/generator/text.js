@@ -1,6 +1,4 @@
-import { getDroppedAssetsWithUniqueName } from "../../../utils/apiCalls.js";
-
-import { Asset, DroppedAsset } from "../../../utils/topiaInit.js";
+import { Asset, World } from "../../../utils/topiaInit.js";
 
 export const createText = async ({
   apiKey,
@@ -40,26 +38,14 @@ export const updateText = async ({
 }) => {
   const { apiKey, urlSlug } = req.body;
   // TODO: Move to SDK
-  const assets = await getDroppedAssetsWithUniqueName({
-    apiKey,
+  const world = World.create(urlSlug, { credentials: req.body });
+  const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
     uniqueName,
-    urlSlug,
   });
 
-  const toUpdateAsset = assets?.data?.assets[0];
-  if (!toUpdateAsset) return; // No asset to update - controls aren't in world.
-  const assetId = toUpdateAsset.id;
-
   try {
-    const droppedAsset = await DroppedAsset.create(assetId, urlSlug, {
-      credentials: req.body,
-    });
-    try {
-      await droppedAsset.updateCustomTextAsset(textOptions, text);
-    } catch (e) {
-      console.log("Can't update.  No asset found");
-    }
+    await droppedAssets[0].updateCustomTextAsset(textOptions, text);
   } catch (e) {
-    console.log("Can't get.  No asset found");
+    console.log("Can't update.  No asset found");
   }
 };

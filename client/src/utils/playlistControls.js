@@ -1,4 +1,5 @@
 import axios from "axios";
+import backendAPI from "@utils/backendApi";
 // context
 import { setMessage } from "@context";
 
@@ -163,8 +164,8 @@ export const removePlaylistFromWorld = async ({
   globalDispatch,
   urlSlug,
 }) => {
-  axios
-    .post("/backend/removeplaylistcontrols", {
+  backendAPI()
+    .post("/removeplaylistcontrols", {
       apiKey,
       assetId,
       urlSlug,
