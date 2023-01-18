@@ -35,17 +35,18 @@ export const updateText = async ({
   text,
   textOptions = {},
   uniqueName,
+  newDataObject,
 }) => {
   const { apiKey, urlSlug } = req.body;
   // TODO: Move to SDK
-  const world = World.create(urlSlug, { credentials: req.body });
-  const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
-    uniqueName,
-  });
 
   try {
+    const world = World.create(urlSlug, { credentials: req.body });
+    const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
+      uniqueName,
+    });
     await droppedAssets[0].updateCustomTextAsset(textOptions, text);
   } catch (e) {
-    console.log("Can't update.  No asset found");
+    console.log("Can't update.  No asset found", e?.response?.status || e);
   }
 };

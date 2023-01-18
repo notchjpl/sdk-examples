@@ -1,11 +1,14 @@
 import { getAssetAndDataObject } from "../../middleware/index.js";
-import { updateCurrentlyPlaying } from "../../apps/jukebox/generator/tracks.js";
+// import { updateCurrentlyPlaying } from "../../apps/jukebox/generator/tracks.js";
+import { updatePlaylist } from "./generator/updatePlaylist.js";
 
 export const updateMedia = async (req, res) => {
   try {
     // Change current song showing in world if there are in-world controls
     // index is used for saving position in playlist
     const { index, videoId, videoInfo } = req.body;
+
+    console.log("Vid info", videoInfo);
 
     // Remove all timeouts related to this asset.  Going to be problematic if using clustering.
     // TODO: Improve by adding Redis?  Or add webhook firing on media state change in core application, then catch webhook to change song and don't use timeouts.
@@ -37,8 +40,16 @@ export const updateMedia = async (req, res) => {
         dataObject?.mediaLinkPlaylist[index]?.uniqueEntryId;
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
-    if (res) res.json({ success: true });
-    updateCurrentlyPlaying({ id: droppedAsset.id, req, trackData: videoInfo });
+    if (res) res.json({ success: true, dataObject });
+    // Moved to generator/updatePlaylist
+    // updateCurrentlyPlaying({ id: droppedAsset.id, req, trackData: videoInfo });
+    updatePlaylist({
+      dataObject,
+      isAdding: false, // Updating instead of adding
+      position: droppedAsset.position,
+      req: { ...req, body: { ...req.body, assetId: droppedAsset.id } },
+      videoInfo,
+    });
   } catch (error) {
     console.log(error);
     if (res) res.status(502).send({ error, success: false });

@@ -17,6 +17,7 @@ import {
   addToAssetPlaylist,
   getDataObject,
   getYoutubeVideoInfo,
+  playMediaInAsset,
   removeFromAssetPlaylist,
   removePlaylistFromWorld,
 } from "@utils";
@@ -84,6 +85,14 @@ export function Playlist({ assetId }) {
     return;
   };
 
+  const play = async (props) => {
+    const result = await playMediaInAsset(props);
+    console.log(result);
+    if (result && result.success) {
+      setDataObject(result.dataObject);
+    }
+  };
+
   return (
     <Grid item>
       <Paper sx={{ p: 2 }}>
@@ -144,6 +153,7 @@ export function Playlist({ assetId }) {
               assetId={assetId}
               dataObject={dataObject}
               handleRemoveFromPlaylist={handleRemoveFromPlaylist}
+              play={play}
             />
           </Grid>
         </Grid>

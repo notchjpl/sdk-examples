@@ -19,6 +19,7 @@ export const addTrack = async ({
     y: position ? position.y + offset : offset,
   };
   const uniqueName = `sdk-examples_playlist_${id}_track_${index}`;
+  console.log(uniqueName);
 
   const trackAsset = await createText({
     apiKey,
@@ -41,10 +42,10 @@ export const addTrack = async ({
   const dataObject = {
     action: "track-clicked",
     index,
-    uniqueEntryId,
+    // uniqueEntryId,
     jukeboxId: id,
-    videoId,
-    videoInfo,
+    // videoId,
+    // videoInfo,
   };
 
   const clickableTitle = `Track ${index}`;

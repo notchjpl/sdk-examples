@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useGlobalDispatch, useGlobalState } from "@context";
 import { VideoTrack } from "@components";
-import { playMediaInAsset } from "@utils";
 
 // Should add pagination
 export const PlaylistTracksWrapper = ({
   assetId,
   dataObject,
   handleRemoveFromPlaylist,
+  play,
 }) => {
   // context
   const globalDispatch = useGlobalDispatch();
@@ -31,7 +31,7 @@ export const PlaylistTracksWrapper = ({
           <VideoTrack
             key={id + item.timeAdded}
             play={() =>
-              playMediaInAsset({
+              play({
                 apiKey,
                 assetId,
                 index,
@@ -55,4 +55,5 @@ PlaylistTracksWrapper.propTypes = {
   assetId: PropTypes.string.isRequired,
   dataObject: PropTypes.object,
   handleRemoveFromPlaylist: PropTypes.func,
+  play: PropTypes.func,
 };

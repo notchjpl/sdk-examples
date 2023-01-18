@@ -2,8 +2,9 @@
 
 import { getAssetAndDataObject } from "../../../middleware/index.js";
 import { getPlayedCurrentIndex } from "../playlist.js";
-import { addCurrentlyPlaying, addTrack } from "./tracks.js";
+import { addTrack } from "./tracks.js";
 import { addPlaylistFrame, addNextButton } from "./buttons.js";
+import { updatePlaylist } from "./updatePlaylist.js";
 import { World } from "../../../utils/topiaInit.js";
 
 const base = "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
@@ -12,65 +13,34 @@ const base = "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
 
 export const addPlaylistToWorld = async (req, res) => {
   const jukeboxAsset = await getAssetAndDataObject(req);
+  const { apiKey, assetId, urlSlug } = req.body;
 
   const { dataObject, position } = jukeboxAsset;
 
-  const {
-    lastPlaylistUniqueEntryIdPlayed,
-    mediaLinkPlaylist,
-    playlistShuffle,
-  } = dataObject;
-  // TODO Add shuffle button.  Blue if shuffle active.  Gray if not.
-  // TODO Add next button.
-  // TODO Add volume up and volume down button
-  let currentIndex = 0;
-  let currentPlayingHeight = 150;
-  // If there was a song played, start with that index.
-  if (lastPlaylistUniqueEntryIdPlayed)
-    currentIndex = getPlayedCurrentIndex(
-      mediaLinkPlaylist,
-      lastPlaylistUniqueEntryIdPlayed
-    );
-  // Show the previous song at the top
-  if (currentIndex > 0) currentIndex--;
+  const addPosOffset = 150; // Where to start adding the in-world assets below jukebox
+  updatePlaylist({
+    addPosOffset,
+    dataObject,
+    isAdding: true,
+    position,
+    req,
+    // req: { ...req, body: { ...req.body, assetId: jukeboxAsset.id } },
+  });
 
-  const { apiKey, assetId, urlSlug } = req.body;
-  for (var i = currentIndex; i < currentIndex + 10; i++) {
-    let videoIndex = i;
-    // Loop around to beginning of playlist if current index is near the end
-    if (i > mediaLinkPlaylist.length - 1) {
-      videoIndex = i - mediaLinkPlaylist.length;
-    }
-
-    addTrack({
-      apiKey,
-      id: assetId,
-      index: i - currentIndex, // Put the track currently playing in the top spot
-      position: { ...position, y: position.y + currentPlayingHeight },
-      trackData: mediaLinkPlaylist[videoIndex],
-      urlSlug,
-      isCurrentlyPlaying: i === currentIndex + 1, // Offset as we are putting the previous song as #1
-    });
-  }
   addPlaylistFrame({
     apiKey,
     id: assetId,
-    position: { ...position, y: position.y + currentPlayingHeight },
+    position: { ...position, y: position.y + addPosOffset },
     urlSlug,
   });
   addNextButton({
     apiKey,
     id: assetId,
-    position: { ...position, y: position.y + currentPlayingHeight },
+    position: { ...position, y: position.y + addPosOffset },
     urlSlug,
   });
-  addCurrentlyPlaying({
-    apiKey,
-    id: assetId,
-    position: { ...position, y: position.y + currentPlayingHeight / 2 },
-    trackData: mediaLinkPlaylist[currentIndex + 1],
-    urlSlug,
-  });
+
+  if (res) res.send("Success");
   try {
   } catch (e) {
     // console.log(e);
@@ -111,11 +81,16 @@ export const addWebhookWithClick = async ({
 export const removePlaylistFromWorld = async (req, res) => {
   const { apiKey, assetId, urlSlug } = req.body;
   const world = World.create(urlSlug, { credentials: req.body });
-  const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
-    isPartial: true,
-    uniqueName: `sdk-examples_playlist_${assetId}`,
-  });
-  droppedAssets.forEach((droppedAsset) => {
-    droppedAsset.deleteDroppedAsset();
-  });
+  try {
+    const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
+      isPartial: true,
+      uniqueName: `sdk-examples_playlist_${assetId}`,
+    });
+    droppedAssets.forEach((droppedAsset) => {
+      droppedAsset.deleteDroppedAsset();
+    });
+  } catch (e) {
+    console.log("No unique names", e?.response?.status || e);
+  }
+  if (res) res.send("Success");
 };

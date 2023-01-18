@@ -7,12 +7,16 @@ import {
   Shuffle,
   ShuffleOn,
   SkipNext,
-  VolumeDown,
-  VolumeUp,
+  // VolumeDown,
+  // VolumeUp,
 } from "@mui/icons-material";
 
 import { useGlobalDispatch, useGlobalState } from "@context";
-import { playlistNext, shufflePlaylist, volumeDown, volumeUp } from "@utils";
+import {
+  playlistNext,
+  shufflePlaylist,
+  // volumeDown, volumeUp
+} from "@utils";
 
 Controls.propTypes = {
   assetId: PropTypes.string,
@@ -79,7 +83,7 @@ export function Controls({ assetId, dataObject, updateDataObject }) {
           </Tooltip>
         </Grid>
       </Grid>
-      <Grid container direction="column">
+      {/*<Grid container direction="column">
         <Tooltip placement="top" title="Increase Volume">
           <VolumeUp
             onClick={() => volumeUp(sendEveryReq)}
@@ -92,7 +96,7 @@ export function Controls({ assetId, dataObject, updateDataObject }) {
             sx={{ color: "black", "&:hover": { cursor: "pointer" } }}
           />
         </Tooltip>
-      </Grid>
+      </Grid>*/}
     </Grid>
   );
 }

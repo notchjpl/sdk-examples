@@ -78,27 +78,29 @@ export const playMediaInAsset = async ({
   videoInfo,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  await backendAPI()
-    .post("/updatemedia", {
-      apiKey,
-      assetId,
-      index,
-      urlSlug,
-      videoId,
-      videoInfo,
-    })
-    .then(() => {
+
+  const result = await backendAPI().post("/updatemedia", {
+    apiKey,
+    assetId,
+    index,
+    urlSlug,
+    videoId,
+    videoInfo,
+  });
+  try {
+    if (result?.data?.success) {
       setMessage({
         dispatch: globalDispatch,
         message: "Success!",
         messageType: "success",
       });
-    })
-    .catch((error) => {
-      setMessage({
-        dispatch: globalDispatch,
-        message: error,
-        messageType: "error",
-      });
+      return result.data;
+    }
+  } catch (error) {
+    setMessage({
+      dispatch: globalDispatch,
+      message: error,
+      messageType: "error",
     });
+  }
 };
