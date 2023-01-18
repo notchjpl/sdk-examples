@@ -1,2 +1,1 @@
-import { getAssetAndDataObject } from "./dataObject.js";
-export { getAssetAndDataObject };
+export { getAssetAndDataObject } from "./dataObject.js";

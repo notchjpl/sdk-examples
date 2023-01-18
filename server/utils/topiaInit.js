@@ -6,6 +6,7 @@ import {
   DroppedAssetFactory,
   UserFactory,
   WorldFactory,
+  AssetFactory,
 } from "@rtsdk/topia";
 
 const config = {
@@ -20,5 +21,6 @@ const myTopiaInstance = new Topia(config);
 const DroppedAsset = new DroppedAssetFactory(myTopiaInstance);
 const User = new UserFactory(myTopiaInstance);
 const World = new WorldFactory(myTopiaInstance);
+const Asset = new AssetFactory(myTopiaInstance);
 
-export { myTopiaInstance, DroppedAsset, User, World };
+export { myTopiaInstance, DroppedAsset, User, World, Asset };
