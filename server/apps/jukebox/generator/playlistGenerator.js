@@ -76,6 +76,7 @@ export const addPlaylistToWorld = async (req, res) => {
     trackData: mediaLinkPlaylist[currentIndex + 1],
     urlSlug,
   });
+  if (res) res.send("Success");
   try {
   } catch (e) {
     // console.log(e);
@@ -133,4 +134,5 @@ export const removePlaylistFromWorld = async (req, res) => {
       urlSlug,
     });
   });
+  if (res) res.send("Success");
 };

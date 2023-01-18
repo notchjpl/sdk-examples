@@ -37,7 +37,7 @@ export const updateMedia = async (req, res) => {
         dataObject?.mediaLinkPlaylist[index]?.uniqueEntryId;
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
-    if (res) res.json({ success: true });
+    if (res) res.json({ success: true, dataObject });
     updateCurrentlyPlaying({ id: droppedAsset.id, req, trackData: videoInfo });
   } catch (error) {
     console.log(error);
