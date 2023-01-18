@@ -68,6 +68,7 @@ export const addWebhookWithClick = async ({
 
   await droppedAsset.addWebhook({
     isUniqueOnly: false,
+    assetId: droppedAsset.id,
     dataObject,
     description,
     title,
