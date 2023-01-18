@@ -5,7 +5,9 @@
 /client/node_modules
 /client/.pnp
 /client/.yalc
+/client/yalc.lock
 /.yalc
+yalc.lock
 .pnp.js
 
 #credentials
