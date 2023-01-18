@@ -61,6 +61,12 @@ export const updatePlaylist = ({
       });
     else
       updateText({
+        newDataObject: {
+          // Need to clean this up and not pass it all in.  Only need uniqueEntryId, then do a lookup
+          videoInfo: mediaLinkPlaylist[videoIndex],
+          videoId: mediaLinkPlaylist[videoIndex].id,
+          uniqueEntryId: mediaLinkPlaylist[videoIndex].uniqueEntryId,
+        },
         // TODO: Make so don't have to pass all these properties in.  Passing only textColor causes failed API call
         textOptions: {
           textColor: videoIndex === currentPlayedIndex ? "#0000ff" : "#000000",

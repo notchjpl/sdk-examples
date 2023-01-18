@@ -1,19 +1,25 @@
 import express from "express";
 const router = express.Router();
 import { playNextSongInPlaylist, updateMedia } from "../apps/jukebox/index.js";
+import { getAssetAndDataObject } from "../middleware/dataObject.js";
 export default router;
 
-router.post("/playlist/:param?", (req, res) => {
+router.post("/playlist/:param?", async (req, res) => {
   const { assetId, dataObject } = req.body;
 
   if (dataObject && dataObject.action === "track-clicked") {
+    const textAsset = await getAssetAndDataObject(req);
+    const textData = textAsset.dataObject;
+    const { videoInfo, uniqueEntryId, videoId } = textData;
     if (!dataObject) return;
-    let { videoId, index, jukeboxId, videoInfo, uniqueEntryId } = dataObject;
+    let { jukeboxId, index } = dataObject;
 
+    // Get data object from the text asset instead of pulling videoId and videoInfo from the webhook
     let updateObject = req;
     updateObject.body = {
       ...req.body,
       assetId: jukeboxId,
+      index,
       videoId,
       videoInfo,
       uniqueEntryId,

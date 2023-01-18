@@ -42,10 +42,10 @@ export const addTrack = async ({
   const dataObject = {
     action: "track-clicked",
     index,
-    uniqueEntryId,
+    // uniqueEntryId,
     jukeboxId: id,
-    videoId,
-    videoInfo,
+    // videoId,
+    // videoInfo,
   };
 
   const clickableTitle = `Track ${index}`;
