@@ -1,3 +1,4 @@
+export { EditTextAsset } from "./edittextasset";
 export { Error } from "./error";
 export { Home } from "./home";
 export { Jukebox } from "./jukebox";

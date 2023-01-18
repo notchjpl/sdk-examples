@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { UniqueAssetTable, VisitorsTable } from "@components";
+import { DroppedAssetTable, VisitorsTable } from "@components";
 
 // context
 import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
@@ -80,14 +80,11 @@ export function MoveVisitors() {
     <>
       <Grid container justifyContent="space-around" p={4} spacing={2}>
         <Grid item xs={8}>
-          <UniqueAssetTable
-            handleChangeAsset={setAsset}
-            selectedWorld={selectedWorld}
-          />
+          <DroppedAssetTable assetType="unique" handleChangeAsset={setAsset} />
         </Grid>
         <Grid item xs={4}>
           <Paper sx={{ p: 2 }}>
-            {asset.name ? (
+            {asset ? (
               <Grid
                 container
                 direction="column"
@@ -96,7 +93,8 @@ export function MoveVisitors() {
               >
                 <Grid item>
                   <Typography variant="h5">
-                    Lasso Visitors to <b>{asset.name}</b>
+                    Lasso Visitors to{" "}
+                    <b>{asset.uniqueName || asset.assetName}</b>
                   </Typography>
                 </Grid>
                 <Grid item>
