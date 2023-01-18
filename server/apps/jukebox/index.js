@@ -1,22 +1,12 @@
-import {
+export {
   addPlaylistToWorld,
   removePlaylistFromWorld,
 } from "./generator/playlistGenerator.js";
-import {
+export {
   addToAssetPlaylist,
   removeFromAssetPlaylist,
   shufflePlaylist,
 } from "./playlist.js";
 
-import { updateMedia } from "./updateMedia.js";
-import { playNextSongInPlaylist } from "./playNextSongInPlaylist.js";
-
-export {
-  addPlaylistToWorld,
-  addToAssetPlaylist,
-  playNextSongInPlaylist,
-  removeFromAssetPlaylist,
-  removePlaylistFromWorld,
-  shufflePlaylist,
-  updateMedia,
-};
+export { updateMedia } from "./updateMedia.js";
+export { playNextSongInPlaylist } from "./playNextSongInPlaylist.js";

@@ -38,8 +38,6 @@ export const createText = async ({
     },
   });
 
-  console.log(trackAsset);
-
   await trackAsset.updateCustomText(
     {
       textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
