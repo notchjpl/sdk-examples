@@ -1,20 +1,8 @@
-import { publicAPI } from "./publicAPI.js";
-import {
+export { publicAPI } from "./publicAPI.js";
+export {
   getDataObject,
   getDroppedAsset,
   updateTextAsset,
 } from "./droppedAsset.js";
-import { updateLeaderboard } from "./leaderboard.js";
-import { myTopiaInstance, DroppedAsset, User, World } from "./topiaInit.js";
-
-export {
-  getDataObject,
-  getDroppedAsset,
-  publicAPI,
-  myTopiaInstance,
-  updateLeaderboard,
-  updateTextAsset,
-  DroppedAsset,
-  User,
-  World,
-};
+export { updateLeaderboard } from "./leaderboard.js";
+export { myTopiaInstance, DroppedAsset, User, World } from "./topiaInit.js";

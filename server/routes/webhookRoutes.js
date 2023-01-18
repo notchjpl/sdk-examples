@@ -4,13 +4,7 @@ import { playNextSongInPlaylist, updateMedia } from "../apps/jukebox/index.js";
 export default router;
 
 router.post("/playlist/:param?", (req, res) => {
-  const {
-    assetId,
-    dataObject,
-    interactiveNonce,
-    interactivePublicKey,
-    urlSlug,
-  } = req.body;
+  const { assetId, dataObject } = req.body;
 
   if (dataObject && dataObject.action === "track-clicked") {
     if (!dataObject) return;
@@ -18,7 +12,7 @@ router.post("/playlist/:param?", (req, res) => {
 
     let updateObject = req;
     updateObject.body = {
-      urlSlug,
+      ...req.body,
       assetId: jukeboxId,
       videoId,
       videoInfo,
@@ -29,17 +23,11 @@ router.post("/playlist/:param?", (req, res) => {
     let { jukeboxId } = dataObject;
     let updateObject = req;
 
-    updateObject.body = {
-      urlSlug,
-      assetId: jukeboxId,
-    };
+    updateObject.body = { ...req.body, assetId: jukeboxId };
     playNextSongInPlaylist(updateObject);
   } else if (req.params.param === "next") {
     let updateObject = req;
-    updateObject.body = {
-      urlSlug,
-      assetId,
-    };
+    updateObject.body = { ...req.body, assetId };
     playNextSongInPlaylist(updateObject);
   }
 
