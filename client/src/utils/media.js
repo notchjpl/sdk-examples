@@ -1,4 +1,4 @@
-import axios from "axios";
+import backendAPI from "@utils/backendApi";
 // context
 import { setMessage } from "@context";
 
@@ -10,8 +10,8 @@ export const addToAssetPlaylist = async ({
   videoInfo,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  await axios
-    .post("/backend/addtoassetplaylist", {
+  await backendAPI()
+    .post("/addtoassetplaylist", {
       apiKey,
       assetId,
       urlSlug,
@@ -43,7 +43,7 @@ export const removeFromAssetPlaylist = async ({
   urlSlug,
 }) => {
   try {
-    const response = await axios.post("/backend/removefromassetplaylist", {
+    const response = await backendAPI().post("/removefromassetplaylist", {
       apiKey,
       assetId,
       index,
@@ -78,8 +78,8 @@ export const playMediaInAsset = async ({
   videoInfo,
 }) => {
   // If API Key is included in an input, send to backend and overwrite the server's default API Key.
-  await axios
-    .post("/backend/updatemedia", {
+  await backendAPI()
+    .post("/updatemedia", {
       apiKey,
       assetId,
       index,

@@ -31,9 +31,8 @@ export function Playlist({ assetId }) {
   const [dataObject, setDataObject] = React.useState({});
   // context
   const globalDispatch = useGlobalDispatch();
-  const globalState = useGlobalState();
+  const { isInteractiveIframe, urlSlug } = useGlobalState();
 
-  const urlSlug = globalState.urlSlug;
   const apiKey = localStorage.getItem("apiKey");
 
   useEffect(() => {
@@ -56,8 +55,7 @@ export function Playlist({ assetId }) {
   };
 
   const youTubeParser = (url) => {
-    var regExp =
-      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     var match = url.match(regExp);
     return match && match[7].length == 11 ? match[7] : false;
   };
@@ -93,34 +91,36 @@ export function Playlist({ assetId }) {
           <Grid item xs={11}>
             <Typography variant="h4">Playlist</Typography>
           </Grid>
-          <Grid item xs={1}>
-            <Tooltip title="Add Controls to World">
-              <AddBox
-                onClick={() =>
-                  addPlaylistToWorld({
-                    apiKey,
-                    assetId,
-                    globalDispatch,
-                    urlSlug,
-                  })
-                }
-                sx={{ "&:hover": { cursor: "pointer" } }}
-              />
-            </Tooltip>
-            <Tooltip title="Remove Playlist Controls from World">
-              <Remove
-                onClick={() =>
-                  removePlaylistFromWorld({
-                    apiKey,
-                    assetId,
-                    globalDispatch,
-                    urlSlug,
-                  })
-                }
-                sx={{ "&:hover": { cursor: "pointer" } }}
-              />
-            </Tooltip>
-          </Grid>
+          {!isInteractiveIframe && (
+            <Grid item xs={1}>
+              <Tooltip title="Add Controls to World">
+                <AddBox
+                  onClick={() =>
+                    addPlaylistToWorld({
+                      apiKey,
+                      assetId,
+                      globalDispatch,
+                      urlSlug,
+                    })
+                  }
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                />
+              </Tooltip>
+              <Tooltip title="Remove Playlist Controls from World">
+                <Remove
+                  onClick={() =>
+                    removePlaylistFromWorld({
+                      apiKey,
+                      assetId,
+                      globalDispatch,
+                      urlSlug,
+                    })
+                  }
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                />
+              </Tooltip>
+            </Grid>
+          )}
           <Grid alignItems="center" container justifyContent="start">
             <Grid item xs={2}>
               <Controls
