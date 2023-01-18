@@ -6,7 +6,7 @@ import { useTheme } from "@mui/system";
 
 // components
 import { Header } from "../Header";
-import Sidebar from "../Sidebar/Sidebar";
+import { Sidebar } from "../Sidebar";
 import { Alert, Grid, Snackbar, Typography } from "@mui/material";
 
 // context
