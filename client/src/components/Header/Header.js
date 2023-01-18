@@ -23,34 +23,8 @@ import {
   useUserState,
 } from "@context";
 
-export function Header() {
-  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
-  const [urlSlug, setUrlSlug] = useState("");
-  const theme = useTheme();
-
-  // context
-  const globalDispatch = useGlobalDispatch();
-  const userDispatch = useUserDispatch();
-  const { user } = useUserState();
-  const globalState = useGlobalState();
-
-  useEffect(() => {
-    if (apiKey && !user) {
-      fetchUser(apiKey, userDispatch);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setUrlSlug(globalState.urlSlug || "");
-  }, [globalState.urlSlug]);
-
-  const handleUpdateContext = async () => {
-    await fetchUser(apiKey, userDispatch);
-    if (urlSlug) fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
-  };
-
-  const StyledTextField = styled(TextField)(() => ({
+const StyledTextField = styled(TextField)(({ theme }) => {
+  return {
     width: "100%",
     "& .MuiFormLabel-root": {
       color: "white",
@@ -69,7 +43,32 @@ export function Header() {
       color: "white",
       padding: 8,
     },
-  }));
+  };
+});
+
+export function Header() {
+  const { urlSlug: contextUrlSlug } = useGlobalState();
+  const { user } = useUserState();
+
+  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
+  const [urlSlug, setUrlSlug] = useState(contextUrlSlug);
+  const theme = useTheme();
+
+  // context
+  const globalDispatch = useGlobalDispatch();
+  const userDispatch = useUserDispatch();
+
+  useEffect(() => {
+    if (apiKey && !user) {
+      fetchUser(apiKey, userDispatch);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleUpdateContext = async () => {
+    await fetchUser(apiKey, userDispatch);
+    if (urlSlug) fetchWorld({ apiKey, dispatch: globalDispatch, urlSlug });
+  };
 
   return (
     <AppBar
@@ -100,8 +99,12 @@ export function Header() {
                 <StyledTextField
                   id="apiKeyInput"
                   label="API Key"
-                  onChange={(event) => setApiKey(event.target.value)}
+                  onChange={(event) => {
+                    event.preventDefault();
+                    setApiKey(event.target.value);
+                  }}
                   sx={{ width: 320 }}
+                  theme={theme}
                   value={apiKey}
                 />
               </Grid>
@@ -110,7 +113,12 @@ export function Header() {
                   disabled={!apiKey}
                   id="urlSlugInput"
                   label="URL Slug"
-                  onChange={(event) => setUrlSlug(event.target.value)}
+                  onChange={(event) => {
+                    console.log(event.target.value, urlSlug);
+                    event.preventDefault();
+                    setUrlSlug(event.target.value);
+                  }}
+                  theme={theme}
                   value={urlSlug}
                 />
               </Grid>
