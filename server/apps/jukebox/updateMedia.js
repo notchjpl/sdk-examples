@@ -8,8 +8,6 @@ export const updateMedia = async (req, res) => {
     // index is used for saving position in playlist
     const { index, videoId, videoInfo } = req.body;
 
-    console.log("Vid info", videoInfo);
-
     // Remove all timeouts related to this asset.  Going to be problematic if using clustering.
     // TODO: Improve by adding Redis?  Or add webhook firing on media state change in core application, then catch webhook to change song and don't use timeouts.
 

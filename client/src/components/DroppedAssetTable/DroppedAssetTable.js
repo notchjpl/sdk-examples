@@ -43,7 +43,9 @@ export function DroppedAssetTable({
         (assetType === "unique" && asset.uniqueName) ||
         (assetType === "text" && asset.specialType === "text")
       ) {
-        assets.push(asset);
+        // If included a uniqueNamePrefix, don't show assets if they are missing the prefix.
+        if (!uniqueNamePrefix || asset.uniqueName.includes(uniqueNamePrefix))
+          assets.push(asset);
       }
     }
     if (assets.length === 0) {

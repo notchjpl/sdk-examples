@@ -38,7 +38,7 @@ export const createText = async ({
     },
   });
 
-  await trackAsset.updateCustomText(
+  await trackAsset.updateCustomTextAsset(
     {
       textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
       textFontFamily: "Arial",
@@ -66,7 +66,6 @@ export const updateText = async ({
     urlSlug,
   });
 
-  console.log("Updating text");
   const toUpdateAsset = assets?.data?.assets[0];
   if (!toUpdateAsset) return; // No asset to update - controls aren't in world.
   const assetId = toUpdateAsset.id;
@@ -76,7 +75,7 @@ export const updateText = async ({
     });
     // console.log(droppedAsset);
     try {
-      await droppedAsset.updateCustomText(textOptions, text);
+      await droppedAsset.updateCustomTextAsset(textOptions, text);
       if (newDataObject) {
         droppedAsset.updateDroppedAssetDataObject(newDataObject);
       }

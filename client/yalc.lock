@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@rtsdk/topia": {
-      "signature": "016d3fc8fc7614776be65628bec1a9fa"
+      "signature": "f6b47bc32e5cbbbfd85b2a4ca0d63ed2"
     }
   }
 }
