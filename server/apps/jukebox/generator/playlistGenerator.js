@@ -1,7 +1,6 @@
 // TODO: Add 'next page' and 'previous page' buttons to in-world playlist so can browse through the entire playlist
 
 import { getAssetAndDataObject } from "../../../middleware/index.js";
-import { deleteAsset } from "../../../utils/apiCalls.js";
 import { getPlayedCurrentIndex } from "../playlist.js";
 import { addCurrentlyPlaying, addTrack } from "./tracks.js";
 import { addPlaylistFrame, addNextButton } from "./buttons.js";
@@ -116,11 +115,7 @@ export const removePlaylistFromWorld = async (req, res) => {
     isPartial: true,
     uniqueName: `sdk-examples_playlist_${assetId}`,
   });
-  droppedAssets.forEach((item) => {
-    deleteAsset({
-      apiKey,
-      assetId: item.id,
-      urlSlug,
-    });
+  droppedAssets.forEach((droppedAsset) => {
+    droppedAsset.deleteDroppedAsset();
   });
 };
