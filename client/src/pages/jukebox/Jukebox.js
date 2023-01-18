@@ -26,7 +26,7 @@ import { useGlobalState } from "@context";
 
 // components
 import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { Playlist, UniqueAssetTable, YouTubeSearch } from "@components";
+import { DroppedAssetTable, Playlist, YouTubeSearch } from "@components";
 
 export function Jukebox() {
   const [asset, setAsset] = React.useState({});
@@ -59,7 +59,8 @@ export function Jukebox() {
     >
       {!isInteractiveIframe && (
         <Grid item>
-          <UniqueAssetTable
+          <DroppedAssetTable
+            assetType="unique"
             handleChangeAsset={setAsset}
             uniqueNamePrefix="sdk-examples_jukebox"
           />

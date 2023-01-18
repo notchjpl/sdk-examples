@@ -1,4 +1,5 @@
 import { getAssetAndDataObject } from "../middleware/index.js";
+import { DroppedAsset } from "./topiaInit.js";
 
 export const getDroppedAsset = async (req, res) => {
   const { assetId, urlSlug } = req.body;
@@ -22,4 +23,11 @@ export const getDataObject = async (req, res) => {
       .status(502)
       .send({ error: "No dropped asset with that assetId", success: false });
   }
+};
+
+export const updateTextAsset = async (req, res) => {
+  const { assetId, assetText, urlSlug } = req.body;
+  const droppedAsset = DroppedAsset.create(assetId, urlSlug);
+  await droppedAsset.updateCustomTextAsset({}, assetText);
+  return res.json({ success: true });
 };

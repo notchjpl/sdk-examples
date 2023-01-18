@@ -1,6 +1,10 @@
 import express from "express";
 const router = express.Router();
-import { getDataObject, updateLeaderboard } from "../utils/index.js";
+import {
+  getDataObject,
+  updateTextAsset,
+  updateLeaderboard,
+} from "../utils/index.js";
 
 import {
   addPlaylistToWorld,
@@ -24,6 +28,7 @@ router.post("/updatemedia", updateMedia);
 router.post("/addtoassetplaylist", addToAssetPlaylist);
 router.post("/removefromassetplaylist", removeFromAssetPlaylist);
 router.post("/getdataobject", getDataObject);
+router.post("/updatetextasset", updateTextAsset);
 
 router.post("/playlistnext", playNextSongInPlaylist);
 router.post("/shufflePlaylist", shufflePlaylist);

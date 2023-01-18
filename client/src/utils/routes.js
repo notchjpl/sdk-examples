@@ -1,4 +1,5 @@
 import {
+  EditTextAsset,
   Error,
   Home,
   Jukebox,
@@ -41,6 +42,12 @@ export const sidebarRoutes = [
     path: "/replacescene",
     component: ReplaceScene,
     text: "Replace Scene",
+  },
+  {
+    id: "EDIT_TEXT_ASSET",
+    path: "/edittextasset",
+    component: EditTextAsset,
+    text: "Edit Text Asset",
   },
 ];
 

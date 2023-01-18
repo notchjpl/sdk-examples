@@ -57,17 +57,17 @@ export function Header() {
       top: -6,
     },
     "& .MuiInputLabel-shrink": {
-      "background-color": `${theme.palette.secondary.main} !important`,
+      backgroundColor: `${theme.palette.secondary.main} !important`,
       top: 0,
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
     "& input": {
-      padding: 8,
+      backgroundColor: `${theme.palette.secondary.main} !important`,
       border: "1px solid rgba(200,200,200,0.8)",
-      "border-radius": 4,
+      borderRadius: 4,
       color: "white",
-      "background-color": `${theme.palette.secondary.main} !important`,
+      padding: 8,
     },
   }));
 
