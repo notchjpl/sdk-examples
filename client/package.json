@@ -2,7 +2,7 @@
   "name": "sdk-demos",
   "version": "0.1.0",
   "private": true,
-  "config-overrides-path": "./client/config-overrides.js",
+  "config-overrides-path": "/config-overrides.js",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
