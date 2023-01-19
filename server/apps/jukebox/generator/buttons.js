@@ -20,7 +20,7 @@ export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
   frameAsset.updateScale(1.45);
 };
 
-export const addNextButton = async ({ apiKey, id, position, urlSlug }) => {
+export const addNextButton = async ({ id, position, req, urlSlug }) => {
   const nextAsset = await InteractiveAsset({
     id: "8kiBYqfayeJF5TcoUtpK",
     req,
@@ -42,6 +42,7 @@ export const addNextButton = async ({ apiKey, id, position, urlSlug }) => {
     clickableTitle,
     dataObject,
     description,
+    req,
     title,
     droppedAsset: nextAsset,
     urlSlug,

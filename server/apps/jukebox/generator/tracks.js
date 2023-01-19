@@ -37,12 +37,13 @@ export const addTrack = async ({
   const title = "Track clicked";
   const dataObject = { action: "track-clicked", index, jukeboxId: id };
 
-  const clickableTitle = `Track ${index}`;
+  const clickableTitle = `Playing ${trackData.snippet.title}...`;
 
   addWebhookWithClick({
     clickableTitle,
     dataObject,
     description,
+    req,
     title,
     droppedAsset: trackAsset,
     req,

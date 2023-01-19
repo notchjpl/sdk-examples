@@ -49,6 +49,7 @@ export const shufflePlaylist = async (req, res) => {
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true, dataObject });
   } catch (e) {
+    // console.log(e);
     if (res) res.status(502).send({ error, success: false });
   }
 };

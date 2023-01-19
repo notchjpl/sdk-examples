@@ -39,15 +39,16 @@ export const updateText = async ({
   newDataObject,
 }) => {
   const { urlSlug } = req.body;
-  // TODO: Move to SDK
 
   try {
     const world = World.create(urlSlug, { credentials: req.body });
     const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
       uniqueName,
     });
-    await droppedAssets[0].updateCustomTextAsset(textOptions, text);
-    droppedAssets.updateDroppedAssetDataObject(newDataObject);
+    if (droppedAssets && droppedAssets[0]) {
+      await droppedAssets[0].updateCustomTextAsset(textOptions, text);
+      await droppedAssets[0].updateDroppedAssetDataObject(newDataObject);
+    }
   } catch (e) {
     console.log("Can't update.  No asset found", e?.response?.status || e);
   }
