@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { playNextSongInPlaylist, updateMedia } from "../apps/jukebox/index.js";
-import { getAssetAndDataObject } from "../middleware/dataObject.js";
+import { getAssetAndDataObject } from "../utils/index.js";
 export default router;
 
 router.post("/playlist/:param?", async (req, res) => {

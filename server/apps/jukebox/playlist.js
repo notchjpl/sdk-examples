@@ -1,4 +1,4 @@
-import { getAssetAndDataObject } from "../../middleware/index.js";
+import { getAssetAndDataObject } from "../../utils/index.js";
 
 export const addToAssetPlaylist = async (req, res) => {
   // TODO: Look up additional information on YouTube like contentDetails for duration and statistics for play counts.
@@ -49,6 +49,7 @@ export const shufflePlaylist = async (req, res) => {
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true, dataObject });
   } catch (e) {
+    // console.log(e);
     if (res) res.status(502).send({ error, success: false });
   }
 };

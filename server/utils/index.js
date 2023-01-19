@@ -5,4 +5,4 @@ export {
   updateTextAsset,
 } from "./droppedAsset.js";
 export { updateLeaderboard } from "./leaderboard.js";
-export { myTopiaInstance, DroppedAsset, User, World } from "./topiaInit.js";
+export * from "./rtsdk/index.js";

@@ -2,29 +2,25 @@ import { addWebhookWithClick } from "./playlistGenerator.js";
 import { createText, updateText } from "./text.js";
 
 export const addTrack = async ({
-  apiKey,
   id,
   index,
   position,
+  req,
   trackData,
   urlSlug,
   isCurrentlyPlaying,
 }) => {
-  const videoId = trackData.id;
-  const { uniqueEntryId } = trackData;
-  const videoInfo = trackData;
   const offset = 220 + index * 50;
   let pos = {
     x: position ? position.x : 0,
     y: position ? position.y + offset : offset,
   };
   const uniqueName = `sdk-examples_playlist_${id}_track_${index}`;
-  console.log(uniqueName);
 
   const trackAsset = await createText({
-    apiKey,
     isCurrentlyPlaying,
     pos,
+    req,
     text: trackData.snippet.title,
     textSize: 12,
     textWidth: 300,
@@ -39,31 +35,26 @@ export const addTrack = async ({
 
   const description = `Play song by clicking here`;
   const title = "Track clicked";
-  const dataObject = {
-    action: "track-clicked",
-    index,
-    // uniqueEntryId,
-    jukeboxId: id,
-    // videoId,
-    // videoInfo,
-  };
+  const dataObject = { action: "track-clicked", index, jukeboxId: id };
 
-  const clickableTitle = `Track ${index}`;
+  const clickableTitle = `Playing ${trackData.snippet.title}...`;
 
   addWebhookWithClick({
     clickableTitle,
     dataObject,
     description,
+    req,
     title,
     droppedAsset: trackAsset,
+    req,
     urlSlug,
   });
 };
 
 export const addCurrentlyPlaying = ({
-  apiKey,
   id,
   position,
+  req,
   trackData,
   urlSlug,
 }) => {
@@ -73,7 +64,6 @@ export const addCurrentlyPlaying = ({
   const timeString = date.toISOString().substring(11, 19);
 
   const createTextDefault = {
-    apiKey,
     isCurrentlyPlaying: false,
     urlSlug,
   };
@@ -81,6 +71,7 @@ export const addCurrentlyPlaying = ({
   createText({
     ...createTextDefault,
     pos: { x: position.x, y: startingY },
+    req,
     text: "Currently Playing",
     textSize: 40,
     textWidth: 400,
@@ -90,6 +81,7 @@ export const addCurrentlyPlaying = ({
   createText({
     ...createTextDefault,
     pos: { x: position.x, y: startingY + 60 },
+    req,
     text: trackData.snippet.title,
     textSize: 20,
     textWidth: 600,
@@ -99,6 +91,7 @@ export const addCurrentlyPlaying = ({
   createText({
     ...createTextDefault,
     pos: { x: position.x, y: startingY + 100 },
+    req,
     text: `${trackData.snippet.channelTitle} | ${timeString}`,
     textSize: 20,
     textWidth: 600,

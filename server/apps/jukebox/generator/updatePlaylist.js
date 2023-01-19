@@ -32,7 +32,7 @@ export const updatePlaylist = ({
   // Show the previous song at the top if not doing page-based playlist
   // if (currentIndex > 0) currentIndex--;
 
-  const { apiKey, assetId, urlSlug } = req.body;
+  const { assetId, urlSlug } = req.body;
 
   const startIndex = playlistPageShown || 0;
   const start = startIndex * 10;
@@ -49,11 +49,11 @@ export const updatePlaylist = ({
     // if (i < mediaLinkPlaylist.length) {
     if (isAdding)
       addTrack({
-        apiKey,
         id: assetId,
         index, // Put the track currently playing in the top spot
         // index: i - currentIndex, // Put the track currently playing in the top spot.  Only use if not doing page-based
         position: { ...position, y: position.y + addPosOffset },
+        req,
         trackData: mediaLinkPlaylist[videoIndex],
         urlSlug,
         isCurrentlyPlaying: videoIndex === currentPlayedIndex, // Offset as we are putting the previous song as #1.  Only use if not doing page-based
@@ -84,9 +84,9 @@ export const updatePlaylist = ({
   }
   if (isAdding)
     addCurrentlyPlaying({
-      apiKey,
       id: assetId,
       position: { ...position, y: position.y + addPosOffset / 2 },
+      req,
       // trackData: mediaLinkPlaylist[currentIndex + 1], // Only use if not doing page-based playlist
       trackData: mediaLinkPlaylist[currentPlayedIndex],
       urlSlug,
