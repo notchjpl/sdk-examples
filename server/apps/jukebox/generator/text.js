@@ -41,13 +41,17 @@ export const updateText = async ({
   const { urlSlug } = req.body;
 
   try {
+    console.log("Updating", uniqueName);
+    if (!uniqueName) return;
     const world = World.create(urlSlug, { credentials: req.body });
+
     const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
       uniqueName,
     });
     if (droppedAssets && droppedAssets[0]) {
       await droppedAssets[0].updateCustomTextAsset(textOptions, text);
       await droppedAssets[0].updateDroppedAssetDataObject(newDataObject);
+      console.log("Updated", uniqueName);
     }
   } catch (e) {
     console.log("Can't update.  No asset found", e?.response?.status || e);
