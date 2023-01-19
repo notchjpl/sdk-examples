@@ -1,4 +1,4 @@
-import { Asset } from "./index.js";
+import { Asset, DroppedAsset } from "./index.js";
 
 export const InteractiveAsset = async ({
   id,
@@ -10,7 +10,7 @@ export const InteractiveAsset = async ({
   try {
     const asset = Asset.create(id, { credentials: req.body });
 
-    const droppedAsset = await asset.drop({
+    const droppedAsset = await DroppedAsset.drop(asset, {
       position,
       uniqueName,
       urlSlug,
