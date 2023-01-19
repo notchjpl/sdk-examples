@@ -32,7 +32,7 @@ export function Playlist({ assetId }) {
   const [dataObject, setDataObject] = React.useState({});
   // context
   const globalDispatch = useGlobalDispatch();
-  const { isInteractiveIframe, urlSlug } = useGlobalState();
+  const { urlSlug } = useGlobalState();
 
   const apiKey = localStorage.getItem("apiKey");
 
