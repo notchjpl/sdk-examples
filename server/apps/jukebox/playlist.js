@@ -1,4 +1,4 @@
-import { getAssetAndDataObject } from "../../middleware/index.js";
+import { getAssetAndDataObject } from "../../utils/index.js";
 
 export const addToAssetPlaylist = async (req, res) => {
   // TODO: Look up additional information on YouTube like contentDetails for duration and statistics for play counts.

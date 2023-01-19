@@ -32,7 +32,7 @@ export function Playlist({ assetId }) {
   const [dataObject, setDataObject] = React.useState({});
   // context
   const globalDispatch = useGlobalDispatch();
-  const { isInteractiveIframe, urlSlug } = useGlobalState();
+  const { urlSlug } = useGlobalState();
 
   const apiKey = localStorage.getItem("apiKey");
 
@@ -56,7 +56,8 @@ export function Playlist({ assetId }) {
   };
 
   const youTubeParser = (url) => {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var regExp =
+      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     var match = url.match(regExp);
     return match && match[7].length == 11 ? match[7] : false;
   };

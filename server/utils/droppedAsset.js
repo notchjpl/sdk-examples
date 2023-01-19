@@ -1,5 +1,4 @@
-import { getAssetAndDataObject } from "../middleware/index.js";
-import { DroppedAsset } from "./topiaInit.js";
+import { DroppedAsset, getAssetAndDataObject } from "./index.js";
 
 export const getDroppedAsset = async (req, res) => {
   const { assetId, urlSlug } = req.body;
@@ -32,7 +31,10 @@ export const getDataObject = async (req, res) => {
 
 export const updateTextAsset = async (req, res) => {
   const { assetId, assetText, urlSlug } = req.body;
-  const droppedAsset = DroppedAsset.create(assetId, urlSlug);
+  // Doing a create here instead of a .get because don't need all the data inside the dropped asset.
+  const droppedAsset = DroppedAsset.create(assetId, urlSlug, {
+    credentials: req.body,
+  });
   await droppedAsset.updateCustomTextAsset({}, assetText);
   return res.json({ success: true });
 };

@@ -1,12 +1,10 @@
 // TODO: Add 'next page' and 'previous page' buttons to in-world playlist so can browse through the entire playlist
 
-import { getAssetAndDataObject } from "../../../middleware/index.js";
-import { getPlayedCurrentIndex } from "../playlist.js";
-import { addTrack } from "./tracks.js";
+import { getAssetAndDataObject, World } from "../../../utils/index.js";
 import { addPlaylistFrame, addNextButton } from "./buttons.js";
 import { updatePlaylist } from "./updatePlaylist.js";
-import { World } from "../../../utils/topiaInit.js";
 
+// TODO: Change so if in development use one base and if in production, use server path
 const base = "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
 
 // TODO replace Track to change highlighting when it's playing
@@ -31,6 +29,7 @@ export const addPlaylistToWorld = async (req, res) => {
     apiKey,
     id: assetId,
     position: { ...position, y: position.y + addPosOffset },
+    req,
     urlSlug,
   });
   addNextButton({
@@ -56,11 +55,15 @@ export const addWebhookWithClick = async ({
   droppedAsset,
   urlSlug,
 }) => {
-  await droppedAsset.updateClickType({
-    clickType: "link",
-    clickableLink: `https://topia.io`,
-    clickableLinkTitle: clickableTitle,
-  });
+  try {
+    await droppedAsset.updateClickType({
+      clickType: "displayText",
+      headline: clickableTitle,
+      description: "Playing",
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
   // Webhook
   const type = "assetClicked";

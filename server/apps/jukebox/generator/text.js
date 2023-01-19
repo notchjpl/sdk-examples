@@ -1,16 +1,16 @@
-import { Asset, World } from "../../../utils/topiaInit.js";
+import { InteractiveAsset, World } from "../../../utils/index.js";
 
 export const createText = async ({
-  apiKey,
   isCurrentlyPlaying,
   pos,
+  req,
   text,
   textSize,
   textWidth,
   uniqueName,
   urlSlug,
 }) => {
-  const asset = Asset.create("rXLgzCs1wxpx96YLZAN5");
+  const asset = await InteractiveAsset({ id: "rXLgzCs1wxpx96YLZAN5", req });
   const trackAsset = await asset.drop({
     position: pos,
     uniqueName,

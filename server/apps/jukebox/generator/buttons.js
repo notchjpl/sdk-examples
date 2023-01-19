@@ -1,8 +1,9 @@
 import { addWebhookWithClick } from "./playlistGenerator.js";
-import { Asset } from "../../../utils/topiaInit.js";
+import { InteractiveAsset } from "../../../utils/index.js";
+import req from "express/lib/request.js";
 
-export const addPlaylistFrame = async ({ id, position, urlSlug }) => {
-  const asset = Asset.create("lldvC2nqOzMXmgqmZJ8f");
+export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
+  const asset = await InteractiveAsset({ id: "lldvC2nqOzMXmgqmZJ8f", req });
   const frameAsset = await asset.drop({
     position: {
       x: position ? position.x : 0,
@@ -18,7 +19,7 @@ export const addPlaylistFrame = async ({ id, position, urlSlug }) => {
 };
 
 export const addNextButton = async ({ apiKey, id, position, urlSlug }) => {
-  const asset = Asset.create("8kiBYqfayeJF5TcoUtpK");
+  const asset = await InteractiveAsset({ id: "8kiBYqfayeJF5TcoUtpK", req });
   const nextAsset = await asset.drop({
     position: {
       x: position ? position.x + 400 : 400,
@@ -32,7 +33,7 @@ export const addNextButton = async ({ apiKey, id, position, urlSlug }) => {
   const title = "Next clicked";
   const dataObject = { action: "next-clicked", jukeboxId: id };
 
-  const clickableTitle = `Next click`;
+  const clickableTitle = `Next clicked`;
 
   addWebhookWithClick({
     clickableTitle,
