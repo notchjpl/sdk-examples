@@ -58,7 +58,7 @@ export const addWebhookWithClick = async ({
     await droppedAsset.updateClickType({
       clickType: "displayText",
       clickableDisplayTextHeadline: clickableTitle,
-      // clickableDisplayTextDescription: "Playing",
+      clickableDisplayTextDescription: "-",
     });
   } catch (e) {
     console.log(e);
