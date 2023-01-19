@@ -55,6 +55,7 @@ export const addWebhookWithClick = async ({
   urlSlug,
 }) => {
   try {
+    if (droppedAsset && droppedAsset.updateClickType) {
     await droppedAsset.updateClickType({
       clickType: "displayText",
       clickableDisplayTextHeadline: clickableTitle,
@@ -80,6 +81,7 @@ export const addWebhookWithClick = async ({
       url,
       urlSlug,
     });
+  } else throw("No asset found", )
   } catch (e) {
     console.log("Error", e);
   }
@@ -93,6 +95,7 @@ export const removePlaylistFromWorld = async (req, res) => {
       isPartial: true,
       uniqueName: `sdk-examples_playlist_${assetId}`,
     });
+    if (droppedAssets && droppedAssets.length)
     droppedAssets.forEach((droppedAsset) => {
       droppedAsset.deleteDroppedAsset();
     });
