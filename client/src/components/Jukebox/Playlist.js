@@ -100,36 +100,34 @@ export function Playlist({ assetId }) {
           <Grid item xs={11}>
             <Typography variant="h4">Playlist</Typography>
           </Grid>
-          {!isInteractiveIframe && (
-            <Grid item xs={1}>
-              <Tooltip title="Add Controls to World">
-                <AddBox
-                  onClick={() =>
-                    addPlaylistToWorld({
-                      apiKey,
-                      assetId,
-                      globalDispatch,
-                      urlSlug,
-                    })
-                  }
-                  sx={{ "&:hover": { cursor: "pointer" } }}
-                />
-              </Tooltip>
-              <Tooltip title="Remove Playlist Controls from World">
-                <Remove
-                  onClick={() =>
-                    removePlaylistFromWorld({
-                      apiKey,
-                      assetId,
-                      globalDispatch,
-                      urlSlug,
-                    })
-                  }
-                  sx={{ "&:hover": { cursor: "pointer" } }}
-                />
-              </Tooltip>
-            </Grid>
-          )}
+          <Grid item xs={1}>
+            <Tooltip title="Add Controls to World">
+              <AddBox
+                onClick={() =>
+                  addPlaylistToWorld({
+                    apiKey,
+                    assetId,
+                    globalDispatch,
+                    urlSlug,
+                  })
+                }
+                sx={{ "&:hover": { cursor: "pointer" } }}
+              />
+            </Tooltip>
+            <Tooltip title="Remove Playlist Controls from World">
+              <Remove
+                onClick={() =>
+                  removePlaylistFromWorld({
+                    apiKey,
+                    assetId,
+                    globalDispatch,
+                    urlSlug,
+                  })
+                }
+                sx={{ "&:hover": { cursor: "pointer" } }}
+              />
+            </Tooltip>
+          </Grid>
           <Grid alignItems="center" container justifyContent="start">
             <Grid item xs={2}>
               <Controls
