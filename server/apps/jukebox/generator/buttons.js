@@ -3,8 +3,9 @@ import { InteractiveAsset } from "../../../utils/index.js";
 import req from "express/lib/request.js";
 
 export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
-  const asset = await InteractiveAsset({ id: "lldvC2nqOzMXmgqmZJ8f", req });
-  const frameAsset = await asset.drop({
+  const frameAsset = await InteractiveAsset({
+    id: "lldvC2nqOzMXmgqmZJ8f",
+    req,
     position: {
       x: position ? position.x : 0,
       y: position ? position.y + 450 : 450,
@@ -12,6 +13,7 @@ export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
     uniqueName: `sdk-examples_playlist_${id}_frame`,
     urlSlug,
   });
+
   // await frameAsset.fetchDroppedAssetById();
   // await frameAsset.fetchDroppedAssetDataObject();
 
@@ -19,8 +21,9 @@ export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
 };
 
 export const addNextButton = async ({ apiKey, id, position, urlSlug }) => {
-  const asset = await InteractiveAsset({ id: "8kiBYqfayeJF5TcoUtpK", req });
-  const nextAsset = await asset.drop({
+  const nextAsset = await InteractiveAsset({
+    id: "8kiBYqfayeJF5TcoUtpK",
+    req,
     position: {
       x: position ? position.x + 400 : 400,
       y: position ? position.y + 450 : 450,

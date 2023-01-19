@@ -10,8 +10,9 @@ export const createText = async ({
   uniqueName,
   urlSlug,
 }) => {
-  const asset = await InteractiveAsset({ id: "rXLgzCs1wxpx96YLZAN5", req });
-  const trackAsset = await asset.drop({
+  const trackAsset = await InteractiveAsset({
+    id: "rXLgzCs1wxpx96YLZAN5",
+    req,
     position: pos,
     uniqueName,
     urlSlug,
@@ -37,7 +38,7 @@ export const updateText = async ({
   uniqueName,
   newDataObject,
 }) => {
-  const { apiKey, urlSlug } = req.body;
+  const { urlSlug } = req.body;
   // TODO: Move to SDK
 
   try {
@@ -46,6 +47,7 @@ export const updateText = async ({
       uniqueName,
     });
     await droppedAssets[0].updateCustomTextAsset(textOptions, text);
+    droppedAssets.updateDroppedAssetDataObject(newDataObject);
   } catch (e) {
     console.log("Can't update.  No asset found", e?.response?.status || e);
   }

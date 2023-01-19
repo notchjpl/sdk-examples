@@ -2,7 +2,6 @@ import { addWebhookWithClick } from "./playlistGenerator.js";
 import { createText, updateText } from "./text.js";
 
 export const addTrack = async ({
-  apiKey,
   id,
   index,
   position,
@@ -19,7 +18,6 @@ export const addTrack = async ({
   const uniqueName = `sdk-examples_playlist_${id}_track_${index}`;
 
   const trackAsset = await createText({
-    apiKey,
     isCurrentlyPlaying,
     pos,
     req,
@@ -53,7 +51,6 @@ export const addTrack = async ({
 };
 
 export const addCurrentlyPlaying = ({
-  apiKey,
   id,
   position,
   req,
@@ -66,7 +63,6 @@ export const addCurrentlyPlaying = ({
   const timeString = date.toISOString().substring(11, 19);
 
   const createTextDefault = {
-    apiKey,
     isCurrentlyPlaying: false,
     urlSlug,
   };
