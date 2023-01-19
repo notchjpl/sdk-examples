@@ -56,32 +56,32 @@ export const addWebhookWithClick = async ({
 }) => {
   try {
     if (droppedAsset && droppedAsset.updateClickType) {
-    await droppedAsset.updateClickType({
-      clickType: "displayText",
-      clickableDisplayTextHeadline: clickableTitle,
-      clickableDisplayTextDescription: "-",
-    });
+      await droppedAsset.updateClickType({
+        clickType: "displayText",
+        clickableDisplayTextHeadline: clickableTitle,
+        clickableDisplayTextDescription: "-",
+      });
 
-    // Webhook
-    const type = "assetClicked";
-    const base =
-      process.env.NODE_ENV === "production"
-        ? req.protocol + "://" + req.get("host")
-        : "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
-    const url = `${base}/webhooks/playlist`;
+      // Webhook
+      const type = "assetClicked";
+      const base =
+        process.env.NODE_ENV === "production"
+          ? req.protocol + "://" + req.get("host")
+          : "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
+      const url = `${base}/webhooks/playlist`;
 
-    console.log("Webhook base", base);
+      console.log("Webhook base", base);
 
-    await droppedAsset.addWebhook({
-      isUniqueOnly: false,
-      dataObject,
-      description,
-      title,
-      type,
-      url,
-      urlSlug,
-    });
-  } else throw("No asset found", )
+      await droppedAsset.addWebhook({
+        isUniqueOnly: false,
+        dataObject,
+        description,
+        title,
+        type,
+        url,
+        urlSlug,
+      });
+    } else throw "No asset found";
   } catch (e) {
     console.log("Error", e);
   }
@@ -96,9 +96,9 @@ export const removePlaylistFromWorld = async (req, res) => {
       uniqueName: `sdk-examples_playlist_${assetId}`,
     });
     if (droppedAssets && droppedAssets.length)
-    droppedAssets.forEach((droppedAsset) => {
-      droppedAsset.deleteDroppedAsset();
-    });
+      droppedAssets.forEach((droppedAsset) => {
+        droppedAsset.deleteDroppedAsset();
+      });
   } catch (e) {
     console.log("No unique names", e?.response?.status || e);
   }
