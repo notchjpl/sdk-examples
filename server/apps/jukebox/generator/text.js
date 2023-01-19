@@ -1,17 +1,18 @@
-import { Asset, World } from "../../../utils/topiaInit.js";
+import { InteractiveAsset, World } from "../../../utils/index.js";
 
 export const createText = async ({
-  apiKey,
   isCurrentlyPlaying,
   pos,
+  req,
   text,
   textSize,
   textWidth,
   uniqueName,
   urlSlug,
 }) => {
-  const asset = Asset.create("rXLgzCs1wxpx96YLZAN5");
-  const trackAsset = await asset.drop({
+  const trackAsset = await InteractiveAsset({
+    id: "rXLgzCs1wxpx96YLZAN5",
+    req,
     position: pos,
     uniqueName,
     urlSlug,
@@ -37,15 +38,17 @@ export const updateText = async ({
   uniqueName,
   newDataObject,
 }) => {
-  const { apiKey, urlSlug } = req.body;
-  // TODO: Move to SDK
+  const { urlSlug } = req.body;
 
   try {
     const world = World.create(urlSlug, { credentials: req.body });
     const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
       uniqueName,
     });
-    await droppedAssets[0].updateCustomTextAsset(textOptions, text);
+    if (droppedAssets && droppedAssets[0]) {
+      await droppedAssets[0].updateCustomTextAsset(textOptions, text);
+      await droppedAssets[0].updateDroppedAssetDataObject(newDataObject);
+    }
   } catch (e) {
     console.log("Can't update.  No asset found", e?.response?.status || e);
   }

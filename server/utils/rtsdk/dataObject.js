@@ -1,4 +1,4 @@
-import { DroppedAsset } from "../utils/index.js";
+import { DroppedAsset } from "./index.js";
 
 // Middleware to get the asset and object
 export const getAssetAndDataObject = async (req) => {

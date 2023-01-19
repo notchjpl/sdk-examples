@@ -36,14 +36,26 @@ export function DroppedAssetTable({
 
   const handleFetchAssets = async () => {
     const assets = [];
+    // try {
+    //   if (uniqueNamePrefix) {
+    //     await selectedWorld.fetchDroppedAssetsWithUniqueName({
+    //       isPartial: true,
+    //       uniqueName: uniqueNamePrefix,
+    //     });
+    //   } else {
     await selectedWorld.fetchDroppedAssets();
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
     for (const asset of Object.values(selectedWorld.droppedAssets)) {
       // TODO: Should be able to only pull assets by unique name prefix to select relevant assets rather than doing this filter.
       if (
         (assetType === "unique" && asset.uniqueName) ||
         (assetType === "text" && asset.specialType === "text")
       ) {
-        assets.push(asset);
+        if (!uniqueNamePrefix || asset.uniqueName.includes(uniqueNamePrefix))
+          assets.push(asset);
       }
     }
     if (assets.length === 0) {

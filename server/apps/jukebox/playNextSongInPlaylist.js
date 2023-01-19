@@ -1,4 +1,4 @@
-import { getAssetAndDataObject } from "../../middleware/index.js";
+import { getAssetAndDataObject } from "../../utils/index.js";
 import { updateMedia } from "./index.js";
 import { getPlayedCurrentIndex } from "./playlist.js";
 
