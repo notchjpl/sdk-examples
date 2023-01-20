@@ -12,10 +12,10 @@
     open "^7.0.3"
     server-destroy "^1.0.1"
 
-"@rtsdk/topia@^0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@rtsdk/topia/-/topia-0.0.19.tgz#d631b6ba61837d08b6ebde103931e37ea9ca67fd"
-  integrity sha512-z0e0/rx+5TzfgoSJ/ZWHiw7hUDn45Q8ii2LCghLgcetMGD+/Wdcw1j97iE3X+i2gJu+7JF8uzVoT5mXf612buQ==
+"@rtsdk/topia@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@rtsdk/topia/-/topia-0.0.20.tgz#d4c28a7865fb8f0730b2f09a85726cc71f8b33e4"
+  integrity sha512-AW3t3jktyRWT+Fv6nwveTXP5LKgH+eYpAOrRPG8vuVrLtA2QSc7SEL3H73566ht22wamjHB+PLix84JmpN44sA==
 
 accepts@~1.3.8:
   version "1.3.8"
