@@ -21,7 +21,7 @@ export const addTrack = async ({
     isCurrentlyPlaying,
     pos,
     req,
-    text: trackData.snippet.title,
+    text: trackData?.snippet?.title,
     textSize: 12,
     textWidth: 300,
     uniqueName,
@@ -37,7 +37,7 @@ export const addTrack = async ({
   const title = "Track clicked";
   const dataObject = { action: "track-clicked", index, jukeboxId: id };
 
-  const clickableTitle = `Playing ${trackData.snippet.title}...`;
+  const clickableTitle = `Playing ${trackData?.snippet?.title}...`;
 
   addWebhookWithClick({
     clickableTitle,
@@ -82,7 +82,7 @@ export const addCurrentlyPlaying = ({
     ...createTextDefault,
     pos: { x: position.x, y: startingY + 60 },
     req,
-    text: trackData.snippet.title,
+    text: trackData?.snippet?.title,
     textSize: 20,
     textWidth: 600,
     uniqueName: `sdk-examples_playlist_${id}_playing_title`,
@@ -92,7 +92,7 @@ export const addCurrentlyPlaying = ({
     ...createTextDefault,
     pos: { x: position.x, y: startingY + 100 },
     req,
-    text: `${trackData.snippet.channelTitle} | ${timeString}`,
+    text: `${trackData?.snippet?.channelTitle} | ${timeString}`,
     textSize: 20,
     textWidth: 600,
     uniqueName: `sdk-examples_playlist_${id}_playing_subtitle`,
@@ -109,13 +109,13 @@ export const updateCurrentlyPlaying = ({ id, req, trackData }) => {
 
   updateText({
     ...updateTextDefault,
-    text: `${trackData.snippet.title}`,
+    text: `${trackData?.snippet?.title}`,
     uniqueName: `sdk-examples_playlist_${id}_playing_title`,
   });
 
   updateText({
     ...updateTextDefault,
-    text: `${trackData.snippet.channelTitle} | ${timeString}`,
+    text: `${trackData?.snippet?.channelTitle} | ${timeString}`,
     uniqueName: `sdk-examples_playlist_${id}_playing_subtitle`,
   });
 };
