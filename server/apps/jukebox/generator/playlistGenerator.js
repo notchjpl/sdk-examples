@@ -7,38 +7,38 @@ import { updatePlaylist } from "./updatePlaylist.js";
 // TODO replace Track to change highlighting when it's playing
 
 export const addPlaylistToWorld = async (req, res) => {
-  const jukeboxAsset = await getAssetAndDataObject(req);
-  const { apiKey, assetId, urlSlug } = req.body;
-
-  const { dataObject, position } = jukeboxAsset;
-
-  const addPosOffset = 150; // Where to start adding the in-world assets below jukebox
-  updatePlaylist({
-    addPosOffset,
-    dataObject,
-    isAdding: true,
-    position,
-    req,
-    // req: { ...req, body: { ...req.body, assetId: jukeboxAsset.id } },
-  });
-
-  addPlaylistFrame({
-    apiKey,
-    id: assetId,
-    position: { ...position, y: position.y + addPosOffset },
-    req,
-    urlSlug,
-  });
-  addNextButton({
-    apiKey,
-    id: assetId,
-    position: { ...position, y: position.y + addPosOffset },
-    req,
-    urlSlug,
-  });
-
-  if (res) res.send("Success");
   try {
+    const jukeboxAsset = await getAssetAndDataObject(req);
+    const { apiKey, assetId, urlSlug } = req.body;
+
+    const { dataObject, position } = jukeboxAsset;
+
+    const addPosOffset = 150; // Where to start adding the in-world assets below jukebox
+    updatePlaylist({
+      addPosOffset,
+      dataObject,
+      isAdding: true,
+      position,
+      req,
+      // req: { ...req, body: { ...req.body, assetId: jukeboxAsset.id } },
+    });
+
+    addPlaylistFrame({
+      apiKey,
+      id: assetId,
+      position: { ...position, y: position.y + addPosOffset },
+      req,
+      urlSlug,
+    });
+    addNextButton({
+      apiKey,
+      id: assetId,
+      position: { ...position, y: position.y + addPosOffset },
+      req,
+      urlSlug,
+    });
+
+    if (res) res.send("Success");
   } catch (e) {
     // console.log(e);
     if (res) res.status(403).send(e);

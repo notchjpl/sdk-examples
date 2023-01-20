@@ -10,25 +10,29 @@ export const createText = async ({
   uniqueName,
   urlSlug,
 }) => {
-  const trackAsset = await InteractiveAsset({
-    id: "rXLgzCs1wxpx96YLZAN5",
-    req,
-    position: pos,
-    uniqueName,
-    urlSlug,
-  });
+  try {
+    const trackAsset = await InteractiveAsset({
+      id: "rXLgzCs1wxpx96YLZAN5",
+      req,
+      position: pos,
+      uniqueName,
+      urlSlug,
+    });
 
-  await trackAsset.updateCustomTextAsset(
-    {
-      textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
-      textFontFamily: "Arial",
-      textSize,
-      textWeight: "normal",
-      textWidth,
-    },
-    text
-  );
-  return trackAsset;
+    await trackAsset.updateCustomTextAsset(
+      {
+        textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
+        textFontFamily: "Arial",
+        textSize,
+        textWeight: "normal",
+        textWidth,
+      },
+      text
+    );
+    return trackAsset;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const updateText = async ({
