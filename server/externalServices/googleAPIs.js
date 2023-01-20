@@ -31,7 +31,8 @@ const youtube = google.youtube("v3");
 
 const cleanYoutubeVideo = (item) => {
   let cleaned = item;
-  cleaned.duration = YTDurationToMilliseconds(item.contentDetails.duration);
+
+  cleaned.duration = YTDurationToMilliseconds(item?.contentDetails?.duration);
   cleaned.viewCount = item.statistics.viewCount;
   // Get rid of unnecessary information to reduce payloads
   delete cleaned.contentDetails;

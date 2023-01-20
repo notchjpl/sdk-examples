@@ -10,6 +10,7 @@ import { getPlayedCurrentIndex } from "../playlist.js";
 export const updatePlaylist = ({
   addPosOffset, // Only included when adding, not updating
   dataObject,
+  dontUpdateCurrentlyPlaying,
   position, // Only included when adding, not updating
   req,
   isAdding,
