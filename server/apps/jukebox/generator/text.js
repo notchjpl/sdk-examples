@@ -41,7 +41,6 @@ export const updateText = async ({
   const { urlSlug } = req.body;
 
   try {
-    console.log("Updating", uniqueName);
     if (!uniqueName) return;
     const world = World.create(urlSlug, { credentials: req.body });
 
