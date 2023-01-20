@@ -29,6 +29,9 @@ export const updateMedia = async (req, res) => {
       isVideo: true,
       mediaName: videoInfo?.snippet?.title, // Will only change media name if one is sent from the frontend.
       mediaType: "link",
+      audioRadius: droppedAsset.audioRadius || 2,
+      audioVolume: droppedAsset.audioVolume || 50,
+      syncUserMedia: droppedAsset.syncUserMedia || true,
     });
 
     dataObject.lastPlayTimestamp = new Date().valueOf();
