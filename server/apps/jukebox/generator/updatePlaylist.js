@@ -42,7 +42,10 @@ export const updatePlaylist = ({
 
     // // Loop around to beginning of playlist if current index is near the end
     if (i > mediaLinkPlaylist.length - 1) {
+      return;
+
       videoIndex = i - mediaLinkPlaylist.length;
+      if (!mediaLinkPlaylist[videoIndex]) return;
     }
 
     // End of playlist
