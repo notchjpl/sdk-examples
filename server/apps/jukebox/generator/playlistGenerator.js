@@ -66,11 +66,9 @@ export const addWebhookWithClick = async ({
       const type = "assetClicked";
       const base =
         process.env.NODE_ENV === "production"
-          ? req.protocol + "://" + req.get("host")
+          ? "https://" + req.get("host")
           : "https://833b-2603-8000-c001-4f05-882c-4e07-848c-f2f1.ngrok.io";
       const url = `${base}/webhooks/playlist`;
-
-      console.log("Webhook base", base);
 
       await droppedAsset.addWebhook({
         isUniqueOnly: false,

@@ -79,7 +79,7 @@ export const updatePlaylist = ({
           textWidth: 300,
         },
         req,
-        text: mediaLinkPlaylist[videoIndex].snippet.title,
+        text: mediaLinkPlaylist[videoIndex]?.snippet?.title,
         uniqueName: `sdk-examples_playlist_${assetId}_track_${index}`,
       });
 
