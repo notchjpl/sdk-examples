@@ -34,17 +34,19 @@ export const updatePlaylist = ({
 
   const { assetId, urlSlug } = req.body;
 
-  // Adds currently playing
-  if (isAdding)
-    addCurrentlyPlaying({
-      id: assetId,
-      position: { ...position, y: position.y + addPosOffset / 2 },
-      req,
-      // trackData: mediaLinkPlaylist[currentIndex + 1], // Only use if not doing page-based playlist
-      trackData: mediaLinkPlaylist[currentPlayedIndex],
-      urlSlug,
-    });
-  else updateCurrentlyPlaying({ id: assetId, req, trackData: videoInfo });
+  if (!dontUpdateCurrentlyPlaying) {
+    // Adds currently playing
+    if (isAdding)
+      addCurrentlyPlaying({
+        id: assetId,
+        position: { ...position, y: position.y + addPosOffset / 2 },
+        req,
+        // trackData: mediaLinkPlaylist[currentIndex + 1], // Only use if not doing page-based playlist
+        trackData: mediaLinkPlaylist[currentPlayedIndex],
+        urlSlug,
+      });
+    else updateCurrentlyPlaying({ id: assetId, req, trackData: videoInfo });
+  }
 
   // Add tracks
   const startIndex = playlistPageShown || 0;
