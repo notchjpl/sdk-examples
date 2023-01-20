@@ -21,7 +21,7 @@ export const addTrack = async ({
     isCurrentlyPlaying,
     pos,
     req,
-    text: trackData?.snippet?.title,
+    text: trackData?.snippet?.title || "-",
     textSize: 12,
     textWidth: 300,
     uniqueName,

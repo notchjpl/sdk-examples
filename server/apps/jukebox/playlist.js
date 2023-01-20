@@ -1,4 +1,5 @@
 import { getAssetAndDataObject } from "../../utils/index.js";
+import { updatePlaylist } from "./updatePlaylist.js";
 
 export const addToAssetPlaylist = async (req, res) => {
   // TODO: Look up additional information on YouTube like contentDetails for duration and statistics for play counts.
@@ -17,6 +18,14 @@ export const addToAssetPlaylist = async (req, res) => {
     });
 
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
+    updatePlaylist({
+      dataObject,
+      isAdding: false, // Updating instead of adding
+      position: droppedAsset.position,
+      req: { ...req, body: { ...req.body, assetId: droppedAsset.id } },
+      videoInfo,
+      dontUpdateCurrentlyPlaying: true,
+    });
     res.json({ success: true, assetId, dataObject });
   } catch (error) {
     console.log(error);
