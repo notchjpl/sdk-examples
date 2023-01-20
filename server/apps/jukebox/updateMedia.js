@@ -30,7 +30,7 @@ export const updateMedia = async (req, res) => {
       isVideo: true,
       mediaName: videoInfo?.snippet?.title, // Will only change media name if one is sent from the frontend.
       mediaType: "link",
-      audioRadius: 2,
+      audioRadius: droppedAsset.audioRadius || 2,
       syncUserMedia: true,
     });
 
