@@ -56,6 +56,7 @@ export const updateText = async ({
       await droppedAssets[0].updateDroppedAssetDataObject(newDataObject);
     }
   } catch (e) {
-    console.log("Error updating text", e?.response?.status || e);
+    // Don't need this console log.  Include it for dx, but it'll hit pretty frequently.
+    // console.log("Error updating text", e?.response?.status || e);
   }
 };

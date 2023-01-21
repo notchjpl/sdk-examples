@@ -43,6 +43,7 @@ export const updateTextAsset = async (req, res) => {
     await droppedAsset.updateCustomTextAsset({}, assetText);
     return res.json({ success: true });
   } catch (e) {
-    console.log("Error updating text asset", e);
+    // Don't need this console log.  Include it for dx, but it'll hit pretty frequently.
+    // console.log("Error updating text asset", e);
   }
 };

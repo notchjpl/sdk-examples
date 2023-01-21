@@ -29,9 +29,9 @@ export const updateMedia = async (req, res) => {
       isVideo: true,
       mediaName: videoInfo?.snippet?.title, // Will only change media name if one is sent from the frontend.
       mediaType: "link",
-      audioSliderVolume: droppedAsset.audioSliderVolume || 20,
-      audioRadius: droppedAsset.audioRadius || 2,
-      syncUserMedia: true,
+      audioSliderVolume: droppedAsset.audioSliderVolume || 10, // Between 0 and 100
+      audioRadius: droppedAsset.audioRadius || 2, // Far
+      syncUserMedia: true, // Make it so everyone has the video synced instead of it playing from the beginning when they approach.
     });
 
     dataObject.lastPlayTimestamp = new Date().valueOf();

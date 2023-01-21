@@ -63,6 +63,11 @@ export const playNextSongInPlaylist = async (req, res) => {
         console.log("Update is properly locked due to mutex");
         return;
       }
+    } else {
+      console.log(
+        "Cannot play next song in playlist with data object",
+        dataObject
+      );
     }
   } catch (e) {
     console.log("Error playing next song in playlist", e);
