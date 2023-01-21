@@ -2,11 +2,15 @@ import { DroppedAsset, getAssetAndDataObject } from "./index.js";
 
 export const getDroppedAsset = async (req, res) => {
   const { assetId, urlSlug } = req.body;
-  const droppedAsset = await getAsset({
-    assetId,
-    urlSlug,
-  });
-  res.json(droppedAsset);
+  try {
+    const droppedAsset = await getAsset({
+      assetId,
+      urlSlug,
+    });
+    res.json(droppedAsset);
+  } catch (e) {
+    console.log("Error getting dropped asset", e);
+  }
 };
 
 export const getDataObject = async (req, res) => {
@@ -30,11 +34,15 @@ export const getDataObject = async (req, res) => {
 };
 
 export const updateTextAsset = async (req, res) => {
-  const { assetId, assetText, urlSlug } = req.body;
-  // Doing a create here instead of a .get because don't need all the data inside the dropped asset.
-  const droppedAsset = DroppedAsset.create(assetId, urlSlug, {
-    credentials: req.body,
-  });
-  await droppedAsset.updateCustomTextAsset({}, assetText);
-  return res.json({ success: true });
+  try {
+    const { assetId, assetText, urlSlug } = req.body;
+    // Doing a create here instead of a .get because don't need all the data inside the dropped asset.
+    const droppedAsset = DroppedAsset.create(assetId, urlSlug, {
+      credentials: req.body,
+    });
+    await droppedAsset.updateCustomTextAsset({}, assetText);
+    return res.json({ success: true });
+  } catch (e) {
+    console.log("Error updating text asset", e);
+  }
 };
