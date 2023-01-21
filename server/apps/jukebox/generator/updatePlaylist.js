@@ -44,7 +44,9 @@ export const updatePlaylist = ({
           position: { ...position, y: position.y + addPosOffset / 2 },
           req,
           // trackData: mediaLinkPlaylist[currentIndex + 1], // Only use if not doing page-based playlist
-          trackData: mediaLinkPlaylist[currentPlayedIndex],
+          trackData: mediaLinkPlaylist
+            ? mediaLinkPlaylist[currentPlayedIndex]
+            : null,
           urlSlug,
         });
       else updateCurrentlyPlaying({ id: assetId, req, trackData: videoInfo });
@@ -57,13 +59,13 @@ export const updatePlaylist = ({
       let videoIndex = i;
       const index = i - start; // Grab the right asset in the playlist
 
-      // // Loop around to beginning of playlist if current index is near the end
-      if (i > mediaLinkPlaylist.length - 1) {
-        return;
+      // // // Loop around to beginning of playlist if current index is near the end
+      // if (i > mediaLinkPlaylist.length - 1) {
+      //   return;
 
-        videoIndex = i - mediaLinkPlaylist.length;
-        if (!mediaLinkPlaylist[videoIndex]) return;
-      }
+      //   videoIndex = i - mediaLinkPlaylist.length;
+      //   if (!mediaLinkPlaylist[videoIndex]) return;
+      // }
 
       // End of playlist
       // if (i < mediaLinkPlaylist.length) {
@@ -74,7 +76,7 @@ export const updatePlaylist = ({
           // index: i - currentIndex, // Put the track currently playing in the top spot.  Only use if not doing page-based
           position: { ...position, y: position.y + addPosOffset },
           req,
-          trackData: mediaLinkPlaylist[videoIndex],
+          trackData: mediaLinkPlaylist ? mediaLinkPlaylist[videoIndex] : null,
           urlSlug,
           isCurrentlyPlaying: videoIndex === currentPlayedIndex, // Offset as we are putting the previous song as #1.  Only use if not doing page-based
           // isCurrentlyPlaying: i === currentIndex + 1, // Offset as we are putting the previous song as #1.  Only use if not doing page-based
