@@ -92,3 +92,59 @@ export const volumeUp = async (req, res) => {
     console.log("Error increasing volume", e);
   }
 };
+
+export const nextPage = async (req, res) => {
+  turnPage(req, res, "next");
+};
+
+export const previousPage = async (req, res) => {
+  turnPage(req, res, "previous");
+};
+
+const turnPage = async (req, res, direction) => {
+  try {
+    const { assetId } = req.body;
+    const droppedAsset = await getAssetAndDataObject(req);
+    let { dataObject } = droppedAsset;
+
+    const { mediaLinkPlaylist } = dataObject;
+    dataObject.playlistPageShown = dataObject.playlistPageShown || 0;
+
+    if (direction === "next") {
+      // Check if should cycle back to first page
+      if (
+        mediaLinkPlaylist?.length &&
+        // If 15 tracks, will be 0.5, which if page is 0, will be true and turn page.
+        mediaLinkPlaylist.length / 10 - 1 > dataObject.playlistPageShown
+      )
+        dataObject.playlistPageShown++;
+      else {
+        dataObject.playlistPageShown = 0;
+      }
+    } else if (direction === "previous") {
+      if (!mediaLinkPlaylist?.length) return; // No playlist, don't do anything
+      if (mediaLinkPlaylist?.length && dataObject.playlistPageShown === 0)
+        // Round down to nearest integer
+        dataObject.playlistPageShown = Math.floor(
+          mediaLinkPlaylist.length / 10
+        );
+      else {
+        // If not on the 0 page, decrease page
+        dataObject.playlistPageShown--;
+      }
+    }
+
+    await droppedAsset.updateDroppedAssetDataObject(dataObject);
+    updatePlaylist({
+      dataObject,
+      isAdding: false,
+      position: droppedAsset.position,
+      req: { ...req, body: { ...req.body, assetId: droppedAsset.id } },
+      dontUpdateCurrentlyPlaying: true,
+    });
+    if (res) res.json({ success: true, assetId, dataObject });
+  } catch (error) {
+    console.log("Error going to next page", error);
+    if (res) res.status(502).send({ error, success: false });
+  }
+};
