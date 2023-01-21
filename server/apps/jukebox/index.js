@@ -5,6 +5,8 @@ export {
 export { updatePlaylist } from "./generator/updatePlaylist.js";
 export {
   addToAssetPlaylist,
+  nextPage,
+  previousPage,
   removeFromAssetPlaylist,
   shufflePlaylist,
   volumeDown,

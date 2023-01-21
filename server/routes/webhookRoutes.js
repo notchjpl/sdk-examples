@@ -1,6 +1,11 @@
 import express from "express";
 const router = express.Router();
-import { playNextSongInPlaylist, updateMedia } from "../apps/jukebox/index.js";
+import {
+  nextPage,
+  previousPage,
+  playNextSongInPlaylist,
+  updateMedia,
+} from "../apps/jukebox/index.js";
 import { getAssetAndDataObject } from "../utils/index.js";
 export default router;
 
@@ -34,6 +39,16 @@ router.post("/playlist/:param?", async (req, res) => {
     let updateObject = req;
     updateObject.body = { ...req.body, assetId };
     playNextSongInPlaylist(updateObject);
+  } else if (dataObject && dataObject.action === "next-page-clicked") {
+    let updateObject = req;
+    let { jukeboxId } = dataObject;
+    updateObject.body = { ...req.body, assetId: jukeboxId };
+    nextPage(updateObject);
+  } else if (dataObject && dataObject.action === "previous-page-clicked") {
+    let updateObject = req;
+    let { jukeboxId } = dataObject;
+    updateObject.body = { ...req.body, assetId: jukeboxId };
+    previousPage(updateObject);
   }
 
   res.json({ message: "Hello from server!" });

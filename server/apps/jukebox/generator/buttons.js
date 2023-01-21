@@ -1,6 +1,6 @@
 import { addWebhookWithClick } from "./playlistGenerator.js";
 import { InteractiveAsset } from "../../../utils/index.js";
-import req from "express/lib/request.js";
+import { createText } from "./text.js";
 
 export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
   try {
@@ -55,4 +55,66 @@ export const addNextButton = async ({ id, position, req, urlSlug }) => {
   } catch (e) {
     console.log("Error adding next button", e);
   }
+};
+
+export const addPreviousPageButton = async ({ id, position, req, urlSlug }) => {
+  addPageButton({
+    pos: {
+      x: position ? position.x - 100 : -100,
+      y: position ? position.y + 850 : 850,
+    },
+    req,
+    text: "Previous Page",
+    uniqueName: `sdk-examples_playlist_${id}_control_previous_page`,
+    urlSlug,
+    dataObject: { action: "previous-page-clicked", jukeboxId: id },
+  });
+};
+
+export const addNextPageButton = async ({ id, position, req, urlSlug }) => {
+  addPageButton({
+    pos: {
+      x: position ? position.x + 100 : 100,
+      y: position ? position.y + 850 : 850,
+    },
+    req,
+    text: "Next Page",
+    uniqueName: `sdk-examples_playlist_${id}_control_next_page`,
+    urlSlug,
+    dataObject: { action: "next-page-clicked", jukeboxId: id },
+  });
+};
+
+const addPageButton = async ({
+  pos,
+  req,
+  text,
+  uniqueName,
+  urlSlug,
+  dataObject,
+}) => {
+  // Will replace this once have previous and next buttons.
+  const droppedAsset = await createText({
+    pos,
+    req,
+    text,
+    textSize: 20,
+    textWidth: 150,
+    uniqueName,
+    urlSlug,
+  });
+
+  const description = `${text} button clicked`;
+  const title = `${text} clicked`;
+  const clickableTitle = `${text} clicked`;
+
+  addWebhookWithClick({
+    clickableTitle,
+    dataObject,
+    description,
+    req,
+    title,
+    droppedAsset,
+    urlSlug,
+  });
 };

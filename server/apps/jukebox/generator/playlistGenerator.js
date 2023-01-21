@@ -1,7 +1,12 @@
 // TODO: Add 'next page' and 'previous page' buttons to in-world playlist so can browse through the entire playlist
 
 import { getAssetAndDataObject, World } from "../../../utils/index.js";
-import { addPlaylistFrame, addNextButton } from "./buttons.js";
+import {
+  addPlaylistFrame,
+  addPreviousPageButton,
+  addNextButton,
+  addNextPageButton,
+} from "./buttons.js";
 import { updatePlaylist } from "./updatePlaylist.js";
 
 // TODO replace Track to change highlighting when it's playing
@@ -24,14 +29,26 @@ export const addPlaylistToWorld = async (req, res) => {
     });
 
     addPlaylistFrame({
-      apiKey,
       id: assetId,
       position: { ...position, y: position.y + addPosOffset },
       req,
       urlSlug,
     });
     addNextButton({
-      apiKey,
+      id: assetId,
+      position: { ...position, y: position.y + addPosOffset },
+      req,
+      urlSlug,
+    });
+
+    addPreviousPageButton({
+      id: assetId,
+      position: { ...position, y: position.y + addPosOffset },
+      req,
+      urlSlug,
+    });
+
+    addNextPageButton({
       id: assetId,
       position: { ...position, y: position.y + addPosOffset },
       req,

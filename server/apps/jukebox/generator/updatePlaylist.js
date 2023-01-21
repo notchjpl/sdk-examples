@@ -69,6 +69,8 @@ export const updatePlaylist = ({
 
     // End of playlist
     // if (i < mediaLinkPlaylist.length) {
+    // console.log("start", start);
+    // console.log("videoIndex", videoIndex);
     if (isAdding)
       addTrack({
         id: assetId,
@@ -101,7 +103,7 @@ export const updatePlaylist = ({
           textWidth: 300,
         },
         req,
-        text: mediaLinkPlaylist[videoIndex]?.snippet?.title,
+        text: mediaLinkPlaylist[videoIndex]?.snippet?.title || "-",
         uniqueName: `sdk-examples_playlist_${assetId}_track_${index}`,
       });
     }
