@@ -40,7 +40,7 @@ export const addPlaylistToWorld = async (req, res) => {
 
     if (res) res.send("Success");
   } catch (e) {
-    // console.log(e);
+    console.log("Error adding playlist to world", e);
     if (res) res.status(403).send(e);
   }
 };
@@ -81,7 +81,7 @@ export const addWebhookWithClick = async ({
       });
     } else throw "No asset found";
   } catch (e) {
-    console.log("Error", e);
+    console.log("Error adding webhook", e);
   }
 };
 
@@ -98,7 +98,10 @@ export const removePlaylistFromWorld = async (req, res) => {
         droppedAsset.deleteDroppedAsset();
       });
   } catch (e) {
-    console.log("No unique names", e?.response?.status || e);
+    console.log(
+      "Error: No assets with unique names found",
+      e?.response?.status || e
+    );
   }
   if (res) res.send("Success");
 };

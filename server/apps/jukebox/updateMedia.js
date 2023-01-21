@@ -52,7 +52,7 @@ export const updateMedia = async (req, res) => {
       videoInfo,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error updating media", error);
     if (res) res.status(502).send({ error, success: false });
   }
 };

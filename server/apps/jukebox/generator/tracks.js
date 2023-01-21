@@ -51,7 +51,7 @@ export const addTrack = async ({
       urlSlug,
     });
   } catch (e) {
-    console.log(e);
+    console.log("Error adding / updating track", e);
   }
 };
 

@@ -71,7 +71,7 @@ export async function youtubeSearch(req, res) {
 
     return res.json(toReturn);
   } catch (e) {
-    console.log("Error", e.response);
+    console.log("Error in Youtube Search", e.response);
     return res.status(403).send(e);
   }
 }
@@ -95,7 +95,7 @@ export async function getYoutubeVideoDetails(videoId, videoIDArray) {
 
     return result.data;
   } catch (e) {
-    return console.log("Details Error", e);
+    return console.log("Error getting Youtube Video Details", e);
   }
 }
 

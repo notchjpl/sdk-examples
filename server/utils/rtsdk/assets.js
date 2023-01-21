@@ -24,6 +24,6 @@ export const InteractiveAsset = async ({
       });
     return droppedAsset;
   } catch (e) {
-    console.log(e);
+    console.log("Error creating interactive asset", e);
   }
 };

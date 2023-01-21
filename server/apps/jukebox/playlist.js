@@ -28,7 +28,7 @@ export const addToAssetPlaylist = async (req, res) => {
     });
     res.json({ success: true, assetId, dataObject });
   } catch (error) {
-    console.log(error);
+    console.log("Error adding asset to playlist", error);
     res.status(502).send({ error, success: false });
   }
 };
@@ -44,7 +44,7 @@ export const removeFromAssetPlaylist = async (req, res) => {
 
     res.json({ success: true, assetId, dataObject });
   } catch (error) {
-    console.log(error);
+    console.log("Error removing asset from playlist", error);
     res.status(502).send({ error, success: false });
   }
 };
@@ -58,7 +58,7 @@ export const shufflePlaylist = async (req, res) => {
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true, dataObject });
   } catch (e) {
-    console.log(e);
+    console.log("Error shuffling playlist", e);
     if (res) res.status(502).send({ error, success: false });
   }
 };
@@ -76,7 +76,7 @@ export const volumeDown = async (req, res) => {
 
     res.send("Success");
   } catch (e) {
-    console.log(e);
+    console.log("Error decreasing volume", e);
   }
 };
 
@@ -89,6 +89,6 @@ export const volumeUp = async (req, res) => {
     });
     res.send("Success");
   } catch (e) {
-    console.log(e);
+    console.log("Error increasing volume", e);
   }
 };

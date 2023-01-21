@@ -20,7 +20,7 @@ export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
 
     frameAsset.updateScale(1.45);
   } catch (e) {
-    console.log(e);
+    console.log("Error adding playlist frame", e);
   }
 };
 
@@ -53,6 +53,6 @@ export const addNextButton = async ({ id, position, req, urlSlug }) => {
       urlSlug,
     });
   } catch (e) {
-    console.log(e);
+    console.log("Error adding next button", e);
   }
 };

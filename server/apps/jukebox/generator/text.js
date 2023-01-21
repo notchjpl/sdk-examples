@@ -31,7 +31,7 @@ export const createText = async ({
     );
     return trackAsset;
   } catch (e) {
-    console.log(e);
+    console.log("Error updating track text", e);
   }
 };
 
@@ -54,9 +54,8 @@ export const updateText = async ({
     if (droppedAssets && droppedAssets[0]) {
       await droppedAssets[0].updateCustomTextAsset(textOptions, text);
       await droppedAssets[0].updateDroppedAssetDataObject(newDataObject);
-      console.log("Updated", uniqueName);
     }
   } catch (e) {
-    console.log("Can't update.  No asset found", e?.response?.status || e);
+    console.log("Error updating text", e?.response?.status || e);
   }
 };
