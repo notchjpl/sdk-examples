@@ -1747,10 +1747,10 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@rtsdk/topia@^0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@rtsdk/topia/-/topia-0.0.20.tgz#d4c28a7865fb8f0730b2f09a85726cc71f8b33e4"
-  integrity sha512-AW3t3jktyRWT+Fv6nwveTXP5LKgH+eYpAOrRPG8vuVrLtA2QSc7SEL3H73566ht22wamjHB+PLix84JmpN44sA==
+"@rtsdk/topia@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@rtsdk/topia/-/topia-0.0.21.tgz#8fd36f07bb47e67d32279cd14aea8b9612bb548f"
+  integrity sha512-0xTNxFz7X4i9EGV2iN7Sqxe6mFWkvvzNLnXtgprg4g7mHbLExKoYCTECvsH8ZAyxVgPQnNzoq09Wv6RigtwAuA==
 
 "@sinclair/typebox@^0.24.1":
   version "0.24.51"
