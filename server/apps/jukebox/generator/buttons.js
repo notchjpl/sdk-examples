@@ -1,5 +1,6 @@
 import { addWebhookWithClick } from "./playlistGenerator.js";
 import { InteractiveAsset } from "../../../utils/index.js";
+import { createText } from "./text.js";
 
 export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
   try {
@@ -60,7 +61,7 @@ export const addPreviousPageButton = async ({ id, position, req, urlSlug }) => {
   addPageButton({
     pos: {
       x: position ? position.x - 100 : -100,
-      y: position ? position.y + 1000 : 1000,
+      y: position ? position.y + 850 : 850,
     },
     req,
     text: "Previous Page",
@@ -74,7 +75,7 @@ export const addNextPageButton = async ({ id, position, req, urlSlug }) => {
   addPageButton({
     pos: {
       x: position ? position.x + 100 : 100,
-      y: position ? position.y + 1000 : 1000,
+      y: position ? position.y + 850 : 850,
     },
     req,
     text: "Next Page",
@@ -98,7 +99,7 @@ const addPageButton = async ({
     req,
     text,
     textSize: 20,
-    textWidth: 100,
+    textWidth: 150,
     uniqueName,
     urlSlug,
   });

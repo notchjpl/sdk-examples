@@ -92,3 +92,39 @@ export const volumeUp = async (req, res) => {
     console.log("Error increasing volume", e);
   }
 };
+
+export const nextPage = async (req, res) => {
+  try {
+    const { assetId } = req.body;
+    const droppedAsset = await getAssetAndDataObject(req);
+    let { dataObject } = droppedAsset;
+
+    const { mediaLinkPlaylist } = dataObject;
+    dataObject.playlistPageShown = dataObject.playlistPageShown || 0;
+
+    // Check if should cycle back to first page
+    if (
+      mediaLinkPlaylist?.length &&
+      mediaLinkPlaylist.length / 10 - 1 > dataObject.playlistPageShown
+    )
+      dataObject.playlistPageShown++;
+    else {
+      dataObject.playlistPageShown = 0;
+    }
+
+    await droppedAsset.updateDroppedAssetDataObject(dataObject);
+    updatePlaylist({
+      dataObject,
+      isAdding: false,
+      position: droppedAsset.position,
+      req: { ...req, body: { ...req.body, assetId: droppedAsset.id } },
+      dontUpdateCurrentlyPlaying: true,
+    });
+    if (res) res.json({ success: true, assetId, dataObject });
+  } catch (error) {
+    console.log("Error going to next page", error);
+    if (res) res.status(502).send({ error, success: false });
+  }
+};
+
+export const previousPage = async (req, res) => {};
