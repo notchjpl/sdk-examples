@@ -41,6 +41,13 @@ export const removeFromAssetPlaylist = async (req, res) => {
 
     dataObject.mediaLinkPlaylist.splice(index, 1);
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
+    updatePlaylist({
+      dataObject,
+      isAdding: false, // Updating instead of adding
+      position: droppedAsset.position,
+      req: { ...req, body: { ...req.body, assetId: droppedAsset.id } },
+      dontUpdateCurrentlyPlaying: true,
+    });
 
     res.json({ success: true, assetId, dataObject });
   } catch (error) {
