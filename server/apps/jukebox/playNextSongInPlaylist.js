@@ -36,8 +36,9 @@ export const playNextSongInPlaylist = async (req, res) => {
         // If there is only a single item, don't want to get stuck in recusive loop
         if (!mediaLinkPlaylist.length || mediaLinkPlaylist.length === 1) {
           newReq.body.index = 0;
-          newReq.body.index = randIndex(0, mediaLinkPlaylist.length - 1, index);
         }
+        // Shuffle
+        newReq.body.index = randIndex(0, mediaLinkPlaylist.length - 1, index);
       }
 
       try {
