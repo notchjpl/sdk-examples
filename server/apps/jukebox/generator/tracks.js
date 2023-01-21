@@ -36,9 +36,10 @@ export const addTrack = async ({
 
     const description = `Play song by clicking here`;
     const title = "Track clicked";
+    // Keeping the webhook data clean and adding / updating the asset's data object when song changes rather than updating the webhook's data object.
     const dataObject = { action: "track-clicked", index, jukeboxId: id };
 
-    const clickableTitle = `Playing ${trackData?.snippet?.title}...`;
+    const clickableTitle = `Playing track ${index + 1}`;
 
     addWebhookWithClick({
       clickableTitle,
@@ -63,9 +64,14 @@ export const addCurrentlyPlaying = ({
   urlSlug,
 }) => {
   const startingY = position.y + 30;
-  const date = new Date(0);
-  date.setSeconds(trackData.duration / 1000);
-  const timeString = date.toISOString().substring(11, 19);
+  let timeString = "";
+  if (!trackData)
+    return console.log("Not adding currently playing, no track data");
+  if (trackData.duration) {
+    const date = new Date(0);
+    date.setSeconds(trackData.duration / 1000);
+    timeString = date.toISOString().substring(11, 19);
+  }
 
   const createTextDefault = {
     isCurrentlyPlaying: false,
@@ -105,6 +111,8 @@ export const addCurrentlyPlaying = ({
 
 export const updateCurrentlyPlaying = ({ id, req, trackData }) => {
   const date = new Date(0);
+  if (!trackData)
+    return console.log("Not updating currently playing, no track data.");
   date.setSeconds(trackData.duration / 1000);
   const timeString = date.toISOString().substring(11, 19);
   const updateTextDefault = {

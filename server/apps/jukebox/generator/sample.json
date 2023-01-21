@@ -22,22 +22,6 @@
       "viewCount": "419036338"
     },
     {
-      "uniqueEntryId": "QiFyzOyPevQ_1673985054841",
-      "timeAdded": 1673985054841,
-      "snippet": {
-        "title": "Bon Jovi, Queen, ACDC, CCR, U2, The Beatles, The Police 🔥 Top 100 Classic Rock Songs Of All Time",
-        "liveBroadcastContent": "live",
-        "publishedAt": "2023-01-17T12:00:10Z",
-        "channelTitle": "It's My Life",
-        "channelId": "UCdKibeAuhtdXH1EdRUXzhAA"
-      },
-      "duration": 86126000,
-      "viewCount": "683",
-      "etag": "RWYn79xv0VTIJ8EHU_puMQp3eOo",
-      "kind": "youtube#video",
-      "id": "QiFyzOyPevQ"
-    },
-    {
       "snippet": {
         "channelId": "UC4dqLAF7yT-_DqeYisQ001w",
         "channelTitle": "TheBeatlesVEVO",
@@ -132,54 +116,6 @@
       "viewCount": "90958019",
       "etag": "o9LVzlFle_E8oyj7-_LAGQhYBXw",
       "duration": 157000
-    },
-    {
-      "etag": "3bv3-x4nOc2krAZQT3AdFkeLyM8",
-      "duration": 86126000,
-      "kind": "youtube#video",
-      "viewCount": "691",
-      "snippet": {
-        "channelId": "UCdKibeAuhtdXH1EdRUXzhAA",
-        "title": "Bon Jovi, Queen, ACDC, CCR, U2, The Beatles, The Police 🔥 Top 100 Classic Rock Songs Of All Time",
-        "channelTitle": "It's My Life",
-        "liveBroadcastContent": "live",
-        "publishedAt": "2023-01-17T12:00:10Z"
-      },
-      "id": "QiFyzOyPevQ",
-      "uniqueEntryId": "QiFyzOyPevQ_1673985102549",
-      "timeAdded": 1673985102549
-    },
-    {
-      "viewCount": "88746125",
-      "etag": "Nkp_nkV3tA_yr7LdTbrxNg349lg",
-      "duration": 166000,
-      "kind": "youtube#video",
-      "id": "m2uTFF_3MaA",
-      "uniqueEntryId": "m2uTFF_3MaA_1673985119238",
-      "snippet": {
-        "channelId": "UC4dqLAF7yT-_DqeYisQ001w",
-        "channelTitle": "TheBeatlesVEVO",
-        "liveBroadcastContent": "none",
-        "publishedAt": "2017-12-15T17:06:14Z",
-        "title": "The Beatles - Yellow Submarine"
-      },
-      "timeAdded": 1673985119238
-    },
-    {
-      "viewCount": "3459677",
-      "etag": "-haP4HyzzzYTIIersZZvrI6akn0",
-      "uniqueEntryId": "5XwXliCK19Y_1674105012966",
-      "snippet": {
-        "title": "The Beatles - I'm Only Sleeping",
-        "channelId": "UC4dqLAF7yT-_DqeYisQ001w",
-        "publishedAt": "2022-11-01T16:00:07Z",
-        "channelTitle": "TheBeatlesVEVO",
-        "liveBroadcastContent": "none"
-      },
-      "kind": "youtube#video",
-      "duration": 187000,
-      "timeAdded": 1674105012966,
-      "id": "5XwXliCK19Y"
     },
     {
       "duration": 236000,
