@@ -87,21 +87,22 @@ export const addWebhookWithClick = async ({
 
 export const removePlaylistFromWorld = async (req, res) => {
   const { apiKey, assetId, urlSlug } = req.body;
-  const world = World.create(urlSlug, { credentials: req.body });
   try {
+    const world = World.create(urlSlug, { credentials: req.body });
     const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
       isPartial: true,
       uniqueName: `sdk-examples_playlist_${assetId}`,
     });
     if (droppedAssets && droppedAssets.length)
       droppedAssets.forEach((droppedAsset) => {
-        droppedAsset.deleteDroppedAsset();
+        try {
+          droppedAsset.deleteDroppedAsset();
+        } catch (e) {
+          console.log("Error on delete dropped asset", e);
+        }
       });
   } catch (e) {
-    console.log(
-      "Error: No assets with unique names found",
-      e?.response?.status || e
-    );
+    console.log("Error removing playlist", e?.response?.status || e);
   }
   if (res) res.send("Success");
 };

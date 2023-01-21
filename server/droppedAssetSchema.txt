@@ -5,7 +5,7 @@
   assetBroadcastAll: false,
   assetBroadcast: false,
   audioRadius: null,
-  audioVolume: null,
+  audioSliderVolume: null,
   isPrivateZone: false,
   isPrivateZoneChatDisabled: false,
   privateZoneUserCap: null,
