@@ -46,6 +46,7 @@ router.post("/playlist/:param?", async (req, res) => {
     nextPage(updateObject);
   } else if (dataObject && dataObject.action === "previous-page-clicked") {
     let updateObject = req;
+    let { jukeboxId } = dataObject;
     updateObject.body = { ...req.body, assetId: jukeboxId };
     previousPage(updateObject);
   }
