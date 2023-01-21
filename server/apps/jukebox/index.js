@@ -2,6 +2,7 @@ export {
   addPlaylistToWorld,
   removePlaylistFromWorld,
 } from "./generator/playlistGenerator.js";
+export { updatePlaylist } from "./generator/updatePlaylist.js";
 export {
   addToAssetPlaylist,
   removeFromAssetPlaylist,

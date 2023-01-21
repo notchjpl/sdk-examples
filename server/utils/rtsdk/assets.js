@@ -17,13 +17,13 @@ export const InteractiveAsset = async ({
     });
 
     // This adds your public developer key to the dropped asset so visitors can interact with it in-world.
-    if (droppedAsset && droppedAsset.setInteractiveSettings)
+    if (droppedAsset)
       await droppedAsset.setInteractiveSettings({
         isInteractive: true,
         interactivePublicKey: process.env.INTERACTIVE_KEY,
       });
     return droppedAsset;
   } catch (e) {
-    console.log(e);
+    console.log("Error creating interactive asset", e);
   }
 };

@@ -31,7 +31,8 @@ const youtube = google.youtube("v3");
 
 const cleanYoutubeVideo = (item) => {
   let cleaned = item;
-  cleaned.duration = YTDurationToMilliseconds(item.contentDetails.duration);
+
+  cleaned.duration = YTDurationToMilliseconds(item?.contentDetails?.duration);
   cleaned.viewCount = item.statistics.viewCount;
   // Get rid of unnecessary information to reduce payloads
   delete cleaned.contentDetails;
@@ -70,7 +71,7 @@ export async function youtubeSearch(req, res) {
 
     return res.json(toReturn);
   } catch (e) {
-    console.log("Error", e.response);
+    console.log("Error in Youtube Search", e.response);
     return res.status(403).send(e);
   }
 }
@@ -94,7 +95,7 @@ export async function getYoutubeVideoDetails(videoId, videoIDArray) {
 
     return result.data;
   } catch (e) {
-    return console.log("Details Error", e);
+    return console.log("Error getting Youtube Video Details", e);
   }
 }
 

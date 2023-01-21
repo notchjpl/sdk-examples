@@ -28,7 +28,6 @@ router.post("/playlist/:param?", async (req, res) => {
   } else if (dataObject && dataObject.action === "next-clicked") {
     let { jukeboxId } = dataObject;
     let updateObject = req;
-
     updateObject.body = { ...req.body, assetId: jukeboxId };
     playNextSongInPlaylist(updateObject);
   } else if (req.params.param === "next") {

@@ -17,38 +17,42 @@ export const addTrack = async ({
   };
   const uniqueName = `sdk-examples_playlist_${id}_track_${index}`;
 
-  const trackAsset = await createText({
-    isCurrentlyPlaying,
-    pos,
-    req,
-    text: trackData?.snippet?.title || "-",
-    textSize: 12,
-    textWidth: 300,
-    uniqueName,
-    urlSlug,
-  });
+  try {
+    const trackAsset = await createText({
+      isCurrentlyPlaying,
+      pos,
+      req,
+      text: trackData?.snippet?.title || "-",
+      textSize: 12,
+      textWidth: 300,
+      uniqueName,
+      urlSlug,
+    });
 
-  // TODO: Need to make so can send developer public key when adding webhook and specify that can add visitor session credentials.
-  // TODO: Need to add clickType: webhook
-  // TODO: Add clickType: "displayText" to the public API
-  // TODO: Dropped text seems to high.  Need to set max height of asset?
+    // TODO: Need to make so can send developer public key when adding webhook and specify that can add visitor session credentials.
+    // TODO: Need to add clickType: webhook
+    // TODO: Add clickType: "displayText" to the public API
+    // TODO: Dropped text seems to high.  Need to set max height of asset?
 
-  const description = `Play song by clicking here`;
-  const title = "Track clicked";
-  const dataObject = { action: "track-clicked", index, jukeboxId: id };
+    const description = `Play song by clicking here`;
+    const title = "Track clicked";
+    const dataObject = { action: "track-clicked", index, jukeboxId: id };
 
-  const clickableTitle = `Playing ${trackData?.snippet?.title}...`;
+    const clickableTitle = `Playing ${trackData?.snippet?.title}...`;
 
-  addWebhookWithClick({
-    clickableTitle,
-    dataObject,
-    description,
-    req,
-    title,
-    droppedAsset: trackAsset,
-    req,
-    urlSlug,
-  });
+    addWebhookWithClick({
+      clickableTitle,
+      dataObject,
+      description,
+      req,
+      title,
+      droppedAsset: trackAsset,
+      req,
+      urlSlug,
+    });
+  } catch (e) {
+    console.log("Error adding / updating track", e);
+  }
 };
 
 export const addCurrentlyPlaying = ({

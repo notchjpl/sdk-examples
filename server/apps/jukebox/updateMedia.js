@@ -24,14 +24,14 @@ export const updateMedia = async (req, res) => {
     // TODO: Rather than passing in videoInfo, should pull the info from dataObject.
     // Should send uniqueEntryId rather than videoId and videoInfo.  Then do a lookup.
 
-    console.log(droppedAsset);
     await droppedAsset.updateMediaType({
       mediaLink,
       isVideo: true,
       mediaName: videoInfo?.snippet?.title, // Will only change media name if one is sent from the frontend.
       mediaType: "link",
-      audioRadius: droppedAsset.audioRadius || 2,
-      syncUserMedia: true,
+      audioSliderVolume: droppedAsset.audioSliderVolume || 10, // Between 0 and 100
+      audioRadius: droppedAsset.audioRadius || 2, // Far
+      syncUserMedia: true, // Make it so everyone has the video synced instead of it playing from the beginning when they approach.
     });
 
     dataObject.lastPlayTimestamp = new Date().valueOf();
@@ -52,7 +52,7 @@ export const updateMedia = async (req, res) => {
       videoInfo,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error updating media", error);
     if (res) res.status(502).send({ error, success: false });
   }
 };

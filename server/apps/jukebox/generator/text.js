@@ -10,25 +10,29 @@ export const createText = async ({
   uniqueName,
   urlSlug,
 }) => {
-  const trackAsset = await InteractiveAsset({
-    id: "rXLgzCs1wxpx96YLZAN5",
-    req,
-    position: pos,
-    uniqueName,
-    urlSlug,
-  });
+  try {
+    const trackAsset = await InteractiveAsset({
+      id: "rXLgzCs1wxpx96YLZAN5",
+      req,
+      position: pos,
+      uniqueName,
+      urlSlug,
+    });
 
-  await trackAsset.updateCustomTextAsset(
-    {
-      textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
-      textFontFamily: "Arial",
-      textSize,
-      textWeight: "normal",
-      textWidth,
-    },
-    text
-  );
-  return trackAsset;
+    await trackAsset.updateCustomTextAsset(
+      {
+        textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
+        textFontFamily: "Arial",
+        textSize,
+        textWeight: "normal",
+        textWidth,
+      },
+      text
+    );
+    return trackAsset;
+  } catch (e) {
+    console.log("Error updating track text", e);
+  }
 };
 
 export const updateText = async ({
@@ -50,9 +54,9 @@ export const updateText = async ({
     if (droppedAssets && droppedAssets[0]) {
       await droppedAssets[0].updateCustomTextAsset(textOptions, text);
       await droppedAssets[0].updateDroppedAssetDataObject(newDataObject);
-      console.log("Updated", uniqueName);
     }
   } catch (e) {
-    console.log("Can't update.  No asset found", e?.response?.status || e);
+    // Don't need this console log.  Include it for dx, but it'll hit pretty frequently.
+    // console.log("Error updating text", e?.response?.status || e);
   }
 };

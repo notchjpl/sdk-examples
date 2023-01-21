@@ -8,6 +8,8 @@ You can use many of the features of this repo by going to the Topia.io marketpla
 - Run `yarn` in client
 - `cd ..` back to server
 
+If you are developing on localhost, make sure you update the [ngrok](https://ngrok.com/) link in server/apps/jukebox/playlistGenerator. Otherwise, your webhooks won't be able to reach your localhost server.
+
 ## Add your .env environmental variables
 
 ### Where to find INTERACTIVE_KEY and INTERACTIVE_SECRET
@@ -24,9 +26,19 @@ A Google API Key is necessary for the function of the YouTube integration within
 
 # Using the Jukebox
 
-## Using the Jukebox from the https://sdk-examples.metaversecloud.com/jukebox interface
+## Using the Jukebox https://sdk-examples.metaversecloud.com/jukebox interface
 
-Test
+With the Jukebox interface, you can:
+
+- Search YouTube for songs and click the 'plus' button to add them to the end of your playlist.
+- Add a song by inputting the YouTube URL directly into the text box
+- Remove songs from your playlist by clicking the 'minus' button on a song.
+- Play any track by clicking on the 'play' button.
+- Seek forward with the 'next' button to play the next song in the playlist.
+- Turn your playlist into 'shuffle' mode so songs are played at random
+- Add Controls to your world, which will add a playlist, Currently Playing, and 'next' button in-world, underneath your jukebox. Any visitor can click a track to play it or click the 'next' button to play the next song. Don't worry if you accidentally click this more than once, remove will remove all related assets. You can move your assets around the world and everything will still work. Just don't change the Unique Name of any jukebox-related assets.
+- Remove Controls from your world.
+- Switch between jukeboxes in your world by selecting another Jukebox in Dropped Assets. Yes, you can have multiple jukeboxes all with their own controls and you can manage each of them from the interface.
 
 ## Adding a Jukebox to a world you own
 
@@ -60,3 +72,9 @@ Place an asset in any world you own. While in edit mode, click to _edit_ the juk
 - Add both the `https://github.com/mars/create-react-app-buildpack.git` and `heroku/nodejs` buildpacks to your project.
 - From your terminal, type `git remote add heroku <your heroku git URL>`.
 - From your terminal, type `git push heroku master`.
+
+# Troubleshooting
+
+### I can't seem to search for anything on YouTube or add songs to my playlist with a link
+
+YouTube has an API quota that is limited to 10,000 units per day. A search costs 100 units. Each time you add a song from the search or by directly inputting a link, it costs 1 unit. It's possible we've run out of units. Try again tomorrow or clone this repo and sign up for your own YouTube API key.

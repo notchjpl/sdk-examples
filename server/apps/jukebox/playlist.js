@@ -1,5 +1,5 @@
 import { getAssetAndDataObject } from "../../utils/index.js";
-import { updatePlaylist } from "./generator/updatePlaylist.js";
+import { updatePlaylist } from "./index.js";
 
 export const addToAssetPlaylist = async (req, res) => {
   // TODO: Look up additional information on YouTube like contentDetails for duration and statistics for play counts.
@@ -28,7 +28,7 @@ export const addToAssetPlaylist = async (req, res) => {
     });
     res.json({ success: true, assetId, dataObject });
   } catch (error) {
-    console.log(error);
+    console.log("Error adding asset to playlist", error);
     res.status(502).send({ error, success: false });
   }
 };
@@ -44,7 +44,7 @@ export const removeFromAssetPlaylist = async (req, res) => {
 
     res.json({ success: true, assetId, dataObject });
   } catch (error) {
-    console.log(error);
+    console.log("Error removing asset from playlist", error);
     res.status(502).send({ error, success: false });
   }
 };
@@ -58,7 +58,7 @@ export const shufflePlaylist = async (req, res) => {
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
     if (res) res.json({ success: true, dataObject });
   } catch (e) {
-    console.log(e);
+    console.log("Error shuffling playlist", e);
     if (res) res.status(502).send({ error, success: false });
   }
 };
@@ -71,12 +71,12 @@ export const volumeDown = async (req, res) => {
   try {
     const droppedAsset = await getAssetAndDataObject(req);
     droppedAsset.updateMediaType({
-      audioVolume: Math.max(droppedAsset.audioVolume - 10, 0),
+      audioSliderVolume: Math.max(droppedAsset.audioSliderVolume - 10, 0),
     });
 
     res.send("Success");
   } catch (e) {
-    console.log(e);
+    console.log("Error decreasing volume", e);
   }
 };
 
@@ -85,10 +85,10 @@ export const volumeUp = async (req, res) => {
   try {
     const droppedAsset = await getAssetAndDataObject(req);
     droppedAsset.updateMediaType({
-      audioVolume: Math.min(droppedAsset.audioVolume + 10, 100),
+      audioSliderVolume: Math.min(droppedAsset.audioSliderVolume + 10, 100),
     });
     res.send("Success");
   } catch (e) {
-    console.log(e);
+    console.log("Error increasing volume", e);
   }
 };
