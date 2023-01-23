@@ -1,6 +1,6 @@
 # Getting Started
 
-You can use many of the features of this repo by going to the Topia.io marketplace and getting one of the SDK Examples scenes, then placing it in one of your worlds. Then go to https://sdk-examples.metaversecloud.com and select the relevant application.
+You can use many of the features of this repo by going to the Topia.io marketplace and getting one of the SDK Examples scenes, then placing it in one of your worlds. Then go to https://sdk-examples.metaversecloud.com and select the relevant application.  You can find our Javascript SDK (rtsdk) [here](https://github.com/metaversecloud-com/mc-sdk-js).
 
 - Clone this repository
 - Run `yarn` in server
