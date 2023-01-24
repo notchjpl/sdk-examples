@@ -1,6 +1,8 @@
 import { addWebhookWithClick } from "./playlistGenerator.js";
 import { createText, updateText } from "./text.js";
 
+const mainColor = "#C52400";
+
 export const addTrack = async ({
   id,
   index,
@@ -23,6 +25,7 @@ export const addTrack = async ({
       pos,
       req,
       text: trackData?.snippet?.title || "-",
+      textColor: isCurrentlyPlaying ? mainColor : "#000000",
       textSize: 12,
       textWidth: 300,
       uniqueName,
@@ -63,7 +66,7 @@ export const addCurrentlyPlaying = ({
   trackData,
   urlSlug,
 }) => {
-  const startingY = position.y + 30;
+  const startingY = position.y + 120;
   let timeString = "";
   if (!trackData)
     return console.log("Not adding currently playing, no track data");
@@ -78,33 +81,38 @@ export const addCurrentlyPlaying = ({
     urlSlug,
   };
 
+  // createText({
+  //   ...createTextDefault,
+  //   pos: { x: position.x, y: startingY },
+  //   req,
+  //   text: "Currently Playing",
+  //   textSize: 40,
+  //   textWidth: 400,
+  //   uniqueName: `sdk-examples_playlist_${id}_playing_header`,
+  // });
+
+  let titleText = trackData?.snippet?.title;
+  if (titleText.length > 80) titleText = titleText.slice(0, 80) + "...";
+
   createText({
     ...createTextDefault,
     pos: { x: position.x, y: startingY },
     req,
-    text: "Currently Playing",
-    textSize: 40,
-    textWidth: 400,
-    uniqueName: `sdk-examples_playlist_${id}_playing_header`,
-  });
-
-  createText({
-    ...createTextDefault,
-    pos: { x: position.x, y: startingY + 60 },
-    req,
-    text: trackData?.snippet?.title,
-    textSize: 20,
-    textWidth: 600,
+    text: titleText,
+    textColor: mainColor,
+    textSize: 16,
+    textWidth: 315,
     uniqueName: `sdk-examples_playlist_${id}_playing_title`,
   });
 
   createText({
     ...createTextDefault,
-    pos: { x: position.x, y: startingY + 100 },
+    pos: { x: position.x, y: startingY + 30 },
     req,
     text: `${trackData?.snippet?.channelTitle} | ${timeString}`,
-    textSize: 20,
-    textWidth: 600,
+    textColor: mainColor,
+    textSize: 16,
+    textWidth: 315,
     uniqueName: `sdk-examples_playlist_${id}_playing_subtitle`,
   });
 };

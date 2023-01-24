@@ -2,6 +2,8 @@ import { addWebhookWithClick } from "./playlistGenerator.js";
 import { InteractiveAsset } from "../../../utils/index.js";
 import { createText } from "./text.js";
 
+const buttonsRadius = 165;
+
 export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
   try {
     const frameAsset = await InteractiveAsset({
@@ -24,14 +26,37 @@ export const addPlaylistFrame = async ({ id, position, req, urlSlug }) => {
   }
 };
 
+export const addCurrentlyPlayingFrame = async ({
+  id,
+  position,
+  req,
+  urlSlug,
+}) => {
+  try {
+    const frameAsset = await InteractiveAsset({
+      id: "5h21eNGdHvemRopqrvHe",
+      req,
+      position: {
+        x: position ? position.x : 0,
+        y: position ? position.y + 42 : 42,
+      },
+      uniqueName: `sdk-examples_playlist_${id}_currentlyPlaying_frame`,
+      urlSlug,
+    });
+  } catch (e) {
+    console.log("Error adding playlist frame", e);
+  }
+};
+
 export const addNextButton = async ({ id, position, req, urlSlug }) => {
   try {
     const nextAsset = await InteractiveAsset({
-      id: "8kiBYqfayeJF5TcoUtpK",
+      id: "Dav4RWr8DEqJcleqry1e",
       req,
       position: {
-        x: position ? position.x + 400 : 400,
-        y: position ? position.y + 450 : 450,
+        // x: position ? position.x + buttonsRadius : buttonsRadius, // Used when have additional buttons
+        x: position ? position.x : 0,
+        y: position ? position.y + 176 : 176,
       },
       uniqueName: `sdk-examples_playlist_${id}_control_next`,
       urlSlug,
