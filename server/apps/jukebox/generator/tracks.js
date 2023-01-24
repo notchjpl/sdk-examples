@@ -10,10 +10,10 @@ export const addTrack = async ({
   urlSlug,
   isCurrentlyPlaying,
 }) => {
-  const offset = 220 + index * 50;
+  const yOffset = 325 + index * 50;
   let pos = {
     x: position ? position.x : 0,
-    y: position ? position.y + offset : offset,
+    y: position ? position.y + yOffset : yOffset,
   };
   const uniqueName = `sdk-examples_playlist_${id}_track_${index}`;
 
