@@ -7,6 +7,8 @@ import {
 import { updateText } from "./text.js";
 import { getPlayedCurrentIndex } from "../playlist.js";
 
+const mainColor = "#f84d21";
+
 export const updatePlaylist = ({
   addPosOffset, // Only included when adding, not updating
   dataObject,
@@ -95,7 +97,7 @@ export const updatePlaylist = ({
         newDataObject,
         // TODO: Make so don't have to pass all these properties in.  Passing only textColor causes failed API call
         textOptions: {
-          textColor: videoIndex === currentPlayedIndex ? "#0000ff" : "#000000",
+          textColor: videoIndex === currentPlayedIndex ? mainColor : "#000000",
           textFontFamily: "Arial",
           textSize: 12,
           textWeight: "normal",
