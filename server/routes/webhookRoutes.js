@@ -5,6 +5,7 @@ import {
   previousPage,
   playNextSongInPlaylist,
   updateMedia,
+  shufflePlaylist,
 } from "../apps/jukebox/index.js";
 import { getAssetAndDataObject } from "../utils/index.js";
 export default router;
@@ -49,6 +50,11 @@ router.post("/playlist/:param?", async (req, res) => {
     let { jukeboxId } = dataObject;
     updateObject.body = { ...req.body, assetId: jukeboxId };
     previousPage(updateObject);
+  } else if (dataObject && dataObject.action === "shuffle-clicked") {
+    let updateObject = req;
+    let { jukeboxId, toggle } = dataObject;
+    updateObject.body = { ...req.body, assetId: jukeboxId, toggle };
+    shufflePlaylist(updateObject);
   }
 
   res.json({ message: "Hello from server!" });

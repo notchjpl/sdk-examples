@@ -1,10 +1,10 @@
 import { InteractiveAsset, World } from "../../../utils/index.js";
 
 export const createText = async ({
-  isCurrentlyPlaying,
   pos,
   req,
   text,
+  textColor,
   textSize,
   textWidth,
   uniqueName,
@@ -21,7 +21,7 @@ export const createText = async ({
 
     await trackAsset.updateCustomTextAsset(
       {
-        textColor: isCurrentlyPlaying ? "#0000ff" : "#000000", // Color the currently playing track a different color
+        textColor, // Color the currently playing track a different color
         textFontFamily: "Arial",
         textSize,
         textWeight: "normal",

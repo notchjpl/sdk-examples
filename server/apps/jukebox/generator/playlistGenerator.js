@@ -2,10 +2,12 @@
 
 import { getAssetAndDataObject, World } from "../../../utils/index.js";
 import {
+  addCurrentlyPlayingFrame,
   addPlaylistFrame,
   addPreviousPageButton,
   addNextButton,
   addNextPageButton,
+  updateShuffleButton,
 } from "./buttons.js";
 import { updatePlaylist } from "./updatePlaylist.js";
 
@@ -19,13 +21,12 @@ export const addPlaylistToWorld = async (req, res) => {
     const { dataObject, position } = jukeboxAsset;
 
     const addPosOffset = 150; // Where to start adding the in-world assets below jukebox
-    updatePlaylist({
-      addPosOffset,
-      dataObject,
-      isAdding: true,
-      position,
+
+    addCurrentlyPlayingFrame({
+      id: assetId,
+      position: { ...position, y: position.y + addPosOffset },
       req,
-      // req: { ...req, body: { ...req.body, assetId: jukeboxAsset.id } },
+      urlSlug,
     });
 
     addPlaylistFrame({
@@ -34,26 +35,48 @@ export const addPlaylistToWorld = async (req, res) => {
       req,
       urlSlug,
     });
-    addNextButton({
-      id: assetId,
-      position: { ...position, y: position.y + addPosOffset },
-      req,
-      urlSlug,
-    });
 
-    addPreviousPageButton({
-      id: assetId,
-      position: { ...position, y: position.y + addPosOffset },
-      req,
-      urlSlug,
-    });
+    // Make sure Frame is added first for layering.
+    // TODO: Add to API way to push Frame to back like can do in UI.
+    setTimeout(() => {
+      updatePlaylist({
+        addPosOffset,
+        dataObject,
+        isAdding: true,
+        position,
+        req,
+        // req: { ...req, body: { ...req.body, assetId: jukeboxAsset.id } },
+      });
+      addNextButton({
+        id: assetId,
+        position: { ...position, y: position.y + addPosOffset },
+        req,
+        urlSlug,
+      });
 
-    addNextPageButton({
-      id: assetId,
-      position: { ...position, y: position.y + addPosOffset },
-      req,
-      urlSlug,
-    });
+      updateShuffleButton({
+        id: assetId,
+        isAdding: true,
+        isPushed: dataObject.playlistShuffle,
+        position: { ...position, y: position.y + addPosOffset },
+        req,
+        urlSlug,
+      });
+
+      addPreviousPageButton({
+        id: assetId,
+        position: { ...position, y: position.y + addPosOffset },
+        req,
+        urlSlug,
+      });
+
+      addNextPageButton({
+        id: assetId,
+        position: { ...position, y: position.y + addPosOffset },
+        req,
+        urlSlug,
+      });
+    }, 500);
 
     if (res) res.send("Success");
   } catch (e) {
