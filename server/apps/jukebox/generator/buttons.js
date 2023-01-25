@@ -1,6 +1,5 @@
 import { addWebhookWithClick } from "./playlistGenerator.js";
-import { InteractiveAsset } from "../../../utils/index.js";
-import { createText } from "./text.js";
+import { InteractiveAsset, World } from "../../../utils/index.js";
 
 const buttonsRadius = 165;
 
@@ -48,6 +47,73 @@ export const addCurrentlyPlayingFrame = async ({
   }
 };
 
+export const updateShuffleButton = async ({
+  id,
+  isAdding,
+  isPushed,
+  position,
+  req,
+  urlSlug,
+}) => {
+  const uniqueName = `sdk-examples_playlist_${id}_control_shuffle_${!!isPushed}`;
+
+  if (!isAdding) {
+    try {
+      const world = World.create(urlSlug, { credentials: req.body });
+      const toRemoveUniqueName = `sdk-examples_playlist_${id}_control_shuffle_${!isPushed}`;
+      const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
+        uniqueName: toRemoveUniqueName,
+        isPartial: false,
+      });
+      if (droppedAssets && droppedAssets.length) {
+        const toDeleteAsset = droppedAssets[0];
+        try {
+          toDeleteAsset.deleteDroppedAsset();
+        } catch (e) {
+          console.log("Error deleting shuffle button", e);
+        }
+      }
+    } catch (e) {
+      console.log("Error fetching existing shuffle button", e);
+    }
+  }
+
+  // setTimeout(async () => {
+  const offset = isPushed ? 0 : 1;
+  const droppedAsset = await InteractiveAsset({
+    id: isPushed ? "dWqpjsq65NjmZg64iZbS" : "fUN932PLjS8DJh3p70j7",
+    req,
+    position: {
+      x: position ? position.x - buttonsRadius / 3 : -buttonsRadius / 3,
+      y: position ? position.y + 176 + offset : 176 + offset,
+    },
+    uniqueName,
+    urlSlug,
+  });
+
+  const dataObject = {
+    action: "shuffle-clicked",
+    jukeboxId: id,
+    toggle: !isPushed,
+  };
+
+  const beginning = isPushed ? "Unshuffle" : "Shuffle";
+  const description = `${beginning} button clicked`;
+  const title = `${beginning} clicked`;
+  const clickableTitle = `${beginning} clicked`;
+
+  addWebhookWithClick({
+    clickableTitle,
+    dataObject,
+    description,
+    req,
+    title,
+    droppedAsset,
+    urlSlug,
+  });
+  // }, 1500);
+};
+
 export const addNextButton = async ({ id, position, req, urlSlug }) => {
   try {
     const nextAsset = await InteractiveAsset({
@@ -55,7 +121,7 @@ export const addNextButton = async ({ id, position, req, urlSlug }) => {
       req,
       position: {
         // x: position ? position.x + buttonsRadius : buttonsRadius, // Used when have additional buttons
-        x: position ? position.x : 0,
+        x: position ? position.x + buttonsRadius / 3 : buttonsRadius / 3,
         y: position ? position.y + 176 : 176,
       },
       uniqueName: `sdk-examples_playlist_${id}_control_next`,
@@ -134,16 +200,6 @@ const addPageButton = async ({
   } catch (e) {
     return console.log(e);
   }
-  // // Will replace this once have previous and next buttons.
-  // const droppedAsset = await createText({
-  //   pos,
-  //   req,
-  //   text,
-  //   textSize: 20,
-  //   textWidth: 150,
-  //   uniqueName,
-  //   urlSlug,
-  // });
 
   const description = `${text} button clicked`;
   const title = `${text} clicked`;

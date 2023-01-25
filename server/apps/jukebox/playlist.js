@@ -1,5 +1,5 @@
 import { getAssetAndDataObject } from "../../utils/index.js";
-import { updatePlaylist } from "./index.js";
+import { updatePlaylist, updateShuffleButton } from "./index.js";
 
 export const addToAssetPlaylist = async (req, res) => {
   // TODO: Look up additional information on YouTube like contentDetails for duration and statistics for play counts.
@@ -58,11 +58,19 @@ export const removeFromAssetPlaylist = async (req, res) => {
 
 export const shufflePlaylist = async (req, res) => {
   try {
-    const { toggle } = req.body;
+    const { toggle, urlSlug } = req.body;
     const droppedAsset = await getAssetAndDataObject(req);
-    let { dataObject } = droppedAsset;
+    if (!droppedAsset) return;
+    let { dataObject, id, position } = droppedAsset;
     dataObject.playlistShuffle = toggle;
     await droppedAsset.updateDroppedAssetDataObject(dataObject);
+    updateShuffleButton({
+      id,
+      isPushed: toggle,
+      position: { ...position, y: position.y + 150 },
+      req,
+      urlSlug,
+    });
     if (res) res.json({ success: true, dataObject });
   } catch (e) {
     console.log("Error shuffling playlist", e);

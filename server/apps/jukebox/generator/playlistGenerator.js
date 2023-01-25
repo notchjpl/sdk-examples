@@ -7,6 +7,7 @@ import {
   addPreviousPageButton,
   addNextButton,
   addNextPageButton,
+  updateShuffleButton,
 } from "./buttons.js";
 import { updatePlaylist } from "./updatePlaylist.js";
 
@@ -48,6 +49,15 @@ export const addPlaylistToWorld = async (req, res) => {
       });
       addNextButton({
         id: assetId,
+        position: { ...position, y: position.y + addPosOffset },
+        req,
+        urlSlug,
+      });
+
+      updateShuffleButton({
+        id: assetId,
+        isAdding: true,
+        isPushed: dataObject.playlistShuffle,
         position: { ...position, y: position.y + addPosOffset },
         req,
         urlSlug,

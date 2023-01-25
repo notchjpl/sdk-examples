@@ -20,7 +20,6 @@ export const updatePlaylist = ({
     lastPlaylistUniqueEntryIdPlayed,
     mediaLinkPlaylist,
     playlistPageShown,
-    playlistShuffle,
   } = dataObject;
   let currentPlayedIndex = 0;
 

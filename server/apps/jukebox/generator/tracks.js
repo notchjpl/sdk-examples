@@ -1,7 +1,7 @@
 import { addWebhookWithClick } from "./playlistGenerator.js";
 import { createText, updateText } from "./text.js";
 
-const mainColor = "#C52400";
+const mainColor = "#f84d21";
 
 export const addTrack = async ({
   id,
@@ -92,7 +92,7 @@ export const addCurrentlyPlaying = ({
   // });
 
   let titleText = trackData?.snippet?.title;
-  if (titleText.length > 80) titleText = titleText.slice(0, 80) + "...";
+  if (titleText.length > 75) titleText = titleText.slice(0, 75) + "...";
 
   createText({
     ...createTextDefault,

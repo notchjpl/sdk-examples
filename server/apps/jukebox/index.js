@@ -13,5 +13,7 @@ export {
   volumeUp,
 } from "./playlist.js";
 
+export { updateShuffleButton } from "./generator/buttons.js";
+
 export { updateMedia } from "./updateMedia.js";
 export { playNextSongInPlaylist } from "./playNextSongInPlaylist.js";
