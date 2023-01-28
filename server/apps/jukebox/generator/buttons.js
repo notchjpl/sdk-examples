@@ -68,13 +68,19 @@ export const updateShuffleButton = async ({
       if (droppedAssets && droppedAssets.length) {
         const toDeleteAsset = droppedAssets[0];
         try {
+          await toDeleteAsset.updateDroppedAssetDataObject(
+            { interactedWith: true },
+            { lock: { lockId: true, releaseLock: false } } // Prevent multiple updates.
+          );
           toDeleteAsset.deleteDroppedAsset();
         } catch (e) {
           console.log("Error deleting shuffle button", e);
+          return; // Prevent adding or doing anything else.
         }
       }
     } catch (e) {
       console.log("Error fetching existing shuffle button", e);
+      return; // Prevent adding or doing anything else.
     }
   }
 
@@ -111,7 +117,6 @@ export const updateShuffleButton = async ({
     droppedAsset,
     urlSlug,
   });
-  // }, 1500);
 };
 
 export const addNextButton = async ({ id, position, req, urlSlug }) => {
