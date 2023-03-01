@@ -1,6 +1,9 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import { defaultMaxListeners } from "events";
 import backendRouter from "./routes/backendRoutes.js";
 import webhookRouter from "./routes/webhookRoutes.js";
 import externalRouter from "./routes/externalRoutes.js";
@@ -20,6 +23,16 @@ if (process.env.NODE_ENV === "development") {
     optionSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
+} else {
+  // Node serves the files for the React app
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  app.use(express.static(path.resolve(__dirname, "../client/build")));
+
+  // All other GET requests not handled before will return our React app
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+  });
 }
 
 app.use("/backend", backendRouter);
