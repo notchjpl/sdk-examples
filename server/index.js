@@ -13,12 +13,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+if (process.env.NODE_ENV === "development") {
+  const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true, //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+  };
+  app.use(cors(corsOptions));
+}
 
 app.use("/backend", backendRouter);
 app.use("/external", externalRouter);
