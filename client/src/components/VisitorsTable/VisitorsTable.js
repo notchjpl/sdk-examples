@@ -31,16 +31,12 @@ export function VisitorsTable({ handleMoveVisitors }) {
 
   // context
   const globalDispatch = useGlobalDispatch();
-  const { selectedWorld } = useGlobalState();
-
-  // useEffect(() => {
-  //   handleFetchVisitors();
-  // }, []);
+  const { selectedWorldActivity } = useGlobalState();
 
   const handleFetchVisitors = async () => {
     const visitors = [];
-    await selectedWorld.fetchVisitors();
-    for (const visitor of Object.values(selectedWorld.visitors)) {
+    await selectedWorldActivity.fetchVisitors();
+    for (const visitor of Object.values(selectedWorldActivity.visitors)) {
       visitors.push({
         id: visitor.playerId,
         name: visitor.displayName,
@@ -85,13 +81,7 @@ export function VisitorsTable({ handleMoveVisitors }) {
 
   return (
     <Paper sx={{ p: 2 }}>
-      <Grid
-        alignItems="center"
-        container
-        direction="column"
-        justifyContent="space-between"
-        spacing={2}
-      >
+      <Grid alignItems="center" container direction="column" justifyContent="space-between" spacing={2}>
         <Grid container justifyContent="space-between" p={2} spacing={2}>
           <Grid item>
             <Typography variant="h6">Current Visitors</Typography>
@@ -115,79 +105,48 @@ export function VisitorsTable({ handleMoveVisitors }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {visitors
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((visitor) => {
-                      return (
-                        <TableRow
-                          hover
-                          key={visitor.id}
-                          selected={visitor.selected}
-                          tabIndex={-1}
-                        >
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ minWidth: 200 }}
+                  {visitors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((visitor) => {
+                    return (
+                      <TableRow hover key={visitor.id} selected={visitor.selected} tabIndex={-1}>
+                        <TableCell component="th" scope="row" sx={{ minWidth: 200 }}>
+                          <Checkbox
+                            checked={visitor.selected}
+                            color="primary"
+                            id={`${visitor.id}-selected`}
+                            onChange={(event) => onChange("selected", event.target.checked, visitor.id)}
+                            value={visitor.selected}
+                          />
+                          {visitor.name}
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            id={`${visitor.id}-shouldTeleportVisitor`}
+                            onChange={(event) => onChange("shouldTeleportVisitor", event.target.value, visitor.id)}
+                            value={visitor.shouldTeleportVisitor}
                           >
-                            <Checkbox
-                              checked={visitor.selected}
-                              color="primary"
-                              id={`${visitor.id}-selected`}
-                              onChange={(event) =>
-                                onChange(
-                                  "selected",
-                                  event.target.checked,
-                                  visitor.id
-                                )
-                              }
-                              value={visitor.selected}
-                            />
-                            {visitor.name}
-                          </TableCell>
-                          <TableCell>
-                            <Select
-                              id={`${visitor.id}-shouldTeleportVisitor`}
-                              onChange={(event) =>
-                                onChange(
-                                  "shouldTeleportVisitor",
-                                  event.target.value,
-                                  visitor.id
-                                )
-                              }
-                              value={visitor.shouldTeleportVisitor}
-                            >
-                              <MenuItem value={true}>True</MenuItem>
-                              <MenuItem value={false}>False</MenuItem>
-                            </Select>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Input
-                              id={`${visitor.id}-x`}
-                              onChange={(event) =>
-                                onChange("x", event.target.value, visitor.id)
-                              }
-                              value={visitor.x}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <Input
-                              id={`${visitor.id}-y`}
-                              name="y"
-                              onChange={(event) =>
-                                onChange("y", event.target.value, visitor.id)
-                              }
-                              value={visitor.y}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  <EmptyRows
-                    length={visitors.length}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                  />
+                            <MenuItem value={true}>True</MenuItem>
+                            <MenuItem value={false}>False</MenuItem>
+                          </Select>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Input
+                            id={`${visitor.id}-x`}
+                            onChange={(event) => onChange("x", event.target.value, visitor.id)}
+                            value={visitor.x}
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          <Input
+                            id={`${visitor.id}-y`}
+                            name="y"
+                            onChange={(event) => onChange("y", event.target.value, visitor.id)}
+                            value={visitor.y}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  <EmptyRows length={visitors.length} page={page} rowsPerPage={rowsPerPage} />
                 </TableBody>
               </Table>
             </TableContainer>
@@ -203,11 +162,7 @@ export function VisitorsTable({ handleMoveVisitors }) {
           </Grid>
         )}
         <Grid item>
-          <Button
-            disabled={!visitors.length > 0}
-            onClick={() => handleMoveVisitors(visitors)}
-            variant="contained"
-          >
+          <Button disabled={!visitors.length > 0} onClick={() => handleMoveVisitors(visitors)} variant="contained">
             Move Visitors
           </Button>
         </Grid>

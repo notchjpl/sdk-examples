@@ -1,5 +1,5 @@
 import React from "react";
-import { Topia, WorldFactory } from "@rtsdk/topia";
+import { Topia, WorldActivityFactory, WorldFactory } from "@rtsdk/topia";
 
 const GlobalStateContext = React.createContext();
 const GlobalDispatchContext = React.createContext();
@@ -11,6 +11,7 @@ function globalReducer(state, action) {
         ...state,
         urlSlug: action.payload.urlSlug,
         selectedWorld: action.payload.selectedWorld,
+        selectedWorldActivity: action.payload.selectedWorldActivity,
       };
     case "SET_INTERACTIVE_PARAMS":
       return {
@@ -44,9 +45,7 @@ function GlobalProvider({ children }) {
   });
   return (
     <GlobalStateContext.Provider value={state}>
-      <GlobalDispatchContext.Provider value={dispatch}>
-        {children}
-      </GlobalDispatchContext.Provider>
+      <GlobalDispatchContext.Provider value={dispatch}>{children}</GlobalDispatchContext.Provider>
     </GlobalStateContext.Provider>
   );
 }
@@ -67,16 +66,8 @@ function useGlobalDispatch() {
   return context;
 }
 
-function setInteractiveParams({
-  assetId,
-  dispatch,
-  visitorId,
-  interactiveNonce,
-  interactivePublicKey,
-  urlSlug,
-}) {
-  const isInteractiveIframe =
-    visitorId && interactiveNonce && interactivePublicKey && assetId;
+function setInteractiveParams({ assetId, dispatch, visitorId, interactiveNonce, interactivePublicKey, urlSlug }) {
+  const isInteractiveIframe = visitorId && interactiveNonce && interactivePublicKey && assetId;
   dispatch({
     type: "SET_INTERACTIVE_PARAMS",
     payload: {
@@ -95,6 +86,7 @@ async function fetchWorld({ apiKey, dispatch, urlSlug }) {
   if (!apiKey || !urlSlug) return;
   const topia = new Topia({ apiKey });
   const selectedWorld = new WorldFactory(topia).create(urlSlug);
+  const selectedWorldActivity = new WorldActivityFactory(topia).create(urlSlug);
   try {
     await selectedWorld.fetchDetails();
     dispatch({
@@ -102,6 +94,7 @@ async function fetchWorld({ apiKey, dispatch, urlSlug }) {
       payload: {
         urlSlug,
         selectedWorld,
+        selectedWorldActivity,
       },
     });
   } catch (error) {

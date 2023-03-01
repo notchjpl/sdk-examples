@@ -1,16 +1,7 @@
 import React from "react";
 
 // components
-import {
-  Button,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { DroppedAssetTable, VisitorsTable } from "@components";
 
 // context
@@ -25,15 +16,14 @@ import { setMessage, useGlobalDispatch, useGlobalState } from "@context";
 export function MoveVisitors() {
   const [asset, setAsset] = React.useState({});
   const [scatterVisitorsBy, setScatterVisitorsBy] = React.useState(0);
-  const [shouldTeleportVisitors, setShouldTeleportVisitors] =
-    React.useState(false);
+  const [shouldTeleportVisitors, setShouldTeleportVisitors] = React.useState(false);
 
   // context
   const globalDispatch = useGlobalDispatch();
-  const { selectedWorld } = useGlobalState();
+  const { selectedWorld, selectedWorldActivity } = useGlobalState();
 
   const handleLassoAll = async () => {
-    await selectedWorld
+    await selectedWorldActivity
       .moveAllVisitors({
         shouldTeleportVisitors,
         scatterVisitorsBy,
@@ -52,7 +42,7 @@ export function MoveVisitors() {
           dispatch: globalDispatch,
           message: error,
           messageType: "error",
-        })
+        }),
       );
   };
 
@@ -72,7 +62,7 @@ export function MoveVisitors() {
           dispatch: globalDispatch,
           message: error,
           messageType: "error",
-        })
+        }),
       );
   };
 
@@ -85,25 +75,17 @@ export function MoveVisitors() {
         <Grid item xs={4}>
           <Paper sx={{ p: 2 }}>
             {asset ? (
-              <Grid
-                container
-                direction="column"
-                justifyContent="space-between"
-                spacing={2}
-              >
+              <Grid container direction="column" justifyContent="space-between" spacing={2}>
                 <Grid item>
                   <Typography variant="h5">
-                    Lasso Visitors to{" "}
-                    <b>{asset.uniqueName || asset.assetName}</b>
+                    Lasso Visitors to <b>{asset.uniqueName || asset.assetName}</b>
                   </Typography>
                 </Grid>
                 <Grid item>
                   <TextField
                     id="scatter"
                     label="Scatter by"
-                    onChange={(event) =>
-                      setScatterVisitorsBy(event.target.value)
-                    }
+                    onChange={(event) => setScatterVisitorsBy(event.target.value)}
                   />
                 </Grid>
                 <Grid item>
@@ -131,10 +113,7 @@ export function MoveVisitors() {
       </Grid>
       <Grid container justifyContent="space-around" p={4} spacing={2}>
         <Grid item xs={12}>
-          <VisitorsTable
-            handleMoveVisitors={handleMoveVisitors}
-            selectedWorld={selectedWorld}
-          />
+          <VisitorsTable handleMoveVisitors={handleMoveVisitors} selectedWorld={selectedWorld} />
         </Grid>
       </Grid>
     </>
