@@ -24,9 +24,7 @@ export const getDataObject = async (req, res) => {
       });
     } else {
       console.log("No dropped asset");
-      return res
-        .status(502)
-        .send({ error: "No dropped asset with that assetId", success: false });
+      return res.status(502).send({ error: "No dropped asset with that assetId", success: false });
     }
   } catch (e) {
     console.log("Error getting data object", e);
