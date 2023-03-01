@@ -3,7 +3,6 @@ import { fileURLToPath } from "url";
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import { defaultMaxListeners } from "events";
 import backendRouter from "./routes/backendRoutes.js";
 import webhookRouter from "./routes/webhookRoutes.js";
 import externalRouter from "./routes/externalRoutes.js";

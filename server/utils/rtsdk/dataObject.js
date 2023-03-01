@@ -8,9 +8,10 @@ export const getAssetAndDataObject = async (req) => {
     // Can do .create instead of .get if you don't need all the data inside the dropped asset
     const droppedAsset = await DroppedAsset.get(assetId, urlSlug, {
       credentials: {
-        visitorId,
+        assetId,
         interactiveNonce,
         interactivePublicKey,
+        visitorId,
       },
     });
 
