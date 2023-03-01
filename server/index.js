@@ -1,9 +1,6 @@
-import path from "path";
-import { fileURLToPath } from "url";
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import { defaultMaxListeners } from "events";
 import backendRouter from "./routes/backendRoutes.js";
 import webhookRouter from "./routes/webhookRoutes.js";
 import externalRouter from "./routes/externalRoutes.js";
@@ -12,11 +9,6 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
-
-// Node serves the files for the React app
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,11 +23,6 @@ app.use(cors(corsOptions));
 app.use("/backend", backendRouter);
 app.use("/external", externalRouter);
 app.use("/webhooks", webhookRouter);
-
-// All other GET requests not handled before will return our React app
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
