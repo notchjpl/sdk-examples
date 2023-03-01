@@ -140,9 +140,7 @@ const turnPage = async (req, res, direction) => {
       if (!mediaLinkPlaylist?.length) return; // No playlist, don't do anything
       if (mediaLinkPlaylist?.length && dataObject.playlistPageShown === 0)
         // Round down to nearest integer
-        dataObject.playlistPageShown = Math.floor(
-          mediaLinkPlaylist.length / 10
-        );
+        dataObject.playlistPageShown = Math.floor(mediaLinkPlaylist.length / 10);
       else {
         // If not on the 0 page, decrease page
         dataObject.playlistPageShown--;
