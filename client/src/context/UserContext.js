@@ -21,9 +21,7 @@ function UserProvider({ children }) {
 
   return (
     <UserStateContext.Provider value={state}>
-      <UserDispatchContext.Provider value={dispatch}>
-        {children}
-      </UserDispatchContext.Provider>
+      <UserDispatchContext.Provider value={dispatch}>{children}</UserDispatchContext.Provider>
     </UserStateContext.Provider>
   );
 }
@@ -47,7 +45,7 @@ function useUserDispatch() {
 function fetchUser(apiKey, dispatch) {
   if (!apiKey) return;
   setTimeout(async () => {
-    const topia = new Topia({ apiKey });
+    const topia = await new Topia(apiKey);
     const user = new UserFactory(topia).create({ apiKey });
     localStorage.setItem("apiKey", apiKey);
     dispatch({ payload: user, type: "FETCH_USER_SUCCESS" });
