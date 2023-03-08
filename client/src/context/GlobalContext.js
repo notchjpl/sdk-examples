@@ -84,9 +84,9 @@ function setInteractiveParams({ assetId, dispatch, visitorId, interactiveNonce, 
 // eslint-disable-next-line no-unused-vars
 async function fetchWorld({ apiKey, dispatch, urlSlug }) {
   if (!apiKey || !urlSlug) return;
-  const topia = await new Topia({ apiKey });
-  const selectedWorld = await new WorldFactory(topia).create(urlSlug);
-  const selectedWorldActivity = await new WorldActivityFactory(topia).create(urlSlug);
+  const topia = new Topia({ apiKey });
+  const selectedWorld = new WorldFactory(topia).create(urlSlug);
+  const selectedWorldActivity = new WorldActivityFactory(topia).create(urlSlug);
   try {
     await selectedWorld.fetchDetails();
     dispatch({
