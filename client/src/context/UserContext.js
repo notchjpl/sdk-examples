@@ -21,9 +21,7 @@ function UserProvider({ children }) {
 
   return (
     <UserStateContext.Provider value={state}>
-      <UserDispatchContext.Provider value={dispatch}>
-        {children}
-      </UserDispatchContext.Provider>
+      <UserDispatchContext.Provider value={dispatch}>{children}</UserDispatchContext.Provider>
     </UserStateContext.Provider>
   );
 }

@@ -38,7 +38,7 @@ export function VisitorsTable({ handleMoveVisitors }) {
     await selectedWorldActivity.fetchVisitors();
     for (const visitor of Object.values(selectedWorldActivity.visitors)) {
       visitors.push({
-        id: visitor.playerId,
+        id: visitor.visitorId,
         name: visitor.displayName,
         visitorObj: visitor,
         selected: false,
