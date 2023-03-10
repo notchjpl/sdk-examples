@@ -1,12 +1,6 @@
 import express from "express";
 const router = express.Router();
-import {
-  nextPage,
-  previousPage,
-  playNextSongInPlaylist,
-  updateMedia,
-  shufflePlaylist,
-} from "../apps/jukebox/index.js";
+import { nextPage, previousPage, playNextSongInPlaylist, updateMedia, shufflePlaylist } from "../apps/jukebox/index.js";
 import { getAssetAndDataObject } from "../utils/index.js";
 export default router;
 

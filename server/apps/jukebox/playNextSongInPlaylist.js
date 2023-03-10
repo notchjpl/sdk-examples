@@ -5,6 +5,7 @@ import { getPlayedCurrentIndex } from "./playlist.js";
 export const playNextSongInPlaylist = async (req, res) => {
   try {
     const jukeboxAsset = await getAssetAndDataObject(req);
+    if (!jukeboxAsset) console.log("No Jukebox asset", req.body);
     const { dataObject } = jukeboxAsset;
     const {
       lastPlaylistUniqueEntryIdPlayed,
@@ -22,10 +23,7 @@ export const playNextSongInPlaylist = async (req, res) => {
     ) {
       let newReq = req;
       // Saved this when last song was played so we could look it up in case playlist has been rearranged during video playing.
-      const index = getPlayedCurrentIndex(
-        mediaLinkPlaylist,
-        lastPlaylistUniqueEntryIdPlayed
-      );
+      const index = getPlayedCurrentIndex(mediaLinkPlaylist, lastPlaylistUniqueEntryIdPlayed);
 
       if (!playlistShuffle) {
         // At the end of the playlist... loop back to the beginning.  Optionally, could just stop.
@@ -54,7 +52,7 @@ export const playNextSongInPlaylist = async (req, res) => {
               lockId: `${jukeboxAsset.id}_${jukeboxAsset.mediaPlayTime}`,
               releaseLock: false, // If false, will only ever work once.  Make sure lockId is something unique that you'll never ping again.
             },
-          }
+          },
         );
 
         newReq.body.videoId = mediaLinkPlaylist[newReq.body.index].id;
@@ -66,10 +64,7 @@ export const playNextSongInPlaylist = async (req, res) => {
         return;
       }
     } else {
-      console.log(
-        "Cannot play next song in playlist with data object",
-        dataObject
-      );
+      console.log("Cannot play next song in playlist with data object", dataObject);
     }
   } catch (e) {
     console.log("Error playing next song in playlist", e);
