@@ -32,7 +32,6 @@ module.exports = {
         allowSingleLine: true,
       },
     ],
-    "linebreak-style": ["error", "unix", "windows"],
     "max-statements-per-line": [
       "error",
       {
