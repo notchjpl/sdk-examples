@@ -45,7 +45,7 @@ function useUserDispatch() {
 function fetchUser(apiKey, dispatch) {
   if (!apiKey) return;
   setTimeout(async () => {
-    const topia = new Topia({ apiKey });
+    const topia = new Topia({ apiKey, apiDomain: process.env.REACT_APP_INSTANCE_DOMAIN });
     const user = new UserFactory(topia).create({ apiKey });
     localStorage.setItem("apiKey", apiKey);
     dispatch({ payload: user, type: "FETCH_USER_SUCCESS" });
