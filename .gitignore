@@ -6,9 +6,12 @@
 /client/.pnp
 /client/.yalc
 /client/yalc.lock
+/client/yarn.lock
 /.yalc
 yalc.lock
+yarn.lock
 .pnp.js
+package-lock.json
 
 #credentials
 oauth2.keys.json
