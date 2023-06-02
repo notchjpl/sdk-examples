@@ -43,7 +43,7 @@ jobs:
         env:
           REGISTRY: 368076259134.dkr.ecr.us-east-1.amazonaws.com
           REPOSITORY: sdk-example
-          IMAGE_TAG: 368076259134.dkr.ecr.us-east-1.amazonaws.com/sdk-example:sdk-example
+          IMAGE_TAG: sdk-example
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
