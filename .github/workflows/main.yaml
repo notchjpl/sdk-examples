@@ -39,10 +39,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Setup NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ inputs.env }}
+#       - name: Setup NodeJS
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ inputs.env }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2 
