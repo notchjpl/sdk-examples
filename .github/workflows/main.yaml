@@ -7,11 +7,26 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
-      # pass in environment through manual trigger, if not passed in, default to 'dev'
       env:
         required: true
         type: string
         default: 'dev'
+      node_ver:
+        required: true
+        type: string
+        default: '18.13'
+      REGISTRY:
+        required: true
+        type: string
+        default: '368076259134.dkr.ecr.us-east-1.amazonaws.com'
+      REPOSITORY:
+        required: true
+        type: string
+        default:  'sdk-example'
+      IMAGE_TAG:
+        required: true
+        type: string
+        default:  'sdk-example'
         
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -27,7 +42,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: '>=18'
+          node-version: ${{ inputs.env }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2 
@@ -39,11 +54,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push docker image to Amazon ECR
-        env:
-          REGISTRY: 368076259134.dkr.ecr.us-east-1.amazonaws.com
-          REPOSITORY: sdk-example
-          IMAGE_TAG: sdk-example
+      - name: Build, tag, and push docker image to Amazon ECR          
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker build -t ${{ inputs.REGISTRY }}/${{ inputs.REPOSITORY }}:${{ inputs.IMAGE_TAG }} .
+          docker push ${{ inputs.REGISTRY }}/${{ inputs.REPOSITORY }}:${{ inputs.IMAGE_TAG }}
+          
+      - name: Publish
+        run: |
+          aws ecs update-service --service ${{ inputs.IMAGE_TAG }}-svc --force-new-deployment --cluster SDK-Example-CLS
