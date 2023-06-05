@@ -2,28 +2,19 @@ name: CICD
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
     inputs:
       env:
         required: true
         type: string
         default: 'dev'
-      REGISTRY:
-        required: true
-        type: string
-        default: '368076259134.dkr.ecr.us-east-1.amazonaws.com'
-      REPOSITORY:
-        required: true
-        type: string
-        default:  'sdk-example'
-      IMAGE_TAG:
-        required: true
-        type: string
-        default:  'sdk-example'
-        
+
+env:
+  REGISTRY: '368076259134.dkr.ecr.us-east-1.amazonaws.com'
+  REPOSITORY: 'sdk-example'
+  IMAGE_TAG: 'sdk-teams-notify'
+  
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
@@ -50,9 +41,9 @@ jobs:
 
       - name: Build, tag, and push docker image to Amazon ECR          
         run: |
-          docker build -t ${{ inputs.REGISTRY }}/${{ inputs.REPOSITORY }}:${{ inputs.IMAGE_TAG }} .
-          docker push ${{ inputs.REGISTRY }}/${{ inputs.REPOSITORY }}:${{ inputs.IMAGE_TAG }}
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG  .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
           
       - name: Publish
         run: |
-          aws ecs update-service --service ${{ inputs.IMAGE_TAG }}-svc --force-new-deployment --cluster SDK-Example-CLS
+          aws ecs update-service --service $IMAGE_TAG-svc --force-new-deployment --cluster SDK-Example-CLS
