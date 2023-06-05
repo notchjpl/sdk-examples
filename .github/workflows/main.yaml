@@ -11,10 +11,6 @@ on:
         required: true
         type: string
         default: 'dev'
-      node_ver:
-        required: true
-        type: string
-        default: '18.13'
       REGISTRY:
         required: true
         type: string
@@ -39,10 +35,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
-#       - name: Setup NodeJS
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ inputs.env }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2 
